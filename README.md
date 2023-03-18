@@ -4,7 +4,7 @@
 + [Requirements](#requirements)
 + [Run Project](#run-project)
 + [Features](#features)
-    + [Auth](#auth)
+    - [Auth](#auth)
         - [SignUp](#signup)
             - [SignUp Request](#signup-request)
             - [SignUp Response](#signup-response)
@@ -16,7 +16,7 @@
             - [Refresh Token Response](#refresh-token-response)
         - [Change Password](#change-password)
             - [Change Password Request](#change-password-request)
-            = [Change Password Response](#change-password-response)
+            - [Change Password Response](#change-password-response)
         - [Email Confirmation](#email-confirmation)
             - [Email Confirmation Request](#email-confirmation-request)    
             - [Email Confirmation Response](#email-confirmation-response)
@@ -25,11 +25,7 @@
             - [Add Phone Number Response](#phone-number-response)
         - [Phone Number Confirmation](#phone-number-confirmation)
             - [Phone Number Confirmation Request](#phone-number-confirmation-request)
-            - [Phone Number Confirmation Response](#phone-number-confirmation-response)
-
-    + [NGO]
-    + [Volunteer]
-
+            - [Phone Number Confirmation Response](#phone-number-confirmation-response)    
 + [Directory structure](#directory-structure)
 
         
@@ -39,7 +35,7 @@
 
 # Run Project
     
-- Entrar no diretório do projeto e executar o comando:``` > dotnet run --project .\Proj3.Api\```
+- Enter the project directory and run the command:``` > dotnet run --project .\Proj3.Api\```
 
 <br>
 
@@ -118,16 +114,18 @@ POST {{host}}/auth/SignIn
 
 # Directory structure
 
-**📦Proj3Api**
+```
+
+🟪Proj3Api
  ┃ ┃
-**┣ 📂Proj3.Api**
+ ┣ 🟩Proj3.Api
  ┃ ┣ 📂Controllers
  ┃ ┃ ┣ 📂Authentication
  ┃ ┣ 📂Middlewares
  ┃ ┃ ┣ 📂Authentication
  ┃ ┣ 📂Properties
  ┃ ┃
-**┣ 📂Proj3.Application**
+ ┣ 🟩Proj3.Application
  ┃ ┣ 📂Common
  ┃ ┃ ┣ 📂Errors
  ┃ ┃ ┃ ┣ 📂Authentication
@@ -148,16 +146,16 @@ POST {{host}}/auth/SignIn
  ┃ ┣ 📂Utils
  ┃ ┃ ┗ 📂Authentication
  ┃ ┃
-**┣ 📂Proj3.Contracts**
+ ┣ 🟩Proj3.Contracts
  ┃ ┣ 📂Authentication
  ┃ ┃ ┣ 📂Request
  ┃ ┃ ┗ 📂Response
  ┃ ┃
-**┣ 📂Proj3.Domain**
+ ┣ 🟩Proj3.Domain
  ┃ ┣ 📂Entities
  ┃ ┃ ┗ 📂Authentication
  ┃ ┃
-**┣ 📂Proj3.Infrastructure**
+ ┣ 🟩Proj3.Infrastructure
  ┃ ┣ 📂Authentication
  ┃ ┃ ┣ 📂Utils
  ┃ ┣ 📂Database
@@ -167,3 +165,5 @@ POST {{host}}/auth/SignIn
  ┃ ┣ 📂Repositories
  ┃ ┃ ┣ 📂Authentication
  ┃ ┗ 📂Services
+
+```
