@@ -23,7 +23,49 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         _userValidationCodeRepository = userValidationCodeRepository;
     }
 
-    public async Task<UserStatusResult> SignUp(string name, string email, string password)
+    public async Task<UserStatusResult> SignUpNgo(string name, string email, string password)
+    {
+        // USER EMAIL VERIFICATION
+        if (await _userRepository.GetUserByEmail(email) is User)
+        {
+            throw new UserAlreadyExistsException();
+        }
+
+        // EMAIL VALIDATION
+        if (!Validation.IsValidEmail(email))
+        {
+            throw new InvalidEmailException();
+        }
+
+        // PASSWORD VALIDATION
+        if (!Validation.IsValidPassword(password))
+        {
+            throw new InvalidPasswordException();
+        }
+
+        // CREATE NEW USER
+        User? user = User.NewUserNgo(
+            name: name,
+            email: email
+        );
+
+        // CREATE PASSWORDHASH
+        user.Salt = Crypto.GetSalt;
+        user.PasswordHash = Crypto.ReturnUserHash(user, password);        
+        
+        // ADD USER            
+        await _userRepository.Add(user);
+
+        // ADD EMAIL CODE CONFIRMATION                
+        UserValidationCode uvEmail = new UserValidationCode(user.Id, user.Email);
+        await _userValidationCodeRepository.Add(uvEmail);
+
+        return new UserStatusResult(
+            user
+        );
+    }
+
+    public async Task<UserStatusResult> SignUpVolunteer(string name, string email, string password)
     {
         // USER EMAIL VERIFICATION
         if (await _userRepository.GetUserByEmail(email) is User)
@@ -44,11 +86,12 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         }
 
         //CREATE NEW USER
-        User? user = new User(
+        User? user = User.NewUserVolunteer(
             name: name,
-            email: email
+            email: email            
         );
 
+        // CREATE PASSWORDHASH
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, password);
 
@@ -88,17 +131,29 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         );
     }
 
-    public async Task AddPhoneNumber(Guid userId, string phoneNumber)
+    public async Task<UserStatusResult> ConfirmEmail(Guid userId, int code)
     {
-        if (await _userRepository.UserPhoneNumberAlreadyExist(phoneNumber))
+        if (await _userValidationCodeRepository.GetEmailValidationCodeByUser((await _userRepository.GetUserById(userId))!) is not UserValidationCode uv)
         {
-            throw new PhoneNumberAlreadyExistsException();
+            throw new Exception("This confirmation not exists.");
         }
 
-        User user = (await _userRepository.GetUserById(userId))!;
+        if (uv.Expiration < DateTime.Now)
+        {
+            throw new Exception("Invalid code, a new code was resend.");
+        }
 
-        UserValidationCode? uvPhoneNumber = new UserValidationCode(user.Id, phoneNumber);
+        if (uv.Code != code)
+        {
+            throw new Exception("Invalid code.");
+        }
 
-        await _userValidationCodeRepository.Add(uvPhoneNumber);
+        // implement transaction
+        await _userValidationCodeRepository.RemoveUserConfirmation(uv);
+
+        User? user = await _userRepository.GetUserById(userId);
+        user!.Active = true;
+
+        return new UserStatusResult(await _userRepository.Update(user));
     }
 }

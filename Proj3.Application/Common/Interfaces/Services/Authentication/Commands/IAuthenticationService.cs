@@ -4,8 +4,9 @@ namespace Proj3.Application.Common.Interfaces.Services.Authentication.Command
 {
     public interface IAuthenticationCommandService
     {
-        Task<UserStatusResult> SignUp(string name, string email, string password);
+        Task<UserStatusResult> SignUpVolunteer(string name, string email, string password);
+        Task<UserStatusResult> SignUpNgo(string name, string email, string password);
         Task<AuthenticationResult> ChangePassword(Guid id, string password);
-        Task AddPhoneNumber(Guid userId, string phoneNumber);
+        Task<UserStatusResult> ConfirmEmail(Guid userId, int code);
     }
 }

@@ -1,37 +1,53 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proj3.Domain.Entities.Authentication
 {
+    [Table("Users")]
     public class User
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        [MaxLength(300)]
-        public string Name { get; set; } = null!;
+        [Required]
+        public UserRole UserRole { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(300)]        
+        public string UserName { get; set; } = null!;
+
+        [MaxLength(100)]
         public string Email { get; set; } = null!;
-
-        [MaxLength(11)]
-        public string? PhoneNumber { get; set; }
 
         [Required]
         public string PasswordHash { get; set; } = null!;
 
-        public byte[] Salt { get; set; } = null!;
+        public byte[] Salt { get; set; } = null!;        
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        public bool ActiveAccount { get; set; } = false;
+        public bool Active { get; set; } = false;
 
-        [Required]
-        public int DeviceLimit { get; } = 4;
-
-        public User(string name, string email)
+        public static User NewUserNgo(string name, string email)
         {
-            Name = name;
-            Email = email;
+            User user = new();
+            user.UserRole = UserRole.Ngo;
+            user.UserName = name;
+            user.Email = email;
+
+            return user;
         }
 
+        public static User NewUserVolunteer(string name, string email)
+        {
+            User user = new();
+            user.UserRole = UserRole.Volunteer;
+            user.UserName = name;
+            user.Email = email;            
+
+            return user;
+        }
     }
 }

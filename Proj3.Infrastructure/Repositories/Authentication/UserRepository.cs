@@ -25,10 +25,9 @@ namespace Proj3.Infrastructure.Repositories
             User updateUser = _dbcontext.Users!.SingleOrDefault(u => u == user)!;
 
             // MUTABLES
-            updateUser.Name = user.Name;
-            updateUser.PhoneNumber = user.PhoneNumber;
+            updateUser.UserName = user.UserName;            
             updateUser.PasswordHash = user.PasswordHash;
-            updateUser.ActiveAccount = user.ActiveAccount;
+            updateUser.Active = user.Active;
 
             await _dbcontext.SaveChangesAsync();
 
@@ -38,11 +37,6 @@ namespace Proj3.Infrastructure.Repositories
         public async Task<User?> GetUserByEmail(string email)
         {
             return await _dbcontext.Users!.Where(user => user.Email == email).SingleOrDefaultAsync();
-        }
-
-        public async Task<bool> UserPhoneNumberAlreadyExist(string phoneNumber)
-        {
-            return await _dbcontext.Users!.AnyAsync(user => user.PhoneNumber == phoneNumber);
         }
 
         public async Task<User?> GetUserById(Guid id)

@@ -18,7 +18,7 @@ namespace Proj3.Infrastructure.Database
 
             // FOR MIGRATIONS AND DATABASE UPDATES USE ABSOLUTE PATH
             //
-            optionsBuilder.UseSqlite(connectionString: String.Format(@"DataSource={0}; Cache=Shared", @"C:\Users\Aroldo Jales\Documents\Code\Vscode\IFPI\PROVA1\Prova1\Prova1.Infrastructure\Database\SQLite\Database.db"));
+            optionsBuilder.UseSqlite(connectionString: String.Format(@"DataSource={0}; Cache=Shared", @"C:\Users\Aroldo Jales\Documents\Code\Vscode\IFPI\PROJ3\Proj3Api\Proj3.Infrastructure\Database\SQLite\Database.db"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,10 +32,10 @@ namespace Proj3.Infrastructure.Database
 
         /* - COMMANDS
                 - MIGRATIONS
-                    dotnet ef migrations add InitialMigration --project .\Prova1.Infrastructure\ -o Database/SQLite/AppMigrations
+                    dotnet ef migrations add InitialMigration --project .\Proj3.Infrastructure\ -o Database/SQLite/AppMigrations
 
                 - UPDATE DATABASE (AFTER EACH MIGRATION)
-                    dotnet ef database update --project .\Prova1.Infrastructure\
+                    dotnet ef database update --project .\Proj3.Infrastructure\
         */
         
         // Authentication

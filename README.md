@@ -19,14 +19,7 @@
             - [Change Password Response](#change-password-response)
         - [Email Confirmation](#email-confirmation)
             - [Email Confirmation Request](#email-confirmation-request)    
-            - [Email Confirmation Response](#email-confirmation-response)
-        - [Add Phone Number](#phone-number)
-            - [Add Phone Number Request](#phone-number-request)
-            - [Add Phone Number Response](#phone-number-response)
-        - [Phone Number Confirmation](#phone-number-confirmation)
-            - [Phone Number Confirmation Request](#phone-number-confirmation-request)
-            - [Phone Number Confirmation Response](#phone-number-confirmation-response)    
-+ [Directory structure](#directory-structure)
+            - [Email Confirmation Response](#email-confirmation-response)                   
 
         
 # Requirements
@@ -45,13 +38,13 @@
 
 ## Auth
 
-### SignUp
+### SignUp Ngo
 
 ```js
-POST {{host}}/auth/SignUp
+POST {{host}}/auth/signup-ngo
 ```
 
-#### SignUp Request
+#### SignUp Ngo Request
 
 ```json
 {
@@ -62,7 +55,7 @@ POST {{host}}/auth/SignUp
 }
 ```
 
-#### SignUp Response
+#### SignUp Ngo Response
 
 ```js
 200 OK
@@ -108,62 +101,4 @@ POST {{host}}/auth/SignIn
   "email": "foobar@email.com",
   "token": "eyJhb..hbbQ"
 }
-```
-
-<br>
-
-# Directory structure
-
-```
-
-🟪Proj3Api
- ┃ ┃
- ┣ 🟩Proj3.Api
- ┃ ┣ 📂Controllers
- ┃ ┃ ┣ 📂Authentication
- ┃ ┣ 📂Middlewares
- ┃ ┃ ┣ 📂Authentication
- ┃ ┣ 📂Properties
- ┃ ┃
- ┣ 🟩Proj3.Application
- ┃ ┣ 📂Common
- ┃ ┃ ┣ 📂Errors
- ┃ ┃ ┃ ┣ 📂Authentication
- ┃ ┃ ┗ 📂Interfaces
- ┃ ┃ ┃ ┣ 📂Persistence
- ┃ ┃ ┃ ┃ ┣ 📂Authentication
- ┃ ┃ ┃ ┣ 📂Services
- ┃ ┃ ┃ ┃ ┣ 📂Authentication
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Commands
- ┃ ┃ ┃ ┃ ┃ ┗ 📂Queries
- ┃ ┃ ┃ ┗ 📂Utils
- ┃ ┃ ┃ ┃ ┗ 📂Authentication
- ┃ ┣ 📂Services
- ┃ ┃ ┗ 📂Authentication
- ┃ ┃ ┃ ┣ 📂Commands
- ┃ ┃ ┃ ┣ 📂Queries
- ┃ ┃ ┃ ┗ 📂Result
- ┃ ┣ 📂Utils
- ┃ ┃ ┗ 📂Authentication
- ┃ ┃
- ┣ 🟩Proj3.Contracts
- ┃ ┣ 📂Authentication
- ┃ ┃ ┣ 📂Request
- ┃ ┃ ┗ 📂Response
- ┃ ┃
- ┣ 🟩Proj3.Domain
- ┃ ┣ 📂Entities
- ┃ ┃ ┗ 📂Authentication
- ┃ ┃
- ┣ 🟩Proj3.Infrastructure
- ┃ ┣ 📂Authentication
- ┃ ┃ ┣ 📂Utils
- ┃ ┣ 📂Database
- ┃ ┃ ┣ 📂SQLite
- ┃ ┃ ┃ ┣ 📂AppMigrations
- ┃ ┃ ┣ 📂Utils
- ┃ ┣ 📂Repositories
- ┃ ┃ ┣ 📂Authentication
- ┃ ┗ 📂Services
-
 ```

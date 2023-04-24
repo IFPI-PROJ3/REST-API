@@ -61,55 +61,6 @@ namespace Proj3.Application.Services.Authentication.Queries
             _refreshTokensRepository.Update(newRefreshToken);
 
             return new AuthenticationResult(user, newAccessToken, newRefreshToken.Token);
-        }
-
-        public async Task<UserStatusResult> ConfirmEmail(Guid userId, int code)
-        {
-            if (await _userValidationCodeRepository.GetEmailValidationCodeByUser((await _userRepository.GetUserById(userId))!) is not UserValidationCode uv) {
-                throw new Exception("This confirmation not exists.");
-            }
-
-            if (uv.Expiration < DateTime.Now) {
-                throw new Exception("Invalid code, a new code was resend.");
-            }
-
-            if (uv.Code != code) {
-                throw new Exception("Invalid code.");
-            }
-
-            // implement transaction
-            await _userValidationCodeRepository.RemoveUserConfirmation(uv);
-
-            User? user = await _userRepository.GetUserById(userId);
-            user!.ActiveAccount = true;
-
-            return new UserStatusResult(await _userRepository.Update(user));
-        }
-
-        public async Task<UserStatusResult> ConfirmPhoneNumber(Guid userId, int code)
-        {
-            if (await _userValidationCodeRepository.GetPhoneNumberValidationCodeByUser((await _userRepository.GetUserById(userId))!) is not UserValidationCode uv)
-            {
-                throw new Exception("This confirmation not exists.");
-            }
-
-            if (uv.Expiration < DateTime.Now)
-            {
-                throw new Exception("Invalid code, a new code was resend.");
-            }
-
-            if (uv.Code != code)
-            {
-                throw new Exception("Invalid code.");
-            }
-
-            // use transaction
-            await _userValidationCodeRepository.RemoveUserConfirmation(uv);
-
-            User? user = await _userRepository.GetUserById(userId);
-            user!.PhoneNumber = uv.Type;
-
-            return new UserStatusResult(await _userRepository.Update(user));
-        }
+        }        
     }
 }

@@ -27,7 +27,7 @@ namespace Proj3.Api.Middlewares.Authentication
                 throw new UnauthorizedAccessException("Expired, invalid or revoked token.");
             }
 
-            if (!user.ActiveAccount)
+            if (!user.Active)
             {
                 throw new UnauthorizedAccessException("This account is not active.");
             }

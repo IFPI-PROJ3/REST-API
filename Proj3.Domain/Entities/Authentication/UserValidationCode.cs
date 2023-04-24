@@ -33,7 +33,7 @@ namespace Proj3.Domain.Entities.Authentication
         {
             get
             {
-                var RandNum = new Random();
+                Random RandNum = new Random();
                 int number = RandNum.Next(100000, 999999);
 
 
