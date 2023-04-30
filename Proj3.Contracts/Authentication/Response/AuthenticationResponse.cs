@@ -1,9 +1,10 @@
 namespace Proj3.Contracts.Authentication.Response;
 
 public record AuthenticationResponse(
-    Guid Id,
-    string Name,
-    string Email,    
-    string AcessToken,
-    string RefreshToken
+    Guid id,
+    string username,
+    string email,    
+    bool active,
+    string access_token,
+    string refresh_token
 );

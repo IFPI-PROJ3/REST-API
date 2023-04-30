@@ -121,7 +121,7 @@ namespace Proj3.Infrastructure.Authentication.Utils
 
             if (securityToken is not JwtSecurityToken)
             {
-                throw new InvalidTokenException();
+                throw new InvalidRefreshTokenException();
             }
 
             return claimsPrincipal;

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
+using Proj3.Application.Common.Interfaces.Services.Authentication.Commands;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Commands;
 using Proj3.Application.Services.Authentication.Queries;
@@ -11,6 +12,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IAuthenticationQueryService, AuthenticationQueryService>();
         services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
+        services.AddScoped<IEmailCommandService, EmailCommandService>();
 
         return services;
     }

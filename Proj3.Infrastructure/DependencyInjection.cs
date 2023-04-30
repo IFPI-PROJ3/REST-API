@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>();
 
         services.AddAuth(configuration);
+        services.AddScoped<IEmailUtils, EmailUtils>();
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

@@ -6,7 +6,7 @@ namespace Proj3.Application.Common.Interfaces.Services.Authentication.Command
     {
         Task<UserStatusResult> SignUpVolunteer(string name, string email, string password);
         Task<UserStatusResult> SignUpNgo(string name, string email, string password);
-        Task<AuthenticationResult> ChangePassword(Guid id, string password);
+        Task<AuthenticationResult> ChangePassword(string email, string oldPassword, string newPassword);        
         Task<UserStatusResult> ConfirmEmail(Guid userId, int code);
     }
 }

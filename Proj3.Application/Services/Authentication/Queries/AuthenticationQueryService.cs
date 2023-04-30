@@ -38,18 +38,22 @@ namespace Proj3.Application.Services.Authentication.Queries
 
             await _refreshTokensRepository.Add(refreshToken);
 
-            return new AuthenticationResult(user, accessToken, refreshToken.Token);
+            return new AuthenticationResult(
+                user, 
+                accessToken, 
+                refreshToken.Token
+            );
         }
 
         public AuthenticationResult RefreshToken(string refreshtoken, string acesstoken)
         {
             if (_tokensUtils.ValidateJwtToken(acesstoken) is null)
             {
-                throw new Exception("Invalid access token.");
+                throw new InvalidAcessTokenException();
             }
             if (_refreshTokensRepository.GetByToken(refreshtoken).Result is not RefreshToken rf)
             {
-                throw new Exception("Invalid refresh token.");
+                throw new InvalidRefreshTokenException();
             }
 
             User user = _userRepository.GetUserById(rf.UserId).Result!;        
@@ -60,7 +64,11 @@ namespace Proj3.Application.Services.Authentication.Queries
 
             _refreshTokensRepository.Update(newRefreshToken);
 
-            return new AuthenticationResult(user, newAccessToken, newRefreshToken.Token);
+            return new AuthenticationResult(
+                user, 
+                newAccessToken, 
+                newRefreshToken.Token
+            );
         }        
     }
 }

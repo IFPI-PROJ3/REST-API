@@ -1,13 +1,11 @@
-
-
 using System.Net;
 
 namespace Proj3.Application.Common.Errors.Authentication
 {
-    public class InvalidTokenException : Exception, IExceptionBase
+    public class InvalidAcessTokenException : Exception, IExceptionBase
     {
         public HttpStatusCode StatusCode => HttpStatusCode.Unauthorized;
 
-        public string ErrorMessage => "Token is invalid.";
+        public string ErrorMessage => "Access token is invalid.";
     }
 }

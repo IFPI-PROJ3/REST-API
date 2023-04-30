@@ -1,8 +1,8 @@
 namespace Proj3.Contracts.Authentication.Response;
 
 public record UserStatusResponse(
-    Guid Id,
-    string Name,
-    string Email,
-    bool ActiveAccount
+    Guid id,
+    string username,
+    string email,
+    bool active
 );

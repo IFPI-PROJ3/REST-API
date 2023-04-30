@@ -7,7 +7,7 @@ namespace Proj3.Infrastructure.Database.Utils
             get
             {
                 string path = Directory.GetCurrentDirectory();
-                return path.Substring(0, path.LastIndexOf("Prova1.Api")) + @"Prova1.Infrastructure\Database\SQLite\Database.db";
+                return path.Substring(0, path.LastIndexOf("Proj3.Api")) + @"Proj3.Infrastructure\Database\SQLite\Database.db";
             }
         }
     }

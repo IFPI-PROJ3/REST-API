@@ -1,6 +1,7 @@
 namespace Proj3.Contracts.Authentication.Request;
 
 public record ChangePasswordRequest(
-    string userId,
-    string NewPassword
+    string email,
+    string old_password,
+    string new_password
 );

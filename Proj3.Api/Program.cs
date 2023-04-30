@@ -3,6 +3,7 @@ using Proj3.Api.Middlewares;
 using Proj3.Application.Services.Authentication;
 using Proj3.Infrastructure;
 using Proj3.Api.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 {
@@ -12,6 +13,9 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddControllers();
     builder.Services.AddSwagger();
+
+    // MUDAR DE LOCAL
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(2));
 }
 
 WebApplication? app = builder.Build();
@@ -22,6 +26,10 @@ WebApplication? app = builder.Build();
     app.UseMiddleware<ErrorHandlingMiddleware>();
 
     app.UseWhen(context => context.Request.Path.StartsWithSegments("/ngo"), appBuilder =>
+    {
+        appBuilder.UseMiddleware<AuthMiddleware>();
+    });
+    app.UseWhen(context => context.Request.Path.StartsWithSegments("/volunteer"), appBuilder =>
     {
         appBuilder.UseMiddleware<AuthMiddleware>();
     });

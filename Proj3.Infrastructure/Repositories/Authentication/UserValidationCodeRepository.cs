@@ -12,6 +12,7 @@ namespace Proj3.Infrastructure.Repositories
         {
             _dbcontext = dbcontext;
         }
+
         public async Task Add(UserValidationCode userValidationCode)
         {
             await _dbcontext.UserValidationCodes!.AddAsync(userValidationCode);
@@ -26,13 +27,13 @@ namespace Proj3.Infrastructure.Repositories
 
         public async Task<UserValidationCode?> GetEmailValidationCodeByUser(User user)
         {
-            return await _dbcontext.UserValidationCodes!.Where(u => u.UserId == user.Id && u.Type.Contains("@")).SingleOrDefaultAsync();
+            return await _dbcontext.UserValidationCodes!.Where(u => u.UserId == user.Id).SingleOrDefaultAsync();
         }
 
         public async Task<UserValidationCode?> GetPhoneNumberValidationCodeByUser(User user)
         {
 
-            return await _dbcontext.UserValidationCodes!.Where(u => u.UserId == user.Id && !u.Type.Contains("@")).SingleOrDefaultAsync();
+            return await _dbcontext.UserValidationCodes!.Where(u => u.UserId == user.Id).SingleOrDefaultAsync();
         }
 
         public async Task RenewCode(UserValidationCode userValidationCode)

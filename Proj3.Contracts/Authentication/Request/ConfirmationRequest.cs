@@ -1,6 +1,6 @@
 namespace Proj3.Contracts.Authentication.Request;
 
 public record ConfirmationRequest(
-    string userId,
+    string user_id,
     int code
 );

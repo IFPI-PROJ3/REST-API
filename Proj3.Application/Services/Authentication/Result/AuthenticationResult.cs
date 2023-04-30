@@ -4,6 +4,6 @@ namespace Proj3.Application.Services.Authentication.Result;
 
 public record AuthenticationResult(
     User user,
-    string AcessToken,
+    string AccessToken,
     string RefreshToken
 );
