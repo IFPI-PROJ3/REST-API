@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Proj3.Domain.Entities.Authentication;
 using System.Security.Cryptography;
 
 namespace Proj3.Application.Utils.Authentication
@@ -14,7 +13,7 @@ namespace Proj3.Application.Utils.Authentication
             }
         }
 
-        public static string ReturnUserHash(User user, string password)
+        public static string ReturnUserHash(Domain.Entities.Authentication.User user, string password)
         {
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: user.Email + password,

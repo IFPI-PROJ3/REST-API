@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Proj3.Contracts.NGO.Request;
-using System.Security.Claims;
 
 namespace Proj3.Api.Controllers.Volunteers
 {

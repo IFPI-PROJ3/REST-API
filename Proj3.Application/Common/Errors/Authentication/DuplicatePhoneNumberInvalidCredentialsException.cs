@@ -1,10 +1,11 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace Proj3.Application.Common.Errors.Authentication;
 
 public class DuplicatePhoneNumberInvalidCredentialsException : Exception, IExceptionBase
 {
-    public HttpStatusCode StatusCode => HttpStatusCode.Conflict;
+    public int StatusCode => StatusCodes.Status409Conflict;
 
     public string ErrorMessage => "Duplicate phone number.";
 }

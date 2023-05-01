@@ -6,11 +6,11 @@ using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Contracts.Authentication.Request;
 using Proj3.Contracts.Authentication.Response;
+using System.Security.Claims;
 
 namespace Proj3.Api.Controllers.Authentication
 {
-    [ApiController]
-    [AllowAnonymous]
+    [ApiController]    
     [Route("auth")]
     [ApiVersion("1.0")]
     public class AuthenticationController : ControllerBase
@@ -30,17 +30,17 @@ namespace Proj3.Api.Controllers.Authentication
         /// Ngo user signup
         /// </summary>
         /// <param name="request">User data</param>
-        /// <example></example>
-        /// <returns></returns>
+        /// <seealso cref="SignUpRequest"/>
         /// <response code="200">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response> 
-        /// <response code="500">Server internal error</response>
+        /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)] 
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpPost("signup-ngo")]
         public async Task<IActionResult> SignUpNgo([FromQuery]SignUpRequest request)
         {
@@ -65,17 +65,16 @@ namespace Proj3.Api.Controllers.Authentication
         /// Volunteer user signup
         /// </summary>
         /// <param name="request">User info</param>
-        /// <example></example>
-        /// <returns></returns>
         /// <response code="200">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response>        
-        /// <response code="500">Server internal error</response>
+        /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpPost("signup-volunteer")]
         public async Task<IActionResult> SignUpVolunteer([FromQuery]SignUpRequest request)
         {
@@ -100,14 +99,13 @@ namespace Proj3.Api.Controllers.Authentication
         /// User signin
         /// </summary>
         /// <param name="request">User data</param>
-        /// <example></example>
-        /// <returns></returns>
         /// <response code="200">User authenticated</response>
         /// <response code="401">Invalid credentials</response>   
-        /// <response code="500">Server internal error</response>
+        /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpGet("signin")]
         public async Task<IActionResult> SignIn([FromQuery]SignInRequest request)
         {
@@ -130,21 +128,43 @@ namespace Proj3.Api.Controllers.Authentication
         }
 
         /// <summary>
+        /// Logout user
+        /// </summary>        
+        /// <response code="204">No content, refresh</response>
+        /// <response code="401">Invalid credentials exception</response>        
+        /// <response code="500">Internal server error</response>     
+        [ProducesResponseType(typeof(IActionResult), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpPut("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            if(await _authenticationCommandService.Logout(HttpContext) == false)
+            {
+                return Ok(StatusCodes.Status401Unauthorized);
+            }
+            
+            return Ok(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
         /// Receive new refresh token        
         /// </summary>        
-        /// <param name="request">Tokens</param>
-        /// <example></example>
-        /// <returns></returns>
+        /// <param name="request">Access token and refresh token</param>        
         /// <response code="200">User authenticated</response>
         /// <response code="401">Access token is invalid</response>
         /// <response code="401">Refresh token is invalid</response>
-        /// <response code="500">Server internal error</response>
+        /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]        
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpGet("refresh-token")]
         public ActionResult RefreshToken([FromQuery]RefreshTokenRequest request)
         {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             AuthenticationResult? authResult = _authenticationQueryService.RefreshToken(
                 request.refresh_token,
                 request.access_token
@@ -163,15 +183,14 @@ namespace Proj3.Api.Controllers.Authentication
         /// Change password
         /// </summary>
         /// <param name="request">User credentials</param>
-        /// <example></example>
-        /// <returns></returns>
         /// <response code="200">User authenticated</response>
         /// <response code="401">Invalid credentials exception</response>
         /// <response code="401">Invalid password exception</response>
-        /// <response code="500">Server internal error</response>
+        /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromQuery]ChangePasswordRequest request)
         {
@@ -193,39 +212,6 @@ namespace Proj3.Api.Controllers.Authentication
 
             return Ok(response);
         }
-
-        ///// <summary>
-        ///// Forgot Password
-        ///// </summary>        
-        //[HttpPut("forgot-password")]
-        //public async Task<IActionResult> ForgotPassword([FromQuery]ForgotPasswordRequest request)
-        //{            
-        //    _emailCommandService.SendResetPasswordEmail(request.email);
-        //    return Ok(StatusCodes.Status200OK);
-        //}
-
-        ///// <summary>
-        ///// Email confirmation
-        ///// </summary>
-        ///// <param name="request">Email</param>        
-        //[HttpPut("email-confirmation")]
-        //public async Task<IActionResult> EmailConfirmation([FromQuery] ConfirmationRequest request)
-        //{
-        //    UserStatusResult? authServiceResult = await _authenticationCommandService.ConfirmEmail(
-        //        Guid.Parse(request.user_id),
-        //        request.code
-        //    );
-
-        //    UserStatusResponse? response = new
-        //    (
-        //        id: authServiceResult.user.Id,
-        //        username: authServiceResult.user.UserName,
-        //        email: authServiceResult.user.Email,
-        //        active: authServiceResult.user.Active
-        //    );
-
-        //    return Ok(response);
-        //}
     }
 }
 

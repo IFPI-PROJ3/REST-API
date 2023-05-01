@@ -8,7 +8,7 @@ namespace Proj3.Infrastructure.Authentication.Utils
     {
         private const string applicationEmail = "johanna.keeling@ethereal.email";
 
-        public async Task<bool> SendEmail(string receiver,string subject, string content)
+        public Task<bool> SendEmail(string receiver,string subject, string content)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Proj3.Infrastructure.Authentication.Utils
 
                     string userState = "test message1";
                     smtp.SendAsync(message, userState);
-                    return true;
+                    return Task.FromResult(true);
                 }
             }    
             catch (Exception ex)

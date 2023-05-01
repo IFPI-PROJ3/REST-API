@@ -50,20 +50,41 @@ public class ErrorHandlingMiddleware
 
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        HttpStatusCode code = HttpStatusCode.InternalServerError;
-
-        string? result = JsonSerializer.Serialize(new
+        if(exception is IExceptionBase)
         {
-            title = "An error occurred.",
-            type = "Internal server error.",
-            detail = exception is IExceptionBase ? ((IExceptionBase)exception).ErrorMessage : string.Empty,
-            status = (int)code,
-            traceId = context.TraceIdentifier
-        });
+            IExceptionBase exceptionBase = (IExceptionBase)exception;
 
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
+            string? result = JsonSerializer.Serialize(new
+            {
+                title = "Invalid request",
+                type = nameof(exception),
+                detail = exceptionBase.ErrorMessage,
+                status = exceptionBase.StatusCode,
+                traceId = context.TraceIdentifier
+            });
 
-        return context.Response.WriteAsync(result);
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = exceptionBase.StatusCode;
+
+            return context.Response.WriteAsync(result);
+        }
+        else
+        {
+            HttpStatusCode code = HttpStatusCode.InternalServerError;
+
+            string? result = JsonSerializer.Serialize(new
+            {
+                title = "An error occurred.",
+                type = "Internal server error.",
+                detail = string.Empty,
+                status = (int)code,
+                traceId = context.TraceIdentifier
+            });
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)code;
+
+            return context.Response.WriteAsync(result);
+        }        
     }
 }

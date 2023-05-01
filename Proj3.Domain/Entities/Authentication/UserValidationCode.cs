@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proj3.Domain.Entities.Authentication
 {
+    [Table("UserValidationCodes")]
     public class UserValidationCode
     {
         [Key]

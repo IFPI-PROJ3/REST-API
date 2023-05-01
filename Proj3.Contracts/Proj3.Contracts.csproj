@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="NGO\Response\" />
+    <Folder Include="Volunteer\Response\" />
+    <Folder Include="Volunteer\Request\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Proj3.Domain\Proj3.Domain.csproj" />
   </ItemGroup>
 
 </Project>

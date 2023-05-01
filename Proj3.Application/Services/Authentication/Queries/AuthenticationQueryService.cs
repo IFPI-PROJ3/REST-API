@@ -26,7 +26,7 @@ namespace Proj3.Application.Services.Authentication.Queries
 
         public async Task<AuthenticationResult> SignIn(string email, string password)
         {
-            if (!(await _userRepository.GetUserByEmail(email) is User user && user.PasswordHash == Crypto.ReturnUserHash(user, password)))
+            if (!(await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, password)))
             {
                 throw new InvalidCredentialsException();
             }
@@ -56,7 +56,7 @@ namespace Proj3.Application.Services.Authentication.Queries
                 throw new InvalidRefreshTokenException();
             }
 
-            User user = _userRepository.GetUserById(rf.UserId).Result!;        
+            Domain.Entities.Authentication.User user = _userRepository.GetUserById(rf.UserId).Result!;        
             ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(acesstoken);
         
             string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);

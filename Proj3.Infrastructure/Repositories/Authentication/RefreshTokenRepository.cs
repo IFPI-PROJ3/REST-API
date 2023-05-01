@@ -9,9 +9,9 @@ namespace Proj3.Infrastructure.Repositories
     {
         private readonly AppDbContext _dbcontext;
 
-        public RefreshTokenRepository(AppDbContext dbcontext)
+        public RefreshTokenRepository(DbContext dbcontext)
         {
-            _dbcontext = dbcontext;
+            _dbcontext = (AppDbContext) dbcontext;
         }
 
         public async Task Add(RefreshToken rf)

@@ -1,67 +1,81 @@
-﻿using Proj3.Application.Common.Interfaces.Persistence;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Proj3.Application.Common.Interfaces.Persistence;
 
 namespace Proj3.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Class <c>RepositoryBase<T></c> implementação padrao de <see cref="IRepositoryBase{T}"/>.
+    /// </summary>
     public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
         public DbSet<TEntity> Entity { get; }
 
-        Microsoft.EntityFrameworkCore.DbSet<TEntity> IRepositoryBase<TEntity>.Entity => throw new NotImplementedException();
+        public DbContext Context { get; }
 
-        private readonly DbContext _ctx;
-
-        public RepositoryBase(DbContext ctx)
+        public RepositoryBase(DbContext dbContext)
         {
-            _ctx = ctx;
-            Entity = _ctx.Set<TEntity>();
+            Context = dbContext;
+            Entity = dbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetByIdAsync(Guid id)
+        public IAsyncEnumerable<TEntity> GetAllAsync()
+        {
+            return Entity.AsAsyncEnumerable();
+        }
+
+        public async Task<TEntity?> GetByIdAsync(object id)
         {
             return await Entity.FindAsync(id);
         }
 
-        public async Task<bool> TryAddAndSave(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            Entity.Add(entity);
-            int commits = await _ctx.SaveChangesAsync();
-            return commits > 0;
+            await ChangeStateAndSaveAsync(entity, EntityState.Added);
+            return entity;
         }
 
-        public Task<TEntity> AddAndSaveAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            return await ChangeStateAndSaveAsync(entity, EntityState.Modified);
         }
 
-        public Task<bool> TryAddAndSaveAsync(TEntity entity)
+        public async Task<bool> DeleteAsync(object id)
         {
-            throw new NotImplementedException();
+            if (await Entity.FindAsync(id) is TEntity entity)
+            {
+                return await ChangeStateAndSaveAsync(entity, EntityState.Deleted);
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public Task<bool> UpdateAsync(TEntity entity)
+        public IQueryable<TEntity> QueryNoTracking()
         {
-            throw new NotImplementedException();
+            return Entity.AsNoTracking();
         }
 
-        public Task<bool> DeleteAsync(TEntity entity)
+        public async Task ReloadIfModifiedAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            EntityEntry<TEntity> entry = Context.Entry(entity);
+            if (entry.State == EntityState.Modified)
+            {
+                await entry.ReloadAsync();
+            }
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        private async Task<bool> ChangeStateAndSaveAsync(TEntity entity, EntityState state)
         {
-            throw new NotImplementedException();
+            ChangeState(entity, state);
+            return await Context.SaveChangesAsync() > 0;
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        private void ChangeState(TEntity entity, EntityState state)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task ReloadIfModifiedAsync(TEntity entity)
-        {
-            throw new NotImplementedException();
+            EntityEntry<TEntity> entry = Context.Entry(entity);
+            entry.State = state;
         }
     }
 }

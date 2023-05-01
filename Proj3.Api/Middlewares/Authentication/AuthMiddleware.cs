@@ -32,7 +32,7 @@ namespace Proj3.Api.Middlewares.Authentication
                 throw new UnauthorizedAccessException("This account is not active.");
             }
 
-            context.User = tokensUtils.ExtractClaimsFromToken(token!);
+            context.User = tokensUtils.ExtractClaimsFromToken(token!);            
             await _next(context);
            
         }

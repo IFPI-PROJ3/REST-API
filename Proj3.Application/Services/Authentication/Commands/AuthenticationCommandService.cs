@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Proj3.Application.Common.Errors.Authentication;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
@@ -27,7 +28,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
     public async Task<UserStatusResult> SignUpNgo(string name, string email, string password)
     {        
-        if (await _userRepository.GetUserByEmail(email) is User userCheck && userCheck.Active)
+        if (await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
@@ -41,8 +42,8 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         {
             throw new InvalidPasswordException();
         }
-        
-        User? user = User.NewUserNgo(
+
+        Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserNgo(
             name: name,
             email: email
         );
@@ -62,7 +63,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
     public async Task<UserStatusResult> SignUpVolunteer(string name, string email, string password)
     {
-        if (await _userRepository.GetUserByEmail(email) is User userCheck && userCheck.Active)
+        if (await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
@@ -76,8 +77,8 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         {
             throw new InvalidPasswordException();
         }
-        
-        User? user = User.NewUserVolunteer(
+
+        Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserVolunteer(
             name: name,
             email: email            
         );
@@ -93,9 +94,17 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         return new UserStatusResult(user);
     }
 
+    public async Task<bool> Logout(HttpContext httpContext)
+    {
+        Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
+
+        await _refreshTokensRepository.RevokeAllTokensFromUser(userId);
+        return true;        
+    }
+
     public async Task<AuthenticationResult> ChangePassword(string email, string oldPassword, string newPassword)
     {
-        if (!(await _userRepository.GetUserByEmail(email) is User user && user.PasswordHash == Crypto.ReturnUserHash(user, oldPassword)))
+        if (!(await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, oldPassword)))
         {
             throw new InvalidCredentialsException();
         }        
@@ -136,7 +145,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         
         await _userValidationCodeRepository.RemoveUserConfirmation(uv);
 
-        User? user = await _userRepository.GetUserById(userId);
+        Domain.Entities.Authentication.User? user = await _userRepository.GetUserById(userId);
         user!.Active = true;
 
         return new UserStatusResult(await _userRepository.Update(user));

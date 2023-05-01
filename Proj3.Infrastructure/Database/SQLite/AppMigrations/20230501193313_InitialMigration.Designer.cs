@@ -11,7 +11,7 @@ using Proj3.Infrastructure.Database;
 namespace Proj3.Infrastructure.Database.SQLite.AppMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230421234107_InitialMigration")]
+    [Migration("20230501193313_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

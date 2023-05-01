@@ -11,7 +11,8 @@ namespace Proj3.Domain.Entities.NGO
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public User User { get; set; } = null!;
+        [ForeignKey("Users")]
+        public Guid UserId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -23,6 +24,13 @@ namespace Proj3.Domain.Entities.NGO
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }        
+        public DateTime? UpdatedAt { get; set; }
+        
+        public Ngo(string name, string description)
+        {            
+            Name = name;
+            Description = description;
+            CreatedAt = DateTime.UtcNow;
+        }
     }
 }
