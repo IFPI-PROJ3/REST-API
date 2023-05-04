@@ -18,7 +18,12 @@ namespace Proj3.Infrastructure.Database
 
             // FOR MIGRATIONS AND DATABASE UPDATES USE ABSOLUTE PATH
             //
-            optionsBuilder.UseSqlite(connectionString: String.Format(@"DataSource={0}; Cache=Shared", @"C:\Users\Aroldo Jales\Documents\Code\Vscode\IFPI\PROJ3\Proj3Api\Proj3.Infrastructure\Database\SQLite\Database.db"));
+            //optionsBuilder.UseSqlite(connectionString: String.Format(@"DataSource={0}; Cache=Shared", @"C:\Users\Aroldo Jales\Documents\Code\Vscode\IFPI\PROJ3\Proj3Api\Proj3.Infrastructure\Database\SQLite\Database.db"));
+
+            // SQL Server
+            var dbPassword = "P@sswd12345";
+            var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +37,7 @@ namespace Proj3.Infrastructure.Database
 
         /* - COMMANDS
                 - MIGRATIONS
-                    dotnet ef migrations add InitialMigration --project .\Proj3.Infrastructure\ -o Database/SQLite/AppMigrations
+                    dotnet ef migrations add InitialMigration --project .\Proj3.Infrastructure\ -o Database/Migrations
 
                 - UPDATE DATABASE (AFTER EACH MIGRATION)
                     dotnet ef database update --project .\Proj3.Infrastructure\
