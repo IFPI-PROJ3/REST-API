@@ -29,11 +29,10 @@ namespace Proj3.Domain.Entities.Volunteer
 
         public DateTime? UpdatedAt { get; set; }
 
-        public Volunteer(Guid userId, string name, string lastname, string description)
-        {
-            UserId = userId;
+        public Volunteer(string name, string lastName, string description)
+        {            
             Name = name;
-            LastName = lastname;
+            LastName = lastName;
             Description = description;
             CreatedAt = DateTime.UtcNow;
         }
