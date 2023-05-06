@@ -4,15 +4,18 @@ using Proj3.Domain.Entities.Authentication;
 
 namespace Proj3.Api.Middlewares.Authentication
 {
+    ///
     public class AuthMiddleware
     {
         private readonly RequestDelegate _next;
-
+        
+        ///
         public AuthMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        ///
         public async Task Invoke(HttpContext context, IUserRepository userRepository, IRefreshTokenRepository tokenRepository, ITokensUtils tokensUtils)
         {
             if(context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last() is not string token)

@@ -1,10 +1,5 @@
 ﻿using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.Volunteer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Proj3.Application.Common.DTO
 {
@@ -23,9 +18,7 @@ namespace Proj3.Application.Common.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-
-        public List<EventVolunteer> EventVolunteers { get; set; }
-
-        public List<Volunteer> Comments { get; set; }
+        public List<EventVolunteer>? EventVolunteers { get; set; }
+        public List<Volunteer>? Comments { get; set; }
     }
 }

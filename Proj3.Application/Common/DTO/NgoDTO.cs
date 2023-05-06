@@ -12,6 +12,6 @@ namespace Proj3.Application.Common.DTO
         public DateTime? UpdatedAt { get; set; }
 
         //public List<byte> Images { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<Category>? Categories { get; set; }
     }
 }

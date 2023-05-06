@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Proj3.Api.Controllers.Volunteers
 {
+    ///
     [ApiController]
     [Authorize]
     [Route("volunteer")]
@@ -13,7 +14,7 @@ namespace Proj3.Api.Controllers.Volunteers
         /// Volunteer request to participate in the event
         /// </summary>                
         [HttpGet("event-request/{id}")]
-        public async Task<IActionResult> EventRequest()
+        public IActionResult EventRequest()
         {
             //var userVolunteer = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return Ok(200);
