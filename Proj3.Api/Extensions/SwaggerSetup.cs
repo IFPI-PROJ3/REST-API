@@ -3,8 +3,10 @@ using System.Reflection;
 
 namespace Proj3.Api.Extensions
 {
+    ///
     public static class SwaggerSetup
     {
+        ///
         public static void AddSwagger(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
