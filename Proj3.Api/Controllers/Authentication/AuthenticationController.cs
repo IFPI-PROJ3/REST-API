@@ -42,7 +42,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPost("signup-ngo")]
-        public async Task<IActionResult> SignUpNgo([FromQuery]SignUpRequest request)
+        public async Task<IActionResult> SignUpNgo([FromBody] SignUpRequest request)
         {
             UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpNgo(
                 request.username,
@@ -76,7 +76,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPost("signup-volunteer")]
-        public async Task<IActionResult> SignUpVolunteer([FromQuery]SignUpRequest request)
+        public async Task<IActionResult> SignUpVolunteer([FromBody] SignUpRequest request)
         {
             UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpVolunteer(
                 request.username,
@@ -107,7 +107,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpGet("signin")]
-        public async Task<IActionResult> SignIn([FromQuery]SignInRequest request)
+        public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
             AuthenticationResult? authServiceResult = await _authenticationQueryService.SignIn(
                 request.email,
@@ -161,7 +161,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpGet("refresh-token")]
-        public ActionResult RefreshToken([FromQuery]RefreshTokenRequest request)
+        public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -192,7 +192,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword([FromQuery]ChangePasswordRequest request)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             AuthenticationResult? authServiceResult = await _authenticationCommandService.ChangePassword(
                 email: request.email,
