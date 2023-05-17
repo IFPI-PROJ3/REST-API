@@ -25,10 +25,15 @@ WebApplication? app = builder.Build();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
 
-    //app.UseWhen(context => context.Request.Path.StartsWithSegments("/auth/logout"), appBuilder =>
-    //{
-    //    appBuilder.UseMiddleware<AuthMiddleware>();
-    //});
+    app.UseWhen(context => context.Request.Path.StartsWithSegments("/auth/logout"), appBuilder =>
+    {
+        appBuilder.UseMiddleware<AuthMiddleware>();
+    });
+
+    app.UseWhen(context => context.Request.Path.StartsWithSegments("/auth/change-password"), appBuilder =>
+    {
+        appBuilder.UseMiddleware<AuthMiddleware>();
+    });
 
     app.UseWhen(context => context.Request.Path.StartsWithSegments("/ngo"), appBuilder =>
     {

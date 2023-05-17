@@ -6,7 +6,6 @@ using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Contracts.Authentication.Request;
 using Proj3.Contracts.Authentication.Response;
-using System.Security.Claims;
 
 namespace Proj3.Api.Controllers.Authentication
 {
@@ -31,11 +30,11 @@ namespace Proj3.Api.Controllers.Authentication
         /// </summary>
         /// <param name="request">User data</param>
         /// <seealso cref="SignUpRequest"/>
-        /// <response code="200">User created</response>
+        /// <response code="201">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response> 
         /// <response code="500">Internal server error</response>
-        [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -58,18 +57,18 @@ namespace Proj3.Api.Controllers.Authentication
                 userInactiveResult.user.Active
             );
 
-            return Ok(response);
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         /// <summary>
         /// Volunteer user signup
         /// </summary>
         /// <param name="request">User info</param>
-        /// <response code="200">User created</response>
+        /// <response code="201">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response>        
         /// <response code="500">Internal server error</response>
-        [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -92,7 +91,7 @@ namespace Proj3.Api.Controllers.Authentication
                 userInactiveResult.user.Active
             );
 
-            return Ok(response);
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
-        [HttpGet("signin")]
+        [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
             AuthenticationResult? authServiceResult = await _authenticationQueryService.SignIn(
@@ -123,8 +122,8 @@ namespace Proj3.Api.Controllers.Authentication
                 access_token: authServiceResult.AccessToken,
                 authServiceResult.RefreshToken
             );
-            
-            return Ok(response);
+
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         /// <summary>
@@ -162,35 +161,33 @@ namespace Proj3.Api.Controllers.Authentication
         [AllowAnonymous]
         [HttpGet("refresh-token")]
         public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
-        {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+        {            
             AuthenticationResult? authResult = _authenticationQueryService.RefreshToken(
                 request.refresh_token,
                 request.access_token
             );
 
-            RefreshTokenResponse? refreshTokenResponse = new
+            RefreshTokenResponse? response = new
             (
                 authResult.RefreshToken,
                 authResult.AccessToken
             );
 
-            return Ok(refreshTokenResponse);
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         /// <summary>
         /// Change password
         /// </summary>
         /// <param name="request">User credentials</param>
-        /// <response code="200">User authenticated</response>
+        /// <response code="201">User authenticated</response>
         /// <response code="401">Invalid credentials exception</response>
         /// <response code="401">Invalid password exception</response>
         /// <response code="500">Internal server error</response>
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [AllowAnonymous]
+        [Authorize]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
@@ -210,7 +207,7 @@ namespace Proj3.Api.Controllers.Authentication
                 refresh_token: authServiceResult.RefreshToken
             );
 
-            return Ok(response);
+            return StatusCode(StatusCodes.Status200OK, response);
         }
     }
 }
