@@ -43,32 +43,6 @@ namespace Proj3.Application.Services.Authentication.Queries
                 accessToken, 
                 refreshToken.Token
             );
-        }
-
-        public AuthenticationResult RefreshToken(string refreshtoken, string acesstoken)
-        {
-            if (_tokensUtils.ValidateJwtToken(acesstoken) is null)
-            {
-                throw new InvalidAcessTokenException();
-            }
-            if (_refreshTokensRepository.GetByToken(refreshtoken).Result is not RefreshToken rf)
-            {
-                throw new InvalidRefreshTokenException();
-            }
-
-            Domain.Entities.Authentication.User user = _userRepository.GetUserById(rf.UserId).Result!;        
-            ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(acesstoken);
-        
-            string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);
-            RefreshToken newRefreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
-
-            _refreshTokensRepository.Update(newRefreshToken);
-
-            return new AuthenticationResult(
-                user, 
-                newAccessToken, 
-                newRefreshToken.Token
-            );
-        }        
+        }                
     }
 }

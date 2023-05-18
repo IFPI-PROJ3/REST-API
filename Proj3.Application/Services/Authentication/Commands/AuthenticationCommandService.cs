@@ -6,6 +6,7 @@ using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Application.Utils.Authentication;
 using Proj3.Domain.Entities.Authentication;
+using System.Security.Claims;
 
 namespace Proj3.Application.Services.Authentication.Commands;
 
@@ -92,6 +93,32 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         await _userValidationCodeRepository.Add(uvEmail);
 
         return new UserStatusResult(user);
+    }
+
+    public AuthenticationResult RefreshToken(string refreshtoken, string acesstoken)
+    {
+        if (_tokensUtils.ValidateJwtToken(acesstoken) is null)
+        {
+            throw new InvalidAcessTokenException();
+        }
+        if (_refreshTokensRepository.GetByToken(refreshtoken).Result is not RefreshToken rf)
+        {
+            throw new InvalidRefreshTokenException();
+        }
+
+        Domain.Entities.Authentication.User user = _userRepository.GetUserById(rf.UserId).Result!;
+        ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(acesstoken);
+
+        string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);
+        RefreshToken newRefreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
+
+        _refreshTokensRepository.Update(newRefreshToken);
+
+        return new AuthenticationResult(
+            user,
+            newAccessToken,
+            newRefreshToken.Token
+        );
     }
 
     public async Task<bool> Logout(HttpContext httpContext)
