@@ -10,7 +10,7 @@ namespace Proj3.Application.Utils.Authentication
         {
             try
             {
-                new MailAddress(email);
+                _ = new MailAddress(email);
                 return true;
             }
             catch (FormatException)
@@ -18,14 +18,15 @@ namespace Proj3.Application.Utils.Authentication
                 return false;
             }
         }
+
         public static bool IsValidPassword(string password)
         {
 
-            Regex? hasNumber = new Regex(@"[0-9]+");
-            Regex? hasLowerChar = new Regex(@"[a-z]+");
-            Regex? hasUpperChar = new Regex(@"[A-Z]+");
-            Regex? hasNonAlphaNum = new Regex(@"\W|_");
-            Regex? hasMinimum8Chars = new Regex(@".{8,}");
+            Regex? hasNumber = new(@"[0-9]+");
+            Regex? hasLowerChar = new(@"[a-z]+");
+            Regex? hasUpperChar = new(@"[A-Z]+");
+            Regex? hasNonAlphaNum = new(@"\W|_");
+            Regex? hasMinimum8Chars = new(@".{8,}");
 
             bool isValidated =
             hasNumber.IsMatch(password) &&

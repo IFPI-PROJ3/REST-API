@@ -54,7 +54,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         
         await _userRepository.Add(user);
                    
-        UserValidationCode uvEmail = new UserValidationCode(user.Id, user.Email);
+        UserValidationCode uvEmail = new (user.Id, user.Email);
 
         await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
         await _userValidationCodeRepository.Add(uvEmail);
@@ -89,7 +89,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
         await _userRepository.Add(user);
 
-        UserValidationCode uvEmail = new UserValidationCode(user.Id, user.Email);
+        UserValidationCode uvEmail = new (user.Id, user.Email);
         await _userValidationCodeRepository.Add(uvEmail);
 
         return new UserStatusResult(user);
@@ -176,5 +176,5 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         user!.Active = true;
 
         return new UserStatusResult(await _userRepository.Update(user));
-    }    
+    }
 }
