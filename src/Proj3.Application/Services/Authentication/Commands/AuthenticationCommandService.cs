@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Proj3.Application.Common.Errors.Authentication;
+using Proj3.Application.Common.Interfaces.Others;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
@@ -17,14 +18,16 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokensRepository;
     private readonly IUserValidationCodeRepository _userValidationCodeRepository;
+    private readonly ITransactionsManager _transactionsManager;
 
-    public AuthenticationCommandService(ITokensUtils tokensUtils, IEmailUtils emailUtils, IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository, IUserValidationCodeRepository userValidationCodeRepository)
+    public AuthenticationCommandService(ITokensUtils tokensUtils, IEmailUtils emailUtils, IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository, IUserValidationCodeRepository userValidationCodeRepository, ITransactionsManager transactionsManager)
     {
         _tokensUtils = tokensUtils;
         _emailUtils = emailUtils;
         _userRepository = userRepository;
         _refreshTokensRepository = refreshTokensRepository;
         _userValidationCodeRepository = userValidationCodeRepository;
+        _transactionsManager = transactionsManager;
     }
 
     public async Task<UserStatusResult> SignUpNgo(string name, string email, string password)
@@ -47,17 +50,18 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserNgo(
             name: name,
             email: email
-        );
-      
+        );      
         user.Salt = Crypto.GetSalt;
-        user.PasswordHash = Crypto.ReturnUserHash(user, password);        
-        
-        await _userRepository.Add(user);
-                   
-        UserValidationCode uvEmail = new (user.Id, user.Email);
+        user.PasswordHash = Crypto.ReturnUserHash(user, password);
 
+        await _transactionsManager.BeginTransactionAsync();
+
+        await _userRepository.Add(user);                   
+        UserValidationCode uvEmail = new (user.Id, user.Email);
         await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
         await _userValidationCodeRepository.Add(uvEmail);
+
+        await _transactionsManager.CommitTransactionAsync();
 
         return new UserStatusResult(user);
     }
@@ -83,14 +87,16 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             name: name,
             email: email            
         );
-
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, password);
 
-        await _userRepository.Add(user);
+        await _transactionsManager.BeginTransactionAsync();
 
+        await _userRepository.Add(user);
         UserValidationCode uvEmail = new (user.Id, user.Email);
         await _userValidationCodeRepository.Add(uvEmail);
+
+        await _transactionsManager.CommitTransactionAsync();
 
         return new UserStatusResult(user);
     }
@@ -141,13 +147,17 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             throw new InvalidPasswordException();
         }
 
-        user.PasswordHash = Crypto.ReturnUserHash(user, newPassword);
+        await _transactionsManager.BeginTransactionAsync();
 
+        user.PasswordHash = Crypto.ReturnUserHash(user, newPassword);
         string? acessToken = _tokensUtils.GenerateJwtToken(user);
         RefreshToken? refreshToken = _tokensUtils.GenerateRefreshToken(user);
+        await _userRepository.Update(user);
+
+        await _transactionsManager.CommitTransactionAsync();
 
         return new AuthenticationResult(
-            await _userRepository.Update(user),
+            user,
             acessToken,
             refreshToken.Token
         );
@@ -168,13 +178,17 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         if (uv.Code != code)
         {
             throw new Exception("Invalid confirmation code.");
-        }        
-        
-        await _userValidationCodeRepository.RemoveUserConfirmation(uv);
+        }
 
+        await _transactionsManager.BeginTransactionAsync();
+
+        await _userValidationCodeRepository.RemoveUserConfirmation(uv);
         Domain.Entities.Authentication.User? user = await _userRepository.GetUserById(userId);
         user!.Active = true;
+        await _userRepository.Update(user);
 
-        return new UserStatusResult(await _userRepository.Update(user));
+        await _transactionsManager.CommitTransactionAsync();
+
+        return new UserStatusResult(user);        
     }
 }
