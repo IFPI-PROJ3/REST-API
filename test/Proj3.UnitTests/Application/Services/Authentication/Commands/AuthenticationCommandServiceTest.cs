@@ -35,6 +35,26 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
             );
         }
 
+        [Fact(DisplayName = "Sign up ngo user")]
+        public async Task SignUpNgo()
+        {
+            //Setup
+            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(Task.FromResult(It.IsAny<User>));
+
+            //Arrange
+            var user = new User { UserName = "Greenpeace", Email = "greenpeace@email.com", UserRole = UserRole.Ngo };
+
+            //Act            
+            var result = await _authenticationCommandService.SignUpNgo(user.UserName, user.Email, "P@ssword1234");
+            var expected = user;
+
+            //Assert
+            Assert.Equal(expected.GetType(), result.user.GetType());
+            Assert.Equal(expected.UserName, result.user.UserName);
+            Assert.Equal(expected.Email, result.user.Email);
+            Assert.Equal(expected.UserRole, result.user.UserRole);
+        }
+
         [Fact(DisplayName = "Sign up volunteer user")]
         public async Task SignUpVolunteer()
         {
@@ -46,27 +66,6 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
 
             //Act            
             var result = await _authenticationCommandService.SignUpVolunteer(user.UserName, user.Email, "P@ssword1234");
-            var expected = user;
-
-            //Assert
-            Assert.Equal(expected.GetType(), result.user.GetType());
-            Assert.Equal(expected.UserName, result.user.UserName);
-            Assert.Equal(expected.Email, result.user.Email);
-            Assert.Equal(expected.UserRole, result.user.UserRole);
-        }
-
-
-        [Fact(DisplayName = "Sign up ngo user")]
-        public async Task SignUpNgo()
-        {
-            //Setup
-            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(Task.FromResult(It.IsAny<User>));
-
-            //Arrange
-            var user = new User { UserName = "Greenpeace", Email = "greenpeace@email.com", UserRole = UserRole.Ngo };            
-
-            //Act            
-            var result = await _authenticationCommandService.SignUpNgo(user.UserName, user.Email, "P@ssword1234");
             var expected = user;
 
             //Assert
