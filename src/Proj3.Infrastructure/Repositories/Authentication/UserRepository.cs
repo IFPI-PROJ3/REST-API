@@ -14,11 +14,10 @@ namespace Proj3.Infrastructure.Repositories
             _repository = repository;
         }
 
-        public async Task Add(User user)
+        public async Task<User> Add(User user)
         {
-            await _repository.AddAsync(user);            
+            return await _repository.AddAsync(user);            
         }
-
         public async Task<User> Update(User user)
         {
             await _repository.UpdateAsync(user);

@@ -20,6 +20,7 @@ namespace Proj3.IntegrationTests
             // Act
 
             // Assert
+            Assert.True(true);
         }
     }
 }

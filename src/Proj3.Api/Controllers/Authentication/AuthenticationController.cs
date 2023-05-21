@@ -163,7 +163,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpGet("refresh-token")]
         public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
         {            
-            AuthenticationResult? authResult = _authenticationQueryService.RefreshToken(
+            AuthenticationResult? authResult = _authenticationCommandService.RefreshToken(
                 request.refresh_token,
                 request.access_token
             );

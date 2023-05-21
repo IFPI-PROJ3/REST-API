@@ -67,7 +67,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     }
 
     public async Task<UserStatusResult> SignUpVolunteer(string name, string email, string password)
-    {
+    {        
         if (await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
@@ -92,7 +92,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
         await _transactionsManager.BeginTransactionAsync();
 
-        await _userRepository.Add(user);
+        var addedUser = await _userRepository.Add(user);
         UserValidationCode uvEmail = new (user.Id, user.Email);
         await _userValidationCodeRepository.Add(uvEmail);
 
@@ -107,6 +107,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         {
             throw new InvalidAcessTokenException();
         }
+
         if (_refreshTokensRepository.GetByToken(refreshtoken).Result is not RefreshToken rf)
         {
             throw new InvalidRefreshTokenException();

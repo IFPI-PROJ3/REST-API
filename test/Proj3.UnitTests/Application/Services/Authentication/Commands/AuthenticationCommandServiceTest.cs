@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Proj3.Application.Common.Interfaces.Others;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Commands;
 using Proj3.Domain.Entities.Authentication;
-using System.Reflection;
 
 namespace Proj3.UnitTests.Application.Services.Authentication.Commands
 {
@@ -15,6 +14,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<IRefreshTokenRepository> _refreshTokensRepositoryMock;
         private Mock<IUserValidationCodeRepository> _userValidationCodeRepositoryMock;
+        private Mock<ITransactionsManager> _transactionsManagerMock;
 
         private IAuthenticationCommandService _authenticationCommandService;
 
@@ -25,13 +25,15 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
             _userRepositoryMock = new Mock<IUserRepository>();
             _refreshTokensRepositoryMock = new Mock<IRefreshTokenRepository>();
             _userValidationCodeRepositoryMock = new Mock<IUserValidationCodeRepository>();
+            _transactionsManagerMock = new Mock<ITransactionsManager>();
 
             _authenticationCommandService = new AuthenticationCommandService(
                 _tokensUtilsMock.Object,
                 _emailUtilsMock.Object,
                 _userRepositoryMock.Object,
                 _refreshTokensRepositoryMock.Object,
-                _userValidationCodeRepositoryMock.Object
+                _userValidationCodeRepositoryMock.Object,
+                _transactionsManagerMock.Object
             );
         }
 
@@ -39,7 +41,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
         public async Task SignUpNgo()
         {
             //Setup
-            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(Task.FromResult(It.IsAny<User>));
+            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(It.IsAny<User>);
 
             //Arrange
             var user = new User { UserName = "Greenpeace", Email = "greenpeace@email.com", UserRole = UserRole.Ngo };
@@ -59,7 +61,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
         public async Task SignUpVolunteer()
         {
             //Setup
-            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(Task.FromResult(It.IsAny<User>));
+            _userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns(It.IsAny<User>);
 
             //Arrange
             var user = new User { UserName = "David Bowie", Email = "davidbowie@email.com", UserRole = UserRole.Volunteer };            
@@ -73,6 +75,19 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
             Assert.Equal(expected.UserName, result.user.UserName);
             Assert.Equal(expected.Email, result.user.Email);
             Assert.Equal(expected.UserRole, result.user.UserRole);
+        }
+
+        [Fact(DisplayName = "Get refresh token")]
+        public void GetRefreshToken()
+        {
+            //Setup            
+            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+            var passwordHash = "UzBVVBBYrH1vRdGawYhuh2ND5vXe4qWoE6ITk69Awo8=";
+            //_tokensUtilsMock.Setup(x => x.ValidateJwtToken(token)).Returns(new Guid(token));
+
+
+            //Arrange
+            var user = new User { UserName = "Greenpeace", Email = "" };
         }
     }
 }
