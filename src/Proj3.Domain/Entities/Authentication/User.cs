@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Authentication
 {
     [Table("Users")]
-    public class User
+    public sealed class User
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

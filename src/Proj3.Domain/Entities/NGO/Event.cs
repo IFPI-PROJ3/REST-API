@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.NGO
 {
     [Table("Events")]
-    public class Event
+    public sealed class Event
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

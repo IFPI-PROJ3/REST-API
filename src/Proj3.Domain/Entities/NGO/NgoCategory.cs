@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.NGO
 {
     [Table("NgoCategories")]
-    public class NgoCategory
+    public sealed class NgoCategory
     {
         [Key, Column(Order = 0)]
         [ForeignKey("Ngos")]

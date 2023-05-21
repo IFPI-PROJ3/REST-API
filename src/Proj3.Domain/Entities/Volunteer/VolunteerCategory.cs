@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Volunteer
 {
     [Table("VolunteerCategories")]
-    public class VolunteerCategory
+    public sealed class VolunteerCategory
     {
         [Key, Column(Order = 0)]
         [ForeignKey("Volunteers")]

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Authentication
 {
     [Table("RefreshTokens")]
-    public class RefreshToken
+    public sealed class RefreshToken
     {
         [Key]
         public int Id { get; set; }

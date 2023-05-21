@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Common
 {
     [Table("Categories")]
-    public class Category
+    public sealed class Category
     {
         [Key]
         public int Id { get; set; }

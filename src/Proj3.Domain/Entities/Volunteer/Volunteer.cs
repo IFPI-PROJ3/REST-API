@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Volunteer
 {
     [Table("Volunteers")]
-    public class Volunteer
+    public sealed class Volunteer
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

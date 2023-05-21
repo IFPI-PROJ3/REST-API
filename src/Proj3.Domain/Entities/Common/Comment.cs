@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.Common
 {
     [Table("Comments")]
-    public class Comment
+    public sealed class Comment
     {        
         [Key, Column(Order = 0)]
         [ForeignKey("Events")]

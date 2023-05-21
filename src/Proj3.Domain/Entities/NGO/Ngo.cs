@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Proj3.Domain.Entities.NGO
 {
     [Table("Ngos")]
-    public class Ngo
+    public sealed class Ngo
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
