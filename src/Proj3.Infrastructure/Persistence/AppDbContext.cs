@@ -1,20 +1,26 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Proj3.Domain.Entities.Address;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
 
-namespace Proj3.Infrastructure.Database
+namespace Proj3.Infrastructure.Persistence
 {
     public class AppDbContext : DbContext
     {
+        // Address        
+        public DbSet<Address>? Addresses { get; set; }
+        public DbSet<City>? Cities { get; set; }
+        public DbSet<State>? States { get; set; }
+
         // Authentication
         public DbSet<User>? Users { get; set; }
         public DbSet<UserValidationCode>? UserValidationCodes { get; set; }
         public DbSet<RefreshToken>? RefreshTokens { get; set; }
 
-        // Common
-        //public DbSet<Address>? Addresses { get; set; }
+        // Common                
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Comment>? Comments { get; set; }
         public DbSet<EventVolunteer>? EventVolunteers { get; set; }
@@ -51,17 +57,18 @@ namespace Proj3.Infrastructure.Database
         }
     }
 }
-        //0001_initial
-        //0002_business_address_fields
-        //0003_business_owner_and_person
-        //0004_person_phone_number
-        //0005_person_email_and_opt_out
-        //0006_business_description_and_services
 
-        /* - COMMANDS
-                - MIGRATIONS
-                    dotnet ef migrations add 0001_initial --project .\Proj3.Infrastructure\ -o Database\Migrations
+//0001_initial
+//0002_business_address_fields
+//0003_business_owner_and_person
+//0004_person_phone_number
+//0005_person_email_and_opt_out
+//0006_business_description_and_services
 
-                - UPDATE DATABASE (AFTER EACH MIGRATION)
-                    dotnet ef database update --project .\Proj3.Infrastructure\
-        */       
+/* - COMMANDS
+        - MIGRATIONS
+            dotnet ef migrations add 0001_initial --project .\Proj3.Infrastructure\ -o Persistence\Migrations
+
+        - UPDATE DATABASE (AFTER EACH MIGRATION)
+            dotnet ef database update --project .\Proj3.Infrastructure\
+*/       

@@ -3,7 +3,7 @@ using Proj3.Application.Common.Interfaces.Persistence;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Domain.Entities.Authentication;
 
-namespace Proj3.Infrastructure.Repositories
+namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
 {
     public class UserValidationCodeRepository : IUserValidationCodeRepository
     {
@@ -21,11 +21,11 @@ namespace Proj3.Infrastructure.Repositories
 
         public async Task RemoveUserConfirmation(UserValidationCode userValidationCode)
         {
-            await _repository.DeleteAsync(userValidationCode.Id);            
+            await _repository.DeleteAsync(userValidationCode.Id);
         }
 
         public async Task<UserValidationCode?> GetEmailValidationCodeByUser(User user)
-        {            
+        {
             return await _repository.Entity.Where(userCode => userCode.UserId == user.Id).SingleOrDefaultAsync();
         }
 

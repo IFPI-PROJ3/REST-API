@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Proj3.Application.Common.Interfaces.Persistence;
 
-namespace Proj3.Infrastructure.Repositories
+namespace Proj3.Infrastructure.Persistence.Repositories
 {
     /// <summary>
     /// Class <c>RepositoryBase<T></c> implementação padrao de <see cref="IRepositoryBase{T}"/>.

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Domain.Entities.Authentication;
-using Proj3.Infrastructure.Database;
+using Proj3.Infrastructure.Persistence;
 
-namespace Proj3.Infrastructure.Repositories
+namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
@@ -11,7 +11,7 @@ namespace Proj3.Infrastructure.Repositories
 
         public RefreshTokenRepository(DbContext dbcontext)
         {
-            _dbcontext = (AppDbContext) dbcontext;
+            _dbcontext = (AppDbContext)dbcontext;
         }
 
         public async Task Add(RefreshToken rf)
@@ -19,16 +19,16 @@ namespace Proj3.Infrastructure.Repositories
             // se nao existir no banco adiciona o token se existir atualiza.            
             // posteriormente alterar para mais dispositivos podendo ter mais de um token por usuario
 
-            if(await _dbcontext.RefreshTokens!.Where(r => r.UserId == rf.UserId).AnyAsync())
+            if (await _dbcontext.RefreshTokens!.Where(r => r.UserId == rf.UserId).AnyAsync())
             {
                 await Update(rf);
             }
             else
             {
-                await _dbcontext.RefreshTokens!.AddAsync(rf);                
-            }   
-            await _dbcontext.SaveChangesAsync();             
-        }        
+                await _dbcontext.RefreshTokens!.AddAsync(rf);
+            }
+            await _dbcontext.SaveChangesAsync();
+        }
 
         public async Task<RefreshToken> Update(RefreshToken rf)
         {
@@ -57,7 +57,7 @@ namespace Proj3.Infrastructure.Repositories
         }
 
         public async Task<RefreshToken?> GetByToken(string token)
-        {            
+        {
             RefreshToken? refreshToken = await _dbcontext.RefreshTokens!.Where(r => r.Token == token).SingleOrDefaultAsync();
             return refreshToken;
         }

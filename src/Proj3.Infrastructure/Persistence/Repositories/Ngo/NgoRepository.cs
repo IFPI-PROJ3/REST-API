@@ -1,25 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proj3.Application.Common.Interfaces.Persistence;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
-using Proj3.Domain.Entities.NGO;
 
-namespace Proj3.Infrastructure.Repositories.NGO
+namespace Proj3.Infrastructure.Persistence.Repositories.Ngo
 {
     public class NgoRepository : INgoRepository
     {
-        private readonly IRepositoryBase<Ngo> _repository;
+        private readonly IRepositoryBase<Domain.Entities.NGO.Ngo> _repository;
 
-        public NgoRepository(IRepositoryBase<Ngo> repository)
+        public NgoRepository(IRepositoryBase<Domain.Entities.NGO.Ngo> repository)
         {
             _repository = repository;
         }
 
-        public async Task<Ngo> Add(Ngo ngo)
+        public async Task<Domain.Entities.NGO.Ngo> Add(Domain.Entities.NGO.Ngo ngo)
         {
             return await _repository.AddAsync(ngo);
         }
 
-        public async Task<Ngo> Update(Ngo ngo)
+        public async Task<Domain.Entities.NGO.Ngo> Update(Domain.Entities.NGO.Ngo ngo)
         {
             await _repository.UpdateAsync(ngo);
             return ngo;

@@ -13,9 +13,10 @@ using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
 using Proj3.Infrastructure.Authentication;
 using Proj3.Infrastructure.Authentication.Utils;
-using Proj3.Infrastructure.Database;
-using Proj3.Infrastructure.Repositories;
-using Proj3.Infrastructure.Repositories.NGO;
+using Proj3.Infrastructure.Persistence;
+using Proj3.Infrastructure.Persistence.Repositories;
+using Proj3.Infrastructure.Persistence.Repositories.Authentication;
+using Proj3.Infrastructure.Persistence.Repositories.Ngo;
 using Proj3.Infrastructure.Services;
 
 namespace Proj3.Infrastructure;

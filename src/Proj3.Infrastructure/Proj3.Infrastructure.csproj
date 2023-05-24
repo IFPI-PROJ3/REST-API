@@ -7,9 +7,9 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <Compile Remove="Database\SQLite\**" />
-    <EmbeddedResource Remove="Database\SQLite\**" />
-    <None Remove="Database\SQLite\**" />
+    <Compile Remove="Persistence\SQLite\**" />
+    <EmbeddedResource Remove="Persistence\SQLite\**" />
+    <None Remove="Persistence\SQLite\**" />
   </ItemGroup>  
 
   <ItemGroup>
@@ -33,10 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Proj3.Application\Proj3.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\Migrations\" />
   </ItemGroup>
   
 </Project>

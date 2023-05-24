@@ -98,7 +98,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
         await _transactionsManager.CommitTransactionAsync();
 
-        return new UserStatusResult(user);
+        return new UserStatusResult(addedUser);
     }
 
     public AuthenticationResult RefreshToken(string refreshtoken, string acesstoken)

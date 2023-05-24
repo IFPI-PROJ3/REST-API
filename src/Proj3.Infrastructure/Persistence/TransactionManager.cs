@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proj3.Application.Common.Interfaces.Others;
 
-namespace Proj3.Infrastructure.Database
+namespace Proj3.Infrastructure.Persistence
 {
     public class TransactionManager : ITransactionsManager
     {
