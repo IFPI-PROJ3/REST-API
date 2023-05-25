@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">  
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>  
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Proj3.Contracts\Proj3.Contracts.csproj" />
+    <ProjectReference Include="..\Proj3.Domain\Proj3.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\Persistence\Volunteer\" />
+    <Folder Include="Common\Interfaces\Services\Volunteer\Commands\" />
+    <Folder Include="Common\Interfaces\Services\Volunteer\Queries\" />
+  </ItemGroup>
+  
+</Project>
