@@ -5,6 +5,7 @@ using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
 using Proj3.Contracts.Authentication.Response;
 using Proj3.Contracts.NGO.Request;
 using Proj3.Domain.Entities.NGO;
+using System.Net.Mime;
 
 namespace Proj3.Api.Controllers.NGO
 {
@@ -12,15 +13,18 @@ namespace Proj3.Api.Controllers.NGO
     [Authorize]
     [Route("ngo")]
     [ApiVersion("1.0")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class NGOController : ControllerBase
     {
         private readonly INgoCommandService _ngoCommandService;
-        private readonly INgoQueryService _ngoQueryService;        
+        //private readonly INgoQueryService _ngoQueryService;        
 
-        public NGOController(INgoCommandService ngoCommandService, INgoQueryService ngoQueryService)
+
+        public NGOController(INgoCommandService ngoCommandService /*, INgoQueryService ngoQueryService*/)
         {
             _ngoCommandService = ngoCommandService;
-            _ngoQueryService = ngoQueryService;            
+            //_ngoQueryService = ngoQueryService;            
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace Proj3.Api.Controllers.NGO
         [HttpGet("add")]
         public async Task<IActionResult> Add([FromQuery] NewNgoRequest request)
         {
-            Ngo ngo = new Ngo(
+            Ngo ngo = new(
                 name: request.name,
                 description: request.description
             );

@@ -12,6 +12,8 @@ namespace Proj3.Api.Controllers.Category
     [Authorize]
     [Route("category")]
     [ApiVersion("1.0")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class CategoryController : ControllerBase
     {
         //private readonly ICategoryQueryService _categoryQueryService;

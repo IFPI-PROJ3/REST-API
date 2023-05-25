@@ -6,23 +6,32 @@ using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Contracts.Authentication.Request;
 using Proj3.Contracts.Authentication.Response;
+using System.Net.Mime;
 
 namespace Proj3.Api.Controllers.Authentication
 {
+    /// <summary>
+    /// Authentication controller
+    /// </summary>
     [ApiController]    
     [Route("auth")]
     [ApiVersion("1.0")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationCommandService _authenticationCommandService;
         private readonly IAuthenticationQueryService _authenticationQueryService;
-        private readonly IEmailCommandService _emailCommandService;
+        //private readonly IEmailCommandService _emailCommandService;
 
-        public AuthenticationController(IAuthenticationCommandService authenticationCommandService, IAuthenticationQueryService authenticationQueryService, IEmailCommandService emailCommandService)
+        /// <summary>
+        /// Authentication controller constructor
+        /// </summary>
+        public AuthenticationController(IAuthenticationCommandService authenticationCommandService, IAuthenticationQueryService authenticationQueryService /*, IEmailCommandService emailCommandService */)
         {
             _authenticationCommandService = authenticationCommandService;
             _authenticationQueryService = authenticationQueryService;
-            _emailCommandService = emailCommandService;
+            //_emailCommandService = emailCommandService;
         }
 
         /// <summary>
