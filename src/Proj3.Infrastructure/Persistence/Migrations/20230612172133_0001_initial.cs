@@ -5,24 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Proj3.Infrastructure.Persistence.Migrations
 {
-    public partial class _0001_initial_migration : Migration
+    public partial class _0001_initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StateId = table.Column<int>(type: "int", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -35,21 +21,6 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StateId = table.Column<int>(type: "int", nullable: false),
-                    IbgeCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,6 +104,8 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -157,22 +130,6 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "States",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UF = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IbgeCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DDD = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_States", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -244,13 +201,7 @@ namespace Proj3.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Cities");
 
             migrationBuilder.DropTable(
                 name: "Comments");
@@ -272,9 +223,6 @@ namespace Proj3.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
-
-            migrationBuilder.DropTable(
-                name: "States");
 
             migrationBuilder.DropTable(
                 name: "Users");

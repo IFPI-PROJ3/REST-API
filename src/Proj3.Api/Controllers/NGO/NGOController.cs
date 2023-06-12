@@ -41,8 +41,11 @@ namespace Proj3.Api.Controllers.NGO
         public async Task<IActionResult> Add([FromQuery] NewNgoRequest request)
         {
             Ngo ngo = new(
+                userId: new Guid(),
                 name: request.name,
-                description: request.description
+                description: request.description,
+                latitude: 5.0811,
+                longitude: 42.7743
             );
 
             await _ngoCommandService.Add(HttpContext, ngo);

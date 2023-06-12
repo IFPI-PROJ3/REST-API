@@ -1,20 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Proj3.Domain.Entities.Address;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
+using System.Text;
 
 namespace Proj3.Infrastructure.Persistence
 {
     public class AppDbContext : DbContext
     {
-        // Address        
-        public DbSet<Address>? Addresses { get; set; }
-        public DbSet<City>? Cities { get; set; }
-        public DbSet<State>? States { get; set; }
-
         // Authentication
         public DbSet<User>? Users { get; set; }
         public DbSet<UserValidationCode>? UserValidationCodes { get; set; }
@@ -36,11 +31,15 @@ namespace Proj3.Infrastructure.Persistence
         public DbSet<VolunteerCategory>? VolunteerCategories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {            
-            // SQL Server
-            var dbPassword = "P@sswd12345";
-            var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            optionsBuilder.UseSqlServer(connectionString);
+        {
+            // SQL Server Azure
+            //var dbPassword = "P@sswd12345";
+            //var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //optionsBuilder.UseSqlServer(connectionString);
+
+            // SQL Server Local DB
+            string sqlConnectionString = "Data Source=(localdb)\\LocalDB;Initial Catalog=WeChangeDB;Integrated Security=True;";
+            optionsBuilder.UseSqlServer(sqlConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
