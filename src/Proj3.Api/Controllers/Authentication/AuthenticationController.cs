@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
-using Proj3.Application.Common.Interfaces.Services.Authentication.Commands;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Contracts.Authentication.Request;
@@ -38,7 +37,7 @@ namespace Proj3.Api.Controllers.Authentication
         /// Ngo user signup
         /// </summary>
         /// <param name="request">User data</param>
-        /// <seealso cref="SignUpRequest"/>
+        /// <seealso cref="SignUpNgoRequest"/>
         /// <response code="201">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response> 
@@ -50,12 +49,10 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPost("signup-ngo")]
-        public async Task<IActionResult> SignUpNgo([FromBody] SignUpRequest request)
+        public async Task<IActionResult> SignUpNgo([FromBody] SignUpNgoRequest request)
         {
             UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpNgo(
-                request.username,
-                request.email,
-                request.password
+                request
             );
 
             UserStatusResponse? response = new
@@ -73,7 +70,7 @@ namespace Proj3.Api.Controllers.Authentication
         /// Volunteer user signup 
         /// content-type: application/json; charset=utf-8
         /// </summary>
-        /// <param name="request">User info</param>
+        /// <param name="SignUpVolunteerRequest">User info</param>
         /// <response code="201">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response>        
@@ -85,12 +82,10 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPost("signup-volunteer")]
-        public async Task<IActionResult> SignUpVolunteer([FromBody] SignUpRequest request)
+        public async Task<IActionResult> SignUpVolunteer([FromBody] SignUpVolunteerRequest request)
         {
             UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpVolunteer(
-                request.username,
-                request.email,
-                request.password
+                request
             );
 
             UserStatusResponse? response = new
@@ -119,8 +114,7 @@ namespace Proj3.Api.Controllers.Authentication
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
             AuthenticationResult? authServiceResult = await _authenticationQueryService.SignIn(
-                request.email,
-                request.password
+                request
             );
 
             AuthenticationResponse? response = new
@@ -129,6 +123,7 @@ namespace Proj3.Api.Controllers.Authentication
                 username: authServiceResult.user.UserName,
                 email: authServiceResult.user.Email,
                 active: authServiceResult.user.Active,
+                role: nameof(authServiceResult.user.UserRole),
                 access_token: authServiceResult.AccessToken,
                 authServiceResult.RefreshToken
             );
@@ -173,8 +168,7 @@ namespace Proj3.Api.Controllers.Authentication
         public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
         {            
             AuthenticationResult? authResult = _authenticationCommandService.RefreshToken(
-                request.refresh_token,
-                request.access_token
+                request
             );
 
             RefreshTokenResponse? response = new
@@ -202,9 +196,7 @@ namespace Proj3.Api.Controllers.Authentication
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             AuthenticationResult? authServiceResult = await _authenticationCommandService.ChangePassword(
-                email: request.email,
-                oldPassword: request.old_password,
-                newPassword: request.new_password
+                request
             );
 
             AuthenticationResponse? response = new
@@ -213,6 +205,7 @@ namespace Proj3.Api.Controllers.Authentication
                 username: authServiceResult.user.UserName,
                 email: authServiceResult.user.Email,
                 active: authServiceResult.user.Active,
+                role: nameof(authServiceResult.user.UserRole),
                 access_token: authServiceResult.AccessToken,
                 refresh_token: authServiceResult.RefreshToken
             );

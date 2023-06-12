@@ -2,11 +2,16 @@ using Microsoft.AspNetCore.Http;
 using Proj3.Application.Common.Errors.Authentication;
 using Proj3.Application.Common.Interfaces.Others;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
+using Proj3.Application.Common.Interfaces.Persistence.Common;
+using Proj3.Application.Common.Interfaces.Persistence.NGO;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Result;
 using Proj3.Application.Utils.Authentication;
+using Proj3.Contracts.Authentication.Request;
 using Proj3.Domain.Entities.Authentication;
+using Proj3.Domain.Entities.NGO;
+using Proj3.Domain.Entities.Volunteer;
 using System.Security.Claims;
 
 namespace Proj3.Application.Services.Authentication.Commands;
@@ -14,107 +19,149 @@ namespace Proj3.Application.Services.Authentication.Commands;
 public class AuthenticationCommandService : IAuthenticationCommandService
 {
     private readonly ITokensUtils _tokensUtils;
-    private readonly IEmailUtils _emailUtils;
+    private readonly IEmailUtils _emailUtils;        
     private readonly IUserRepository _userRepository;
+    private readonly INgoRepository _ngoRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IRefreshTokenRepository _refreshTokensRepository;
     private readonly IUserValidationCodeRepository _userValidationCodeRepository;
     private readonly ITransactionsManager _transactionsManager;
 
-    public AuthenticationCommandService(ITokensUtils tokensUtils, IEmailUtils emailUtils, IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository, IUserValidationCodeRepository userValidationCodeRepository, ITransactionsManager transactionsManager)
+    public AuthenticationCommandService(ITokensUtils tokensUtils, 
+        IEmailUtils emailUtils,
+        INgoRepository ngoRepository,
+        IUserRepository userRepository, 
+        IRefreshTokenRepository refreshTokensRepository, 
+        IUserValidationCodeRepository userValidationCodeRepository, 
+        ITransactionsManager transactionsManager)
     {
         _tokensUtils = tokensUtils;
         _emailUtils = emailUtils;
+        _ngoRepository = ngoRepository;
         _userRepository = userRepository;
         _refreshTokensRepository = refreshTokensRepository;
         _userValidationCodeRepository = userValidationCodeRepository;
         _transactionsManager = transactionsManager;
     }
 
-    public async Task<UserStatusResult> SignUpNgo(string name, string email, string password)
-    {        
-        if (await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
+    public async Task<UserStatusResult> SignUpNgo(SignUpNgoRequest signUpNgoRequest)
+    {
+        // VALIDATING REQUEST
+        if (await _userRepository.GetUserByEmail(signUpNgoRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
         
-        if (!Validation.IsValidEmail(email))
+        if (!Validation.IsValidEmail(signUpNgoRequest.email))
         {
             throw new InvalidEmailException();
         }
         
-        if (!Validation.IsValidPassword(password))
+        if (!Validation.IsValidPassword(signUpNgoRequest.password))
         {
             throw new InvalidPasswordException();
         }
 
+        // CREATING ENTITIES
         Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserNgo(
-            name: name,
-            email: email
-        );      
+            name: signUpNgoRequest.username,
+            email: signUpNgoRequest.email
+        );        
         user.Salt = Crypto.GetSalt;
-        user.PasswordHash = Crypto.ReturnUserHash(user, password);
+        user.PasswordHash = Crypto.ReturnUserHash(user, signUpNgoRequest.password);
 
-        await _transactionsManager.BeginTransactionAsync();
+        Ngo ngo = new(user.Id, signUpNgoRequest.name, signUpNgoRequest.password, signUpNgoRequest.latitude, signUpNgoRequest.longitude);
 
-        await _userRepository.Add(user);                   
-        UserValidationCode uvEmail = new (user.Id, user.Email);
-        await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
-        await _userValidationCodeRepository.Add(uvEmail);
+        try
+        {
+            // TRANSACTION ADD USER AND NGO
+            await _transactionsManager.BeginTransactionAsync();
 
-        await _transactionsManager.CommitTransactionAsync();
+            await _userRepository.Add(user);
+            await _ngoRepository.Add(ngo);
 
-        return new UserStatusResult(user);
+            await _categoryRepository.AddCategoriesToNgoAsync(ngo.Id, signUpNgoRequest.categories);
+
+            UserValidationCode uvEmail = new(user.Id, user.Email);
+            await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
+            await _userValidationCodeRepository.Add(uvEmail);
+
+            await _transactionsManager.CommitTransactionAsync();
+
+            return new UserStatusResult(user);
+        } 
+        catch (Exception)
+        {
+            await _transactionsManager.RollbackTransactionAsync();
+            throw;
+        }
     }
 
-    public async Task<UserStatusResult> SignUpVolunteer(string name, string email, string password)
-    {        
-        if (await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
+    public async Task<UserStatusResult> SignUpVolunteer(SignUpVolunteerRequest signUpVolunteerRequest)
+    {
+        // VALIDATING REQUEST
+        if (await _userRepository.GetUserByEmail(signUpVolunteerRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
 
-        if (!Validation.IsValidEmail(email))
+        if (!Validation.IsValidEmail(signUpVolunteerRequest.email))
         {
             throw new InvalidEmailException();
         }
 
-        if (!Validation.IsValidPassword(password))
+        if (!Validation.IsValidPassword(signUpVolunteerRequest.password))
         {
             throw new InvalidPasswordException();
         }
 
+        // CREATING ENTITIES
         Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserVolunteer(
-            name: name,
-            email: email            
+            name: signUpVolunteerRequest.username,
+            email: signUpVolunteerRequest.email
         );
         user.Salt = Crypto.GetSalt;
-        user.PasswordHash = Crypto.ReturnUserHash(user, password);
+        user.PasswordHash = Crypto.ReturnUserHash(user, signUpVolunteerRequest.password);
 
-        await _transactionsManager.BeginTransactionAsync();
+        Volunteer volunteer = new(user.Id, signUpVolunteerRequest.name, signUpVolunteerRequest.lastname, signUpVolunteerRequest.description);
 
-        var addedUser = await _userRepository.Add(user);
-        UserValidationCode uvEmail = new (user.Id, user.Email);
-        await _userValidationCodeRepository.Add(uvEmail);
+        try
+        {
+            // TRANSACTION ADD USER AND VOLUNTEER
+            await _transactionsManager.BeginTransactionAsync();
 
-        await _transactionsManager.CommitTransactionAsync();
+            await _userRepository.Add(user);
+            await _categoryRepository.AddCategoriesToVolunteerAsync(volunteer.Id, signUpVolunteerRequest.categories);
 
-        return new UserStatusResult(addedUser);
+            UserValidationCode uvEmail = new(user.Id, user.Email);
+            await _userValidationCodeRepository.Add(uvEmail);
+
+            await _transactionsManager.CommitTransactionAsync();
+
+            return new UserStatusResult(user);
+        }
+        catch (Exception)
+        {
+            await _transactionsManager.RollbackTransactionAsync();
+            throw;
+        }
     }
 
-    public AuthenticationResult RefreshToken(string refreshtoken, string acesstoken)
+    public AuthenticationResult RefreshToken(RefreshTokenRequest refreshTokenRequest)
     {
-        if (_tokensUtils.ValidateJwtToken(acesstoken) is null)
+        // VALIDATING REQUEST
+        if (_tokensUtils.ValidateJwtToken(refreshTokenRequest.access_token) is null)
         {
             throw new InvalidAcessTokenException();
         }
 
-        if (_refreshTokensRepository.GetByToken(refreshtoken).Result is not RefreshToken rf)
+        if (_refreshTokensRepository.GetByToken(refreshTokenRequest.refresh_token).Result is not RefreshToken rf)
         {
             throw new InvalidRefreshTokenException();
         }
 
         Domain.Entities.Authentication.User user = _userRepository.GetUserById(rf.UserId).Result!;
-        ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(acesstoken);
+        ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(refreshTokenRequest.access_token);
 
         string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);
         RefreshToken newRefreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
@@ -136,21 +183,21 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         return true;        
     }
 
-    public async Task<AuthenticationResult> ChangePassword(string email, string oldPassword, string newPassword)
+    public async Task<AuthenticationResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
     {
-        if (!(await _userRepository.GetUserByEmail(email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, oldPassword)))
+        if (!(await _userRepository.GetUserByEmail(changePasswordRequest.email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, changePasswordRequest.old_password)))
         {
             throw new InvalidCredentialsException();
         }        
 
-        if (!Validation.IsValidPassword(newPassword))
+        if (!Validation.IsValidPassword(changePasswordRequest.new_password))
         {
             throw new InvalidPasswordException();
         }
 
         await _transactionsManager.BeginTransactionAsync();
 
-        user.PasswordHash = Crypto.ReturnUserHash(user, newPassword);
+        user.PasswordHash = Crypto.ReturnUserHash(user, changePasswordRequest.new_password);
         string? acessToken = _tokensUtils.GenerateJwtToken(user);
         RefreshToken? refreshToken = _tokensUtils.GenerateRefreshToken(user);
         await _userRepository.Update(user);
@@ -164,9 +211,9 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         );
     }
 
-    public async Task<UserStatusResult> ConfirmEmail(Guid userId, int code)
+    public async Task<UserStatusResult> ConfirmEmail(ConfirmationRequest confirmationRequest)
     {
-        if (await _userValidationCodeRepository.GetEmailValidationCodeByUser((await _userRepository.GetUserById(userId))!) is not UserValidationCode uv)
+        if (await _userValidationCodeRepository.GetEmailValidationCodeByUser((await _userRepository.GetUserById(confirmationRequest.user_id))!) is not UserValidationCode uv)
         {
             throw new Exception("This confirmation not exists.");
         }
@@ -176,7 +223,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             throw new Exception("Confirmation code has expired.");
         }
 
-        if (uv.Code != code)
+        if (uv.Code != confirmationRequest.code)
         {
             throw new Exception("Invalid confirmation code.");
         }
@@ -184,7 +231,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         await _transactionsManager.BeginTransactionAsync();
 
         await _userValidationCodeRepository.RemoveUserConfirmation(uv);
-        Domain.Entities.Authentication.User? user = await _userRepository.GetUserById(userId);
+        Domain.Entities.Authentication.User? user = await _userRepository.GetUserById(confirmationRequest.user_id);
         user!.Active = true;
         await _userRepository.Update(user);
 

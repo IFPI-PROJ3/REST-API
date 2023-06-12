@@ -12,6 +12,7 @@ using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.NGO;
+using Proj3.Domain.Entities.Volunteer;
 using Proj3.Infrastructure.Authentication;
 using Proj3.Infrastructure.Authentication.Utils;
 using Proj3.Infrastructure.Persistence;
@@ -46,6 +47,8 @@ public static class DependencyInjection
 
         // Common
         services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
+        services.AddScoped<IRepositoryBase<NgoCategory>, RepositoryBase<NgoCategory>>();
+        services.AddScoped<IRepositoryBase<VolunteerCategory>, RepositoryBase<VolunteerCategory>>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         // NGO
