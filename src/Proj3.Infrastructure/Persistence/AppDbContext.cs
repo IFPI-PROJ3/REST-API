@@ -1,10 +1,9 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
-using System.Text;
 
 namespace Proj3.Infrastructure.Persistence
 {
@@ -38,8 +37,18 @@ namespace Proj3.Infrastructure.Persistence
             //optionsBuilder.UseSqlServer(connectionString);
 
             // SQL Server Local DB
-            string sqlConnectionString = "Data Source=(localdb)\\LocalDB;Initial Catalog=WeChangeDB;Integrated Security=True;";
-            optionsBuilder.UseSqlServer(sqlConnectionString);
+            //string sqlConnectionString = "Data Source=(localdb)\\LocalDB;Initial Catalog=WeChangeDB;Integrated Security=True;";
+            //optionsBuilder.UseSqlServer(sqlConnectionString);
+
+            // PostgreSQL Render
+            //SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
+            //sqlConnectionStringBuilder.DataSource = "dpg-ci46prmnqqlbd9mi1pg0-a\\WeChange, 5432";
+            //sqlConnectionStringBuilder.InitialCatalog = "wechange_db";            
+            //sqlConnectionStringBuilder.UserID = "wechange_db_user";
+            //sqlConnectionStringBuilder.Password = "ZmB0VPjyBV4FscngKxz0rN5o6QEhB65L";
+
+            //var stringss = sqlConnectionStringBuilder.ConnectionString;
+            //optionsBuilder.UseNpgsql("Data Source= dpg-ci46prmnqqlbd9mi1pg0-a\\WeChange, 5432 ;Initial Catalog=wechange_db;User ID=wechange_db_user;Password=ZmB0VPjyBV4FscngKxz0rN5o6QEhB65L");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
