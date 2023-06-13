@@ -34,5 +34,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Proj3.Application\Proj3.Application.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
   
 </Project>

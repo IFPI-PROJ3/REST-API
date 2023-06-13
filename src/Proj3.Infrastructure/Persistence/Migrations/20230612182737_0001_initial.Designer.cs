@@ -12,7 +12,7 @@ using Proj3.Infrastructure.Persistence;
 namespace Proj3.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230612172133_0001_initial")]
+    [Migration("20230612182737_0001_initial")]
     partial class _0001_initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
