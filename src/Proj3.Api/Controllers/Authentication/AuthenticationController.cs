@@ -67,8 +67,7 @@ namespace Proj3.Api.Controllers.Authentication
         }
 
         /// <summary>
-        /// Volunteer user signup 
-        /// content-type: application/json; charset=utf-8
+        /// Volunteer user signup
         /// </summary>
         /// <param name="SignUpVolunteerRequest">User info</param>
         /// <response code="201">User created</response>

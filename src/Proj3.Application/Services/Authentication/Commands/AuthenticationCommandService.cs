@@ -30,6 +30,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     public AuthenticationCommandService(ITokensUtils tokensUtils, 
         IEmailUtils emailUtils,
         INgoRepository ngoRepository,
+        ICategoryRepository categoryRepository,
         IUserRepository userRepository, 
         IRefreshTokenRepository refreshTokensRepository, 
         IUserValidationCodeRepository userValidationCodeRepository, 
@@ -38,6 +39,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         _tokensUtils = tokensUtils;
         _emailUtils = emailUtils;
         _ngoRepository = ngoRepository;
+        _categoryRepository = categoryRepository;
         _userRepository = userRepository;
         _refreshTokensRepository = refreshTokensRepository;
         _userValidationCodeRepository = userValidationCodeRepository;

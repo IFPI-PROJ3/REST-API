@@ -27,7 +27,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
     {        
-        services.AddTransient<DbContext, AppDbContext>();
+        services.AddScoped<DbContext, AppDbContext>();
         services.AddScoped<ITransactionsManager, TransactionManager>();
 
         services.AddAuth(configuration);
@@ -63,7 +63,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAuth(this IServiceCollection services, ConfigurationManager configuration)
     {
-        JwtSettings? jwtSettings = new JwtSettings();
+        JwtSettings? jwtSettings = new();
         configuration.Bind(JwtSettings.SectionName, jwtSettings); // json to jwtsettings
 
         services.AddSingleton(Options.Create(jwtSettings));

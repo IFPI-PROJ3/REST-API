@@ -32,23 +32,9 @@ namespace Proj3.Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // SQL Server Azure
-            //var dbPassword = "P@sswd12345";
-            //var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //optionsBuilder.UseSqlServer(connectionString);
-
-            // SQL Server Local DB
-            //string sqlConnectionString = "Data Source=(localdb)\\LocalDB;Initial Catalog=WeChangeDB;Integrated Security=True;";
-            //optionsBuilder.UseSqlServer(sqlConnectionString);
-
-            // PostgreSQL Render
-            //SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
-            //sqlConnectionStringBuilder.DataSource = "dpg-ci46prmnqqlbd9mi1pg0-a\\WeChange, 5432";
-            //sqlConnectionStringBuilder.InitialCatalog = "wechange_db";            
-            //sqlConnectionStringBuilder.UserID = "wechange_db_user";
-            //sqlConnectionStringBuilder.Password = "ZmB0VPjyBV4FscngKxz0rN5o6QEhB65L";
-
-            //var stringss = sqlConnectionStringBuilder.ConnectionString;
-            //optionsBuilder.UseNpgsql("Data Source= dpg-ci46prmnqqlbd9mi1pg0-a\\WeChange, 5432 ;Initial Catalog=wechange_db;User ID=wechange_db_user;Password=ZmB0VPjyBV4FscngKxz0rN5o6QEhB65L");
+            var dbPassword = "P@sswd12345";
+            var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            optionsBuilder.UseSqlServer(connectionString);            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
