@@ -1,4 +1,3 @@
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.Common;
@@ -16,7 +15,7 @@ namespace Proj3.Infrastructure.Persistence
 
         // Common                
         public DbSet<Category>? Categories { get; set; }
-        public DbSet<Comment>? Comments { get; set; }
+        public DbSet<Review>? Reviews { get; set; }
         public DbSet<EventVolunteer>? EventVolunteers { get; set; }
 
         // NGO
@@ -44,7 +43,7 @@ namespace Proj3.Infrastructure.Persistence
             modelBuilder.Entity<RefreshToken>().Property(r => r.Id).ValueGeneratedOnAdd();
 
             // Composite keys
-            modelBuilder.Entity<Comment>().HasKey(c => new { c.EventId, c.VolunteerId });
+            modelBuilder.Entity<Review>().HasKey(c => new { c.EventId, c.VolunteerId });
             modelBuilder.Entity<EventVolunteer>().HasKey(e => new { e.EventId, e.VolunteerId });
             modelBuilder.Entity<NgoCategory>().HasKey(n => new { n.NgoId, n.CategoryId });
             modelBuilder.Entity<VolunteerCategory>().HasKey(v => new { v.VolunteerId, v.CategoryId });
@@ -52,6 +51,7 @@ namespace Proj3.Infrastructure.Persistence
     }
 }
 
+// NAMING MIGRATIONS EXAMPLE
 //0001_initial
 //0002_business_address_fields
 //0003_business_owner_and_person
@@ -59,10 +59,25 @@ namespace Proj3.Infrastructure.Persistence
 //0005_person_email_and_opt_out
 //0006_business_description_and_services
 
-/* - COMMANDS
-        - MIGRATIONS
-            dotnet ef migrations add 0001_initial --project .\Proj3.Infrastructure\ -o Persistence\Migrations
+// MIGRATIONS COMMANDS
+/*
+    - MIGRATIONS
+        dotnet ef migrations add 0001_initial --project .\Proj3.Infrastructure\ -o Persistence\Migrations
 
-        - UPDATE DATABASE (AFTER EACH MIGRATION)
-            dotnet ef database update --project .\Proj3.Infrastructure\
-*/       
+    - UPDATE DATABASE (AFTER EACH MIGRATION)
+        dotnet ef database update --project .\Proj3.Infrastructure\
+*/
+
+// DELETE ALL DATA FROM SQL SERVER DATABASE
+/*
+EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'
+GO
+EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+GO
+EXEC sp_MSForEachTable 'SET QUOTED_IDENTIFIER ON; DELETE FROM ?'
+GO
+EXEC sp_MSForEachTable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'
+GO
+EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'
+GO
+*/

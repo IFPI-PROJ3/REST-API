@@ -33,7 +33,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
         public async Task<RefreshToken> Update(RefreshToken rf)
         {
             RefreshToken updateRefreshToken = (await _dbcontext.RefreshTokens!.Where(r => r.UserId == rf.UserId).SingleOrDefaultAsync())!;
-
+            
             updateRefreshToken.Token = rf.Token;
             updateRefreshToken.Created = rf.Created;
             updateRefreshToken.Expires = rf.Expires;

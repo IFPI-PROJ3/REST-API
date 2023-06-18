@@ -5,7 +5,6 @@ namespace Proj3.Application.Common.Interfaces.Persistence.NGO
     public interface INgoRepository
     {
         Task<Ngo> Add(Ngo ngo);
-        Task<Ngo> Update(Ngo ngo);
-        Task<bool> UserNgoAlreadyExists(Guid userId);
+        Task<Ngo> Update(Ngo ngo);        
     }
 }

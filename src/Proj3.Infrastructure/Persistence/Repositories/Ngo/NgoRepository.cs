@@ -23,10 +23,5 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Ngo
             await _repository.UpdateAsync(ngo);
             return ngo;
         }
-
-        public async Task<bool> UserNgoAlreadyExists(Guid userId)
-        {
-            return await _repository.Entity.Where(n => n.UserId == userId).AnyAsync();
-        }
     }
 }

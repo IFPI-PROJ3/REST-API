@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proj3.Domain.Entities.Common
 {
-    [Table("Comments")]
-    public sealed class Comment
+    [Table("Reviews")]
+    public sealed class Review
     {        
         [Key, Column(Order = 0)]
         [ForeignKey("Events")]
@@ -13,6 +13,8 @@ namespace Proj3.Domain.Entities.Common
         [Key, Column(Order = 1)]
         [ForeignKey("Volunteers")]
         public Guid VolunteerId { get; set; }
+        
+        public float Stars { get; set; }    
 
         [MaxLength(300)]
         public string Content { get; set; }
@@ -21,12 +23,12 @@ namespace Proj3.Domain.Entities.Common
 
         public DateTime? UpdatedAt { get; set; }
 
-        public Comment(Guid eventId, Guid volunteerId, string content)
+        public Review(Guid eventId, Guid volunteerId, float stars, string content)
         {
             EventId = eventId;
             VolunteerId = volunteerId;
             Content = content;
             CreatedAt = DateTime.UtcNow;
-        }
+        }        
     }
 }

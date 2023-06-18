@@ -7,6 +7,15 @@
   </PropertyGroup>  
 
   <ItemGroup>
+    <Compile Remove="Common\Interfaces\Persistence\Volunteer\**" />
+    <Compile Remove="Common\Interfaces\Services\Volunteer\**" />
+    <EmbeddedResource Remove="Common\Interfaces\Persistence\Volunteer\**" />
+    <EmbeddedResource Remove="Common\Interfaces\Services\Volunteer\**" />
+    <None Remove="Common\Interfaces\Persistence\Volunteer\**" />
+    <None Remove="Common\Interfaces\Services\Volunteer\**" />
+  </ItemGroup>  
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
@@ -17,12 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Proj3.Contracts\Proj3.Contracts.csproj" />
     <ProjectReference Include="..\Proj3.Domain\Proj3.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Interfaces\Persistence\Volunteer\" />
-    <Folder Include="Common\Interfaces\Services\Volunteer\Commands\" />
-    <Folder Include="Common\Interfaces\Services\Volunteer\Queries\" />
   </ItemGroup>
   
 </Project>

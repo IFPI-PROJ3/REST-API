@@ -17,21 +17,6 @@ namespace Proj3.Application.Services.NGO.Commands
             _ngoRepository = ngoRepository;
         }
 
-        public async Task<NgoStatusResponse> Add(HttpContext httpContext, Ngo ngo)
-        {
-            Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
-
-            if (await _ngoRepository.UserNgoAlreadyExists(userId))
-            {
-                throw new NgoAlreadyExistsException();
-            }
-
-            ngo.UserId = userId;
-            await _ngoRepository.Add(ngo);
-
-            return new NgoStatusResponse(ngo);
-        }
-
         public async Task<NgoStatusResponse> Update(HttpContext httpContext, Ngo ngo)
         {
             Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);

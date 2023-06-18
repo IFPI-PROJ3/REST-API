@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Volunteer\Response\" />
+    <Compile Remove="Volunteer\Response\**" />
+    <EmbeddedResource Remove="Volunteer\Response\**" />
+    <None Remove="Volunteer\Response\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Volunteer\Request\" />
   </ItemGroup>
 

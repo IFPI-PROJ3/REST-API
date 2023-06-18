@@ -146,7 +146,22 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Proj3.Domain.Entities.Common.Comment", b =>
+            modelBuilder.Entity("Proj3.Domain.Entities.Common.EventVolunteer", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("VolunteerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("EventId", "VolunteerId");
+
+                    b.ToTable("EventVolunteers");
+                });
+
+            modelBuilder.Entity("Proj3.Domain.Entities.Common.Review", b =>
                 {
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier")
@@ -164,27 +179,15 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<float>("Stars")
+                        .HasColumnType("real");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("EventId", "VolunteerId");
 
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Proj3.Domain.Entities.Common.EventVolunteer", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<Guid>("VolunteerId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(1);
-
-                    b.HasKey("EventId", "VolunteerId");
-
-                    b.ToTable("EventVolunteers");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Proj3.Domain.Entities.NGO.Event", b =>
