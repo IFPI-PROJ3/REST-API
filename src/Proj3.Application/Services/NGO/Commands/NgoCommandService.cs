@@ -17,7 +17,7 @@ namespace Proj3.Application.Services.NGO.Commands
             _ngoRepository = ngoRepository;
         }
 
-        public async Task<NgoStatusResponse> Update(HttpContext httpContext, Ngo ngo)
+        public async Task<NgoStatusResponse> UpdateAsync(HttpContext httpContext, Ngo ngo)
         {
             Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
 

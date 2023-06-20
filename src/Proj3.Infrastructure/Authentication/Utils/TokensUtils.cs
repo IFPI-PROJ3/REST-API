@@ -59,9 +59,9 @@ namespace Proj3.Infrastructure.Authentication.Utils
             RefreshToken? refreshToken = new RefreshToken(
                 userId: user.Id,
                 token: getUniqueToken(),
-                created: DateTime.Now,
-                expires: DateTime.Now.AddDays(7),
-                device: "Android sddjkas",
+                created: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddDays(7),
+                device: "",
                 iat: iat
             );
 

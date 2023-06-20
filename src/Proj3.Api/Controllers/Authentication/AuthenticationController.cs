@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
 using Proj3.Application.Services.Authentication.Result;
@@ -122,7 +123,7 @@ namespace Proj3.Api.Controllers.Authentication
                 username: authServiceResult.user.UserName,
                 email: authServiceResult.user.Email,
                 active: authServiceResult.user.Active,
-                role: nameof(authServiceResult.user.UserRole),
+                role: authServiceResult.user.UserRole.GetDisplayName(),
                 access_token: authServiceResult.AccessToken,
                 authServiceResult.RefreshToken
             );

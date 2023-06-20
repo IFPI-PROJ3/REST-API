@@ -7,12 +7,14 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <Compile Remove="Common\Interfaces\Persistence\Volunteer\**" />
     <Compile Remove="Common\Interfaces\Services\Volunteer\**" />
-    <EmbeddedResource Remove="Common\Interfaces\Persistence\Volunteer\**" />
     <EmbeddedResource Remove="Common\Interfaces\Services\Volunteer\**" />
-    <None Remove="Common\Interfaces\Persistence\Volunteer\**" />
     <None Remove="Common\Interfaces\Services\Volunteer\**" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Compile Include="Common\Interfaces\Services\Volunteer\Commands\IReviewCommandService.cs" />
+    <Compile Include="Common\Interfaces\Services\Volunteer\Queries\IReviewQueryService.cs" />
   </ItemGroup>  
 
   <ItemGroup>
@@ -21,11 +23,16 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Proj3.Contracts\Proj3.Contracts.csproj" />
     <ProjectReference Include="..\Proj3.Domain\Proj3.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\Services\Common\Command\" />
   </ItemGroup>
   
 </Project>

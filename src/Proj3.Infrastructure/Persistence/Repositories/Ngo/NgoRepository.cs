@@ -12,6 +12,15 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Ngo
         {
             _repository = repository;
         }
+        public async Task<Domain.Entities.NGO.Ngo?> GetByUserId(Guid userId)
+        {
+            return await _repository.Entity.Where(n => n.UserId == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Domain.Entities.NGO.Ngo?> GetById(Guid id)
+        {
+            return await _repository.GetByIdAsync(id);
+        }
 
         public async Task<Domain.Entities.NGO.Ngo> Add(Domain.Entities.NGO.Ngo ngo)
         {

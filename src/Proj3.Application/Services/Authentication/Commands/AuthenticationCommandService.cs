@@ -11,7 +11,6 @@ using Proj3.Application.Utils.Authentication;
 using Proj3.Contracts.Authentication.Request;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.NGO;
-using Proj3.Domain.Entities.Volunteer;
 using System.Security.Claims;
 
 namespace Proj3.Application.Services.Authentication.Commands;
@@ -48,7 +47,6 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
     public async Task<UserStatusResult> SignUpNgo(SignUpNgoRequest signUpNgoRequest)
     {
-        // VALIDATING REQUEST
         if (await _userRepository.GetUserByEmail(signUpNgoRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
@@ -64,7 +62,6 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             throw new InvalidPasswordException();
         }
 
-        // CREATING ENTITIES
         Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserNgo(
             name: signUpNgoRequest.username,
             email: signUpNgoRequest.email
@@ -72,11 +69,10 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, signUpNgoRequest.password);
 
-        Ngo ngo = new(user.Id, signUpNgoRequest.name, signUpNgoRequest.password, signUpNgoRequest.latitude, signUpNgoRequest.longitude);
+        Ngo ngo = new(user.Id, signUpNgoRequest.name, signUpNgoRequest.description, signUpNgoRequest.latitude, signUpNgoRequest.longitude);
 
         try
         {
-            // TRANSACTION ADD USER AND NGO
             await _transactionsManager.BeginTransactionAsync();
 
             await _userRepository.Add(user);
@@ -101,7 +97,6 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
     public async Task<UserStatusResult> SignUpVolunteer(SignUpVolunteerRequest signUpVolunteerRequest)
     {
-        // VALIDATING REQUEST
         if (await _userRepository.GetUserByEmail(signUpVolunteerRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
@@ -117,7 +112,6 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             throw new InvalidPasswordException();
         }
 
-        // CREATING ENTITIES
         Domain.Entities.Authentication.User? user = Domain.Entities.Authentication.User.NewUserVolunteer(
             name: signUpVolunteerRequest.username,
             email: signUpVolunteerRequest.email
@@ -125,11 +119,10 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, signUpVolunteerRequest.password);
 
-        Volunteer volunteer = new(user.Id, signUpVolunteerRequest.name, signUpVolunteerRequest.lastname, signUpVolunteerRequest.description);
+        Domain.Entities.Volunteer.Volunteer volunteer = new(user.Id, signUpVolunteerRequest.name, signUpVolunteerRequest.lastname, signUpVolunteerRequest.description);
 
         try
         {
-            // TRANSACTION ADD USER AND VOLUNTEER
             await _transactionsManager.BeginTransactionAsync();
 
             await _userRepository.Add(user);
@@ -151,7 +144,6 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
     public AuthenticationResult RefreshToken(RefreshTokenRequest refreshTokenRequest)
     {
-        // VALIDATING REQUEST
         if (_tokensUtils.ValidateJwtToken(refreshTokenRequest.access_token) is null)
         {
             throw new InvalidAcessTokenException();

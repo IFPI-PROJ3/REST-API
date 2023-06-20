@@ -4,6 +4,7 @@ namespace Proj3.Contracts.NGO.Response
 {
     public record NgoPageInfo(
         Ngo ngo,
+        List<string> categories,
         float average_rating
     );
 }

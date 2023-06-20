@@ -27,6 +27,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             {
                 await _dbcontext.RefreshTokens!.AddAsync(rf);
             }
+
             await _dbcontext.SaveChangesAsync();
         }
 

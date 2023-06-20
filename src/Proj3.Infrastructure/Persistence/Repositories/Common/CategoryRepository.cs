@@ -41,5 +41,35 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
                 await _repositoryVolunteerCategory.AddAsync(new VolunteerCategory(ngoId, categoryId));
             }
         }
+
+        public async Task<List<string>> GetAllCategoriesByNgo(Guid ngoId)
+        {
+            List<string> categoriesStrArray = new();
+
+            var categories = _repositoryNgoCategory.Entity.Where(c => c.NgoId == ngoId).ToList();
+            
+            foreach(var ngoCategory in categories)
+            {
+                var category = await _repository.GetByIdAsync(ngoCategory.CategoryId);
+                categoriesStrArray.Add(category.Name);
+            }
+            
+            return categoriesStrArray;
+        }
+
+        public async Task<List<string>> GetAllCategoriesByVolunteer(Guid volunteerId)
+        {
+            List<string> categoriesStrArray = new();
+
+            var categories = _repositoryVolunteerCategory.Entity.Where(c => c.VolunteerId == volunteerId).ToList();
+
+            foreach (var volunteerCategory in categories)
+            {
+                var category = await _repository.GetByIdAsync(volunteerCategory.CategoryId);
+                categoriesStrArray.Append(category.Name);
+            }
+
+            return categoriesStrArray;
+        }
     }
 }

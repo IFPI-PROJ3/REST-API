@@ -31,9 +31,14 @@ namespace Proj3.Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // SQL Server Azure
-            var dbPassword = "P@sswd12345";
-            var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            optionsBuilder.UseSqlServer(connectionString);            
+            //var dbPassword = "P@sswd12345";
+            //var connectionString = $"Server=tcp:sqlserverforazure.database.windows.net,1433;Initial Catalog=Proj3.SQL_SERVER_DB;Persist Security Info=False;User ID=dbo4;Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //optionsBuilder.UseSqlServer(connectionString);
+
+            // RDS PostgreSQL AWS
+            var dbPassword = "12345678";
+            var connectionString = $"Server=wechange-db-instance.c7vkpsdcejjg.sa-east-1.rds.amazonaws.com;Port=5432;Database=wechange_db;User Id=postgres;Password={dbPassword};Pooling=true;";
+            optionsBuilder.UseNpgsql(connectionString);            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,4 @@
-﻿using Proj3.Domain.Entities.Common;
+﻿using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
 
 namespace Proj3.Application.Common.DTO

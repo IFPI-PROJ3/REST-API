@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Proj3.Domain.Entities.Common
+namespace Proj3.Domain.Entities.NGO
 {
     [Table("EventVolunteers")]
     public sealed class EventVolunteer
