@@ -22,14 +22,21 @@ namespace Proj3.Domain.Entities.NGO
         [MaxLength(300)]
         public string Description { get; set; } = null!;        
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
         
-        public Ngo(string name, string description)
-        {            
+        public Ngo(Guid userId, string name, string description, double latitude, double longitude)
+        {    
+            UserId = userId;
             Name = name;
             Description = description;
+            Latitude = latitude;
+            Longitude = longitude;
             CreatedAt = DateTime.UtcNow;
         }
     }

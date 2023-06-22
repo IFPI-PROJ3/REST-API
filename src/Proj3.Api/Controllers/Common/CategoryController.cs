@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Proj3.Application.Common.Interfaces.Services.Common;
+using Proj3.Application.Common.Interfaces.Services.Common.Queries;
 using System.Net.Mime;
 
-namespace Proj3.Api.Controllers.Category
+namespace Proj3.Api.Controllers.Common
 {
     /// <summary>
     /// Category controller
@@ -34,7 +34,7 @@ namespace Proj3.Api.Controllers.Category
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpGet("all")]
+        [HttpGet("/all")]
         public IActionResult All()
         {
             var categories = _categoryQueryService.GetAll();

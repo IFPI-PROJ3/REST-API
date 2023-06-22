@@ -8,5 +8,9 @@ namespace Proj3.Domain.Entities.NGO
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
+
+        [Required]
+        [ForeignKey("Events")]
+        public Guid EventId { get; set; }
     }
 }

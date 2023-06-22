@@ -7,11 +7,23 @@
   </PropertyGroup>  
 
   <ItemGroup>
+    <Compile Remove="Common\Interfaces\Services\Volunteer\**" />
+    <EmbeddedResource Remove="Common\Interfaces\Services\Volunteer\**" />
+    <None Remove="Common\Interfaces\Services\Volunteer\**" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Compile Include="Common\Interfaces\Services\Volunteer\Commands\IReviewCommandService.cs" />
+    <Compile Include="Common\Interfaces\Services\Volunteer\Queries\IReviewQueryService.cs" />
+  </ItemGroup>  
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,9 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Interfaces\Persistence\Volunteer\" />
-    <Folder Include="Common\Interfaces\Services\Volunteer\Commands\" />
-    <Folder Include="Common\Interfaces\Services\Volunteer\Queries\" />
+    <Folder Include="Common\Interfaces\Services\Common\Command\" />
   </ItemGroup>
   
 </Project>

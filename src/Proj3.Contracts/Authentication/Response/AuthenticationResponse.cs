@@ -5,6 +5,7 @@ public record AuthenticationResponse(
     string username,
     string email,    
     bool active,
+    string role,
     string access_token,
     string refresh_token
 );

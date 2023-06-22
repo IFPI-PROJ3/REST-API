@@ -24,7 +24,7 @@ WebApplication? app = builder.Build();
     app.UseHttpsRedirection();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
-
+    
     app.UseWhen(context => context.Request.Path.StartsWithSegments("/auth/logout"), appBuilder =>
     {
         appBuilder.UseMiddleware<AuthMiddleware>();
