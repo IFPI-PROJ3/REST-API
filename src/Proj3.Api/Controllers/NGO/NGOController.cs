@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.Common.Queries;
 using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
@@ -48,13 +47,18 @@ namespace Proj3.Api.Controllers.NGO
         [HttpGet("initial-page")]
         public async Task<ActionResult> InitialPageAsync()
         {
-            Guid userId = Application.Utils.Authentication.User.GetUserIdFromHttpContext(HttpContext);            
-
+            Guid userId = Application.Utils.Authentication.User.GetUserIdFromHttpContext(HttpContext);
             Ngo? ngo = await _ngoQueryService.GetByUserId(userId);
-            List<string> categories = await _categoryQueryService.GetCategoryNameByNgo(ngo.Id);
-            //float average_rating = await _reviewQueryService.GetAverageRatingByNgoAsync(ngo.Id);
 
-            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, 0);
+            if (ngo == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            List<string> categories = await _categoryQueryService.GetCategoryNameByNgo(ngo.Id);
+            float average_rating = await _reviewQueryService.GetAverageRatingByNgoAsync(ngo.Id);
+
+            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating);
             return StatusCode(StatusCodes.Status200OK, ngoPageInfo);
         }
 
@@ -71,12 +75,30 @@ namespace Proj3.Api.Controllers.NGO
         [HttpGet("{id}")]
         public async Task<ActionResult> NgoPageAsync([FromQuery]Guid id)
         {
-            Ngo ngo = await _ngoQueryService.GetByUserId(id);
+            Ngo? ngo = await _ngoQueryService.GetById(id);
+
+            if (ngo == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
             List<string> categories = await _categoryQueryService.GetCategoryNameByNgo(id);
             float average_rating = await _reviewQueryService.GetAverageRatingByNgoAsync(id);
             
             NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating);
             return StatusCode(StatusCodes.Status501NotImplemented, ngoPageInfo);
+        }
+
+        /// <summary>
+        /// Get ngos by category (Volunteer)
+        /// </summary>                
+        /// <param name="id">Category id</param>
+        /// <response code="501">Not implemented</response>
+        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
+        [HttpGet("category/{id}")]
+        public IActionResult GetNgosByCategory([FromQuery] Guid id)
+        {
+            return StatusCode(StatusCodes.Status501NotImplemented);
         }
     }
 }

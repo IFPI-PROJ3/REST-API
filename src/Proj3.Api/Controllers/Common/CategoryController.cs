@@ -34,7 +34,7 @@ namespace Proj3.Api.Controllers.Common
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpGet("all")]
+        [HttpGet("/all")]
         public IActionResult All()
         {
             var categories = _categoryQueryService.GetAll();

@@ -6,18 +6,21 @@ namespace Proj3.Domain.Entities.NGO
     [Table("EventVolunteers")]
     public sealed class EventVolunteer
     {
-        [Key, Column(Order = 0)]
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+
         [ForeignKey("Events")]
         public Guid EventId { get; set; }
 
-        [Key, Column(Order = 1)]
         [ForeignKey("Volunteers")]
         public Guid VolunteerId { get; set; }
+
+        public bool? Accepted { get; set; } = null;
 
         public EventVolunteer(Guid eventId, Guid volunteerId)
         {
             EventId = eventId;
-            VolunteerId = volunteerId;
+            VolunteerId = volunteerId;            
         }
     }
 }

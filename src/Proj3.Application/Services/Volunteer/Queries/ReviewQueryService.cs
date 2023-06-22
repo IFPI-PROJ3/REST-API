@@ -4,6 +4,7 @@ using Proj3.Application.Common.Interfaces.Persistence.Volunteer;
 using Proj3.Application.Common.Interfaces.Services.Volunteer.Queries;
 using Proj3.Domain.Entities.NGO;
 using Proj3.Domain.Entities.Volunteer;
+using System.Collections.Generic;
 
 namespace Proj3.Application.Services.Volunteer.Queries
 {
@@ -20,19 +21,19 @@ namespace Proj3.Application.Services.Volunteer.Queries
 
         public async Task<float> GetAverageRatingByNgoAsync(Guid ngoId)
         {
-            float[] allNgoRating = Array.Empty<float>();
-            IAsyncEnumerable<Review> eventReviews = AsyncEnumerable.Empty<Review>();
+            List<float> allNgoRating = new();
+            List<Review> eventReviews = new();
 
-            var ngoEvents = _eventRepository.GetAllByNgo(ngoId);
+            var ngoEvents = await _eventRepository.GetAllByNgo(ngoId).ToListAsync();
 
-            await foreach (Event @event in ngoEvents)
+            foreach (Event @event in ngoEvents)
             {
-                eventReviews = _reviewRepository.GetReviewsByEvent(@event.Id);
+                eventReviews = await _reviewRepository.GetReviewsByEvent(@event.Id).ToListAsync();
             }
 
-            await foreach (Review review in eventReviews)
+            foreach (Review review in eventReviews)
             {
-                _ = allNgoRating.Append(review.Stars);
+                allNgoRating.Add(review.Stars);
             }
 
             return allNgoRating.Average();
