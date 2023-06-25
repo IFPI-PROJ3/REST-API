@@ -164,7 +164,7 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
-        [HttpGet("refresh-token")]
+        [HttpPut("refresh-token")]
         public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
         {            
             AuthenticationResult? authResult = _authenticationCommandService.RefreshToken(
