@@ -7,7 +7,7 @@ public record SignUpVolunteerRequest(
     string name,
     string lastname,
     string description,
-    string latitude,
-    string longitude,
+    double latitude,
+    double longitude,
     List<int> categories
 );
