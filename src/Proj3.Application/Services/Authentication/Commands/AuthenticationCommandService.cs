@@ -116,10 +116,18 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             name: signUpVolunteerRequest.username,
             email: signUpVolunteerRequest.email
         );
+        
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, signUpVolunteerRequest.password);
 
-        Domain.Entities.Volunteer.Volunteer volunteer = new(user.Id, signUpVolunteerRequest.name, signUpVolunteerRequest.lastname, signUpVolunteerRequest.description);
+        Domain.Entities.Volunteer.Volunteer volunteer = new(
+            user.Id, 
+            signUpVolunteerRequest.name, 
+            signUpVolunteerRequest.lastname, 
+            signUpVolunteerRequest.description, 
+            signUpVolunteerRequest.latitude, 
+            signUpVolunteerRequest.longitude
+        );
 
         try
         {
