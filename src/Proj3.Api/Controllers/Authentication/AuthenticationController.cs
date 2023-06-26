@@ -171,8 +171,13 @@ namespace Proj3.Api.Controllers.Authentication
                 request
             );
 
-            RefreshTokenResponse? response = new
-            (                
+            AuthenticationResponse? response = new
+            (      
+                authResult.user.Id,
+                authResult.user.UserName,
+                authResult.user.Email,
+                authResult.user.Active,
+                authResult.user.UserRole.GetDisplayName(),
                 authResult.AccessToken,
                 authResult.RefreshToken
             );
