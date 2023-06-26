@@ -8,7 +8,7 @@ namespace Proj3.Application.Common.Interfaces.Services.Authentication.Command
     {
         Task<UserStatusResult> SignUpNgo(SignUpNgoRequest signUpRequest);
         Task<UserStatusResult> SignUpVolunteer(SignUpVolunteerRequest signUpRequest);        
-        AuthenticationResult RefreshToken(RefreshTokenRequest refreshTokenRequest);
+        Task<AuthenticationResult> RefreshToken(RefreshTokenRequest refreshTokenRequest);
         Task<bool> Logout(HttpContext httpContext);
         Task<AuthenticationResult> ChangePassword(ChangePasswordRequest changePasswordRequest);        
         Task<UserStatusResult> ConfirmEmail(ConfirmationRequest confirmationRequest);

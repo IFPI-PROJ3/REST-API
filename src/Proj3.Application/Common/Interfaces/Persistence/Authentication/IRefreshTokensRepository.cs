@@ -4,9 +4,7 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Authentication
 {
     public interface IRefreshTokenRepository
     {
-        Task Add(RefreshToken rf);
-
-        Task<RefreshToken> Update(RefreshToken rf);
+        Task Add(RefreshToken rf);        
 
         Task Remove(RefreshToken rf);
 

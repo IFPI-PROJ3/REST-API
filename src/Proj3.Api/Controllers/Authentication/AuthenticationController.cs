@@ -165,16 +165,16 @@ namespace Proj3.Api.Controllers.Authentication
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         [HttpPut("refresh-token")]
-        public ActionResult RefreshToken([FromBody]RefreshTokenRequest request)
+        public async Task<ActionResult> RefreshTokenAsync([FromBody]RefreshTokenRequest request)
         {            
-            AuthenticationResult? authResult = _authenticationCommandService.RefreshToken(
+            AuthenticationResult? authResult = await _authenticationCommandService.RefreshToken(
                 request
             );
 
             RefreshTokenResponse? response = new
-            (
-                authResult.RefreshToken,
-                authResult.AccessToken
+            (                
+                authResult.AccessToken,
+                authResult.RefreshToken
             );
 
             return StatusCode(StatusCodes.Status200OK, response);

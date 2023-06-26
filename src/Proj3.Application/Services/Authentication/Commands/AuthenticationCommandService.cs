@@ -150,25 +150,25 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         }
     }
 
-    public AuthenticationResult RefreshToken(RefreshTokenRequest refreshTokenRequest)
+    public async Task<AuthenticationResult> RefreshToken(RefreshTokenRequest refreshTokenRequest)
     {
         if (_tokensUtils.ValidateJwtToken(refreshTokenRequest.access_token) is null)
         {
             throw new InvalidAcessTokenException();
         }
 
-        if (_refreshTokensRepository.GetByToken(refreshTokenRequest.refresh_token).Result is not RefreshToken rf)
+        if (await _refreshTokensRepository.GetByToken(refreshTokenRequest.refresh_token) is not RefreshToken rf)
         {
             throw new InvalidRefreshTokenException();
         }
 
-        Domain.Entities.Authentication.User user = _userRepository.GetUserById(rf.UserId).Result!;
+        Domain.Entities.Authentication.User user = (await _userRepository.GetUserById(rf.UserId))!;
         ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(refreshTokenRequest.access_token);
 
         string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);
         RefreshToken newRefreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
 
-        _refreshTokensRepository.Update(newRefreshToken);
+        await _refreshTokensRepository.Add(newRefreshToken);
 
         return new AuthenticationResult(
             user,
