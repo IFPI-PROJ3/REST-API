@@ -139,8 +139,7 @@ namespace Proj3.Api.Controllers.Authentication
         /// <response code="500">Internal server error</response>     
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
         [HttpPut("logout")]
         public async Task<IActionResult> Logout()
         {
