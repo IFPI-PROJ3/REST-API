@@ -25,7 +25,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             }
             else
             {
-                await _repository.Entity.AddAsync(rf);
+                await _repository.AddAsync(rf);
             }            
         }
 
