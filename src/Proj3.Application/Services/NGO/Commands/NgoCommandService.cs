@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Proj3.Application.Common.Errors.Authentication;
-using Proj3.Application.Common.Errors.NGO;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
 using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Contracts.NGO.Response;

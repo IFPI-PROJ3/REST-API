@@ -25,7 +25,6 @@ namespace Proj3.Api.Controllers.Common
             _categoryQueryService = categoryQueryService;            
         }
 
-
         /// <summary>
         /// Get collections with all categories
         /// </summary>          

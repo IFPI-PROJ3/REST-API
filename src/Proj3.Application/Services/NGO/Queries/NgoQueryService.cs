@@ -25,7 +25,7 @@ namespace Proj3.Application.Services.NGO.Queries
             return await _ngoRepository.GetById(ngoId);
         }        
 
-        public Task<IEnumerable<NgoDTO>> AllNgos(SearchOptionsRequest searchOption)
+        public Task<IEnumerable<NgoDTO>> AllNgos(EventsFeedRequest searchOption)
         {
             throw new NotImplementedException();
         }

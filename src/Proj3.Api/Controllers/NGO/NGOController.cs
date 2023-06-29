@@ -96,7 +96,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="501">Not implemented</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpGet("category/{id}")]
-        public IActionResult GetNgosByCategory([FromQuery] Guid id)
+        public IActionResult GetNgosByCategory([FromQuery] int id)
         {
             return StatusCode(StatusCodes.Status501NotImplemented);
         }

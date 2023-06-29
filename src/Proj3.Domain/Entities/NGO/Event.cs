@@ -25,10 +25,7 @@ namespace Proj3.Domain.Entities.NGO
         public bool QuickEvent { get; set; }
 
         [Required]
-        public int VolunteersLimit { get; set; }
-        
-        [Required]
-        public int VolunteerCandidateLimit { get; set; }
+        public int VolunteersLimit { get; set; }               
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -49,8 +46,7 @@ namespace Proj3.Domain.Entities.NGO
             event_.Title = title;
             event_.Decription = decription;
             event_.QuickEvent = true;
-            event_.VolunteersLimit = 0;
-            event_.VolunteerCandidateLimit = 0;
+            event_.VolunteersLimit = 0;            
             event_.StartDate = startDate;
             event_.EndDate = endDate;
             event_.CreatedAt = DateTime.UtcNow;
@@ -65,8 +61,7 @@ namespace Proj3.Domain.Entities.NGO
             event_.Title = title;
             event_.Decription = decription;
             event_.QuickEvent = false;
-            event_.VolunteersLimit = volunteersLimit;
-            event_.VolunteerCandidateLimit = volunteerCandidateLimit;
+            event_.VolunteersLimit = volunteersLimit;            
             event_.StartDate = startDate;
             event_.EndDate = endDate;
             event_.CreatedAt = DateTime.UtcNow;

@@ -8,6 +8,6 @@ namespace Proj3.Application.Common.Interfaces.Services.NGO.Queries
     {
         Task<Ngo?> GetByUserId(Guid userId);
         Task<Ngo?> GetById(Guid ngoId);
-        Task<IEnumerable<NgoDTO>> AllNgos(SearchOptionsRequest searchOption);
+        Task<IEnumerable<NgoDTO>> AllNgos(EventsFeedRequest searchOption);
     }
 }
