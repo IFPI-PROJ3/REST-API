@@ -4,6 +4,8 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Volunteer
 {
     public class VolunteerRepository : IVolunteerRepository
     {
+        public VolunteerRepository() { }
+
         public Task AddAsync(Domain.Entities.Volunteer.Volunteer volunteer)
         {
             throw new NotImplementedException();
