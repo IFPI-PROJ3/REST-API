@@ -108,7 +108,7 @@ namespace Proj3.Application.Services.NGO.Queries
 
             if (await _eventRepository.GetUpcomingEventsByNgoAsync(ngoId).ToListAsync() is not List<Event> events || events.Count == 0)
             {
-                throw new NotFoundException();
+                return new List<EventToCard>();
             }
 
             return await TransformEventToCard(events);
@@ -125,7 +125,7 @@ namespace Proj3.Application.Services.NGO.Queries
 
             if (await _eventRepository.GetActiveEventsByNgoAsync(ngoId).ToListAsync() is not List<Event> events || events.Count == 0)
             {
-                throw new NotFoundException();
+                return new List<EventToCard>();                
             }
 
             return await TransformEventToCard(events);
@@ -142,7 +142,7 @@ namespace Proj3.Application.Services.NGO.Queries
 
             if (await _eventRepository.GetEndedEventsByNgoAsync(ngoId).ToListAsync() is not List<Event> events || events.Count == 0)
             {
-                throw new NotFoundException();
+                return new List<EventToCard>();
             }
 
             return await TransformEventToCard(events);
@@ -150,6 +150,11 @@ namespace Proj3.Application.Services.NGO.Queries
 
         public async Task<List<EventToCard>> TransformEventToCard(List<Event> events)
         {
+            if(events.Count == 0)
+            {
+                return new List<EventToCard>();
+            }
+
             List<string> eventCategories = await _categoryRepository.GetAllCategoriesByNgoAsync(events.First().Id);
             List<EventToCard> eventsToCard = new List<EventToCard>();
 

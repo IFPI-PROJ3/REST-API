@@ -36,6 +36,11 @@ namespace Proj3.Application.Services.Volunteer.Queries
                 allNgoRating.Add(review.Stars);
             }
 
+            if (allNgoRating.Count == 0) 
+            {
+                return -1;
+            }
+
             return allNgoRating.Average();
         }
     }
