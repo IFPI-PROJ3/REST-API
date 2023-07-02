@@ -1,13 +1,21 @@
-﻿using Proj3.Domain.Entities.NGO;
+﻿using Microsoft.AspNetCore.Http;
+using Proj3.Contracts.NGO.Request;
+using Proj3.Contracts.NGO.Response;
 
 namespace Proj3.Application.Common.Interfaces.Services.NGO.Queries
 {
     public interface IEventQueryService
     {
-        IAsyncEnumerable<Event> GetAllByNgo(Guid ngoId);
+        Task<List<EventToCard>> GetEventsFeedAsync(HttpContext httpContext, EventsFeedRequest eventsFeedRequest);
 
-        IAsyncEnumerable<Event> GetAllActiveByNgo(Guid ngoId);
+        Task<List<EventToCard>> GetUpcomingEventsByNgoAsync(HttpContext httpContext, Guid ngoId);
 
-        IAsyncEnumerable<Event> GetActiveByCategory(int categoyId);
+        Task<List<EventToCard>> GetActiveEventsByNgoAsync(HttpContext httpContext, Guid ngoId);
+
+        Task<List<EventToCard>> GetEndedEventsByNgoAsync(HttpContext httpContext, Guid ngoId);
+
+        Task<EventToPage> GetEventByIdAsync(HttpContext httpContext, Guid eventId);
+
+        Task<List<EventToCard>> GetAllByNgoAsync(HttpContext httpContext, Guid ngoId);        
     }
 }

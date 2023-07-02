@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Proj3.Application.Common.Errors.Authentication;
-using Proj3.Application.Common.Errors.NGO;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
 using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Contracts.NGO.Response;
@@ -26,7 +25,7 @@ namespace Proj3.Application.Services.NGO.Commands
                 throw new NotFoundException();
             }
 
-            await _ngoRepository.Update(ngo);
+            await _ngoRepository.UpdateAsync(ngo);
 
             return new NgoStatusResponse(ngo);
         }

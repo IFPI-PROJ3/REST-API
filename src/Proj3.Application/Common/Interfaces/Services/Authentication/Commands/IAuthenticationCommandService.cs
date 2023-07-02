@@ -6,11 +6,16 @@ namespace Proj3.Application.Common.Interfaces.Services.Authentication.Command
 {
     public interface IAuthenticationCommandService
     {
-        Task<UserStatusResult> SignUpNgo(SignUpNgoRequest signUpRequest);
-        Task<UserStatusResult> SignUpVolunteer(SignUpVolunteerRequest signUpRequest);        
-        Task<AuthenticationResult> RefreshToken(RefreshTokenRequest refreshTokenRequest);
-        Task<bool> Logout(HttpContext httpContext);
-        Task<AuthenticationResult> ChangePassword(ChangePasswordRequest changePasswordRequest);        
-        Task<UserStatusResult> ConfirmEmail(ConfirmationRequest confirmationRequest);
+        Task<UserStatusResult> SignUpNgoAsync(SignUpNgoRequest signUpRequest);
+
+        Task<UserStatusResult> SignUpVolunteerAsync(SignUpVolunteerRequest signUpRequest);
+        
+        Task<AuthenticationResult> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
+
+        Task<bool> LogoutAsync(HttpContext httpContext);
+
+        Task<AuthenticationResult> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest);  
+        
+        Task<UserStatusResult> ConfirmEmailAsync(ConfirmationRequest confirmationRequest);
     }
 }

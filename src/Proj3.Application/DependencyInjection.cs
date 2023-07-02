@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Proj3.Application.Common.Interfaces.Persistence.Common;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Commands;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Queries;
@@ -23,7 +24,7 @@ public static class DependencyInjection
         // Authentication
         services.AddScoped<IAuthenticationQueryService, AuthenticationQueryService>();
         services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
-        services.AddScoped<IEmailCommandService, EmailCommandService>();
+        services.AddScoped<IEmailCommandService, EmailCommandService>();        
 
         // Category
         services.AddScoped<ICategoryQueryService, CategoryQueryService>();
@@ -33,7 +34,7 @@ public static class DependencyInjection
         services.AddScoped<INgoQueryService, NgoQueryService>();
         services.AddScoped<IEventCommandService, EventCommandService>();
         services.AddScoped<IEventQueryService, EventQueryService>();
-
+        
         // Review
         services.AddScoped<IReviewCommandService, ReviewCommandService>();
         services.AddScoped<IReviewQueryService, ReviewQueryService>();

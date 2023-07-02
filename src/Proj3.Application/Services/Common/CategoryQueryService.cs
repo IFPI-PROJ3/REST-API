@@ -13,19 +13,19 @@ namespace Proj3.Application.Services.Common
             _categoryRepository = categoryRepository;
         }
 
-        public IAsyncEnumerable<Category> GetAll()
+        public IAsyncEnumerable<Category> GetAllAsync()
         {
-            return _categoryRepository.GetAll();
+            return _categoryRepository.GetAllAsync();
         }
 
-        public Task<List<string>> GetCategoryNameByNgo(Guid ngoId)
+        public Task<List<string>> GetCategoryNameByNgoAsync(Guid ngoId)
         {
-            return _categoryRepository.GetAllCategoriesByNgo(ngoId);
+            return _categoryRepository.GetAllCategoriesByNgoAsync(ngoId);
         }
 
-        public Task<List<string>> GetCategoryNameByVolunteer(Guid volunteerId)
+        public Task<List<string>> GetCategoryNameByVolunteerAsync(Guid volunteerId)
         {
-            return _categoryRepository.GetAllCategoriesByVolunteer(volunteerId);
+            return _categoryRepository.GetAllCategoriesByVolunteerAsync(volunteerId);
         }
     }
 }

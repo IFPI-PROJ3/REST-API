@@ -15,17 +15,17 @@ namespace Proj3.Application.Services.NGO.Queries
             _ngoRepository = ngoRepository;            
         }
 
-        public async Task<Ngo?> GetByUserId(Guid userId)
+        public async Task<Ngo?> GetByUserIdAsync(Guid userId)
         {
             return await _ngoRepository.GetByUserId(userId);
         }
 
-        public async Task<Ngo?> GetById(Guid ngoId)
+        public async Task<Ngo?> GetByIdAsync(Guid ngoId)
         {
-            return await _ngoRepository.GetById(ngoId);
+            return await _ngoRepository.GetByIdAsync(ngoId);
         }        
 
-        public Task<IEnumerable<NgoDTO>> AllNgos(SearchOptionsRequest searchOption)
+        public Task<IEnumerable<NgoDTO>> AllNgosAsync(EventsFeedRequest searchOption)
         {
             throw new NotImplementedException();
         }

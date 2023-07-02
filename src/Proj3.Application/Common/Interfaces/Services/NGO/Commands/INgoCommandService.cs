@@ -7,8 +7,5 @@ namespace Proj3.Application.Common.Interfaces.Services.NGO.Commands
     public interface INgoCommandService
     {
         Task<NgoStatusResponse> UpdateAsync(HttpContext httpContext, Ngo ngo);
-
-        //Task<NgoStatusResponse> AddQuickEvent();
-        //Task<NgoStatusResponse> AddEvent();
     }
 }

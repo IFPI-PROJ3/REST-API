@@ -35,10 +35,18 @@ WebApplication? app = builder.Build();
         appBuilder.UseMiddleware<AuthMiddleware>();
     });
 
+
     app.UseWhen(context => context.Request.Path.StartsWithSegments("/ngo"), appBuilder =>
     {
         appBuilder.UseMiddleware<AuthMiddleware>();
     });
+
+
+    app.UseWhen(context => context.Request.Path.StartsWithSegments("/event"), appBuilder =>
+    {
+        appBuilder.UseMiddleware<AuthMiddleware>();
+    });
+
 
     app.UseWhen(context => context.Request.Path.StartsWithSegments("/volunteer"), appBuilder =>
     {

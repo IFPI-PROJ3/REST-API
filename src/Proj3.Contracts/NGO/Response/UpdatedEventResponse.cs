@@ -2,7 +2,8 @@
 
 namespace Proj3.Contracts.NGO.Response;
 
-public record NgoStatusResponse(
-    Ngo ngo
+public record UpdatedEventResponse
+(
+    Event @event
 );
 

@@ -1,13 +1,15 @@
-﻿using Proj3.Domain.Entities.NGO;
+﻿using Microsoft.AspNetCore.Http;
+using Proj3.Contracts.NGO.Request;
+using Proj3.Contracts.NGO.Response;
 
 namespace Proj3.Application.Common.Interfaces.Services.NGO.Commands
 {
     public interface IEventCommandService
     {
-        Task<Event> Add(Event event_);
+        Task<NewEventResponse> AddAsync(HttpContext httpContext, NewEventRequest newEventRequest);
 
-        Task<Event> Update(Event event_);
+        Task<UpdatedEventResponse> UpdateAsync(HttpContext httpContext, Guid eventId, UpdateEventRequest updateEventRequest);
 
-        Task<bool> Delete(Guid ngoId);
+        Task CancelAsync(HttpContext httpContext, Guid eventId);
     }
 }

@@ -5,6 +5,6 @@ namespace Proj3.Application.Common.Interfaces.Services.Authentication.Queries
 {
     public interface IAuthenticationQueryService
     {
-        Task<AuthenticationResult> SignIn(SignInRequest signInRequest);                           
+        Task<AuthenticationResult> SignInAsync(SignInRequest signInRequest);                           
     }
 }

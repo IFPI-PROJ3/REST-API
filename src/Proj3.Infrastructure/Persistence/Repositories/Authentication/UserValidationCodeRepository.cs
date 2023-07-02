@@ -14,22 +14,22 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             _repository = repository;
         }
 
-        public async Task Add(UserValidationCode userValidationCode)
+        public async Task AddAsync(UserValidationCode userValidationCode)
         {
             await _repository.AddAsync(userValidationCode);
         }
 
-        public async Task RemoveUserConfirmation(UserValidationCode userValidationCode)
+        public async Task RemoveUserConfirmationAsync(UserValidationCode userValidationCode)
         {
             await _repository.DeleteAsync(userValidationCode.Id);
         }
 
-        public async Task<UserValidationCode?> GetEmailValidationCodeByUser(User user)
+        public async Task<UserValidationCode?> GetEmailValidationCodeByUserAsync(User user)
         {
             return await _repository.Entity.Where(userCode => userCode.UserId == user.Id).SingleOrDefaultAsync();
         }
 
-        public async Task RenewCode(UserValidationCode userValidationCode)
+        public async Task RenewCodeAsync(UserValidationCode userValidationCode)
         {
             UserValidationCode? renewUserValidationCode = await _repository.GetByIdAsync(userValidationCode.Id);
             renewUserValidationCode!.RenewUserValidationCode();

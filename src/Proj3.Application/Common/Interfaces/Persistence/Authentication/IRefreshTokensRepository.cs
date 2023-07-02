@@ -4,16 +4,16 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Authentication
 {
     public interface IRefreshTokenRepository
     {
-        Task Add(RefreshToken rf);        
+        Task AddAsync(RefreshToken rf);        
 
-        Task Remove(RefreshToken rf);
+        Task RemoveAsync(RefreshToken rf);
 
-        Task<IEnumerable<RefreshToken>> GetAllUsersRefreshTokens(Guid userId);
+        Task<IEnumerable<RefreshToken>> GetAllUsersRefreshTokensAsync(Guid userId);
 
-        Task<RefreshToken?> GetByToken(string token);
+        Task<RefreshToken?> GetByTokenAsync(string token);
 
-        Task RevokeAllTokensFromUser(Guid userId);
+        Task RevokeAllTokensFromUserAsync(Guid userId);
 
-        Task<bool> ValidateIatToken(Guid userId, string iat);
+        Task<bool> ValidateIatTokenAsync(Guid userId, string iat);
     }
 }

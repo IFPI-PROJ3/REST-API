@@ -4,9 +4,9 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Authentication
 {
     public interface IUserRepository
     {
-        Task<User> Add(User user);
-        Task<User> Update(User user);
-        Task<User?> GetUserByEmail(string email);        
-        Task<User?> GetUserById(Guid id);
+        Task<User> AddAsync(User user);
+        Task<User> UpdateAsync(User user);
+        Task<User?> GetUserByEmailAsync(string email);        
+        Task<User?> GetUserByIdAsync(Guid id);
     }
 }

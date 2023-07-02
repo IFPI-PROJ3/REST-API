@@ -24,8 +24,8 @@ namespace Proj3.Api.Middlewares.Authentication
             }
             
             if(tokensUtils.ValidateJwtToken(token!) is not Guid userId || 
-                await userRepository.GetUserById(userId) is not User user ||
-                tokenRepository.GetAllUsersRefreshTokens(userId).Result.FirstOrDefault()!.Expires < DateTime.Now)
+                await userRepository.GetUserByIdAsync(userId) is not User user ||
+                tokenRepository.GetAllUsersRefreshTokensAsync(userId).Result.FirstOrDefault()!.Expires < DateTime.Now)
             {
                 throw new UnauthorizedAccessException("Expired, invalid or revoked token.");
             }

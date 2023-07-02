@@ -9,5 +9,6 @@ public record SignUpVolunteerRequest(
     string description,
     double latitude,
     double longitude,
-    List<int> categories
+    List<int> categories,
+    byte[] profile_image
 );

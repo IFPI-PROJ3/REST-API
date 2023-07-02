@@ -21,7 +21,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
             _repositoryVolunteerCategory = repositoryVolunteerCategory;
         }
 
-        public IAsyncEnumerable<Category> GetAll()
+        public IAsyncEnumerable<Category> GetAllAsync()
         {
             return _repository.GetAllAsync();
         }
@@ -42,7 +42,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
             }
         }
 
-        public async Task<List<string>> GetAllCategoriesByNgo(Guid ngoId)
+        public async Task<List<string>> GetAllCategoriesByNgoAsync(Guid ngoId)
         {
             List<string> categoriesStrArray = new();
 
@@ -57,7 +57,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
             return categoriesStrArray;
         }
 
-        public async Task<List<string>> GetAllCategoriesByVolunteer(Guid volunteerId)
+        public async Task<List<string>> GetAllCategoriesByVolunteerAsync(Guid volunteerId)
         {
             List<string> categoriesStrArray = new();
 
