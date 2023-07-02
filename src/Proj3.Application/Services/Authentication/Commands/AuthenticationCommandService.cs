@@ -4,6 +4,7 @@ using Proj3.Application.Common.Interfaces.Others;
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Application.Common.Interfaces.Persistence.Common;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
+using Proj3.Application.Common.Interfaces.Persistence.Volunteer;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Result;
@@ -30,6 +31,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     public AuthenticationCommandService(ITokensUtils tokensUtils, 
         IEmailUtils emailUtils,
         INgoRepository ngoRepository,
+        IVolunteerRepository volunteerRepository,
         ICategoryRepository categoryRepository,
         IUserRepository userRepository, 
         IRefreshTokenRepository refreshTokensRepository, 
@@ -39,6 +41,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         _tokensUtils = tokensUtils;
         _emailUtils = emailUtils;
         _ngoRepository = ngoRepository;
+        _volunteerRepository = volunteerRepository;
         _categoryRepository = categoryRepository;
         _userRepository = userRepository;
         _refreshTokensRepository = refreshTokensRepository;
