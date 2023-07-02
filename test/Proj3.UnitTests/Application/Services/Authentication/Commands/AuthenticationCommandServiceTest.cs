@@ -2,6 +2,7 @@
 using Proj3.Application.Common.Interfaces.Persistence.Authentication;
 using Proj3.Application.Common.Interfaces.Persistence.Common;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
+using Proj3.Application.Common.Interfaces.Persistence.Volunteer;
 using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Commands;
@@ -15,6 +16,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
         private Mock<IEmailUtils> _emailUtilsMock;
         private Mock<ICategoryRepository> _categoryRepositoryMock;
         private Mock<INgoRepository> _ngoRepository;
+        private Mock<IVolunteerRepository> _volunteerRepository;
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<IRefreshTokenRepository> _refreshTokensRepositoryMock;
         private Mock<IUserValidationCodeRepository> _userValidationCodeRepositoryMock;
@@ -28,6 +30,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
             _emailUtilsMock = new Mock<IEmailUtils>();
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
             _ngoRepository = new Mock<INgoRepository>();
+            _volunteerRepository = new Mock<IVolunteerRepository>();
             _userRepositoryMock = new Mock<IUserRepository>();
             _refreshTokensRepositoryMock = new Mock<IRefreshTokenRepository>();
             _userValidationCodeRepositoryMock = new Mock<IUserValidationCodeRepository>();
@@ -37,6 +40,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
                 _tokensUtilsMock.Object,
                 _emailUtilsMock.Object,                
                 _ngoRepository.Object,
+                _volunteerRepository.Object,
                 _categoryRepositoryMock.Object,
                 _userRepositoryMock.Object,
                 _refreshTokensRepositoryMock.Object,
