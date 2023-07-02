@@ -26,9 +26,9 @@ namespace Proj3.Application.Services.Authentication.Queries
             _userValidationCodeRepository = userValidationCodeRepository;
         }
 
-        public async Task<AuthenticationResult> SignIn(SignInRequest signInRequest)
+        public async Task<AuthenticationResult> SignInAsync(SignInRequest signInRequest)
         {
-            if (!(await _userRepository.GetUserByEmail(signInRequest.email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, signInRequest.password)))
+            if (!(await _userRepository.GetUserByEmailAsync(signInRequest.email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, signInRequest.password)))
             {
                 throw new InvalidCredentialsException();
             }
@@ -38,7 +38,7 @@ namespace Proj3.Application.Services.Authentication.Queries
             
             RefreshToken? refreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
 
-            await _refreshTokensRepository.Add(refreshToken);
+            await _refreshTokensRepository.AddAsync(refreshToken);
 
             return new AuthenticationResult(
                 user,

@@ -15,7 +15,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             _repository = repository;
         }
 
-        public async Task Add(RefreshToken rf)
+        public async Task AddAsync(RefreshToken rf)
         {
             // se nao existir no banco adiciona o token se existir atualiza.            
             // posteriormente alterar para mais dispositivos podendo ter mais de um token por usuario            
@@ -43,32 +43,32 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             return updateRefreshToken;
         }
 
-        public async Task Remove(RefreshToken rf)
+        public async Task RemoveAsync(RefreshToken rf)
         {
             await _repository.DeleteAsync(rf.Id);            
         }
 
-        public async Task<IEnumerable<RefreshToken>> GetAllUsersRefreshTokens(Guid userId)
+        public async Task<IEnumerable<RefreshToken>> GetAllUsersRefreshTokensAsync(Guid userId)
         {            
             IEnumerable<RefreshToken> list = await _repository.Entity.Where(r => r.UserId == userId).ToListAsync();
             return list;
         }
 
-        public async Task<RefreshToken?> GetByToken(string token)
+        public async Task<RefreshToken?> GetByTokenAsync(string token)
         {            
             RefreshToken? refreshToken = await _repository.Entity.Where(r => r.Token == token).SingleOrDefaultAsync();
             return refreshToken;
         }
 
-        public async Task RevokeAllTokensFromUser(Guid userId)
+        public async Task RevokeAllTokensFromUserAsync(Guid userId)
         {
-            IEnumerable<RefreshToken> list = await GetAllUsersRefreshTokens(userId);
+            IEnumerable<RefreshToken> list = await GetAllUsersRefreshTokensAsync(userId);
             // ### REFATORAR PARA FUNCAO EM REPOSITORYBASE QUE REMOVA O RANGE
             _repository.Entity.RemoveRange(list);
             await _repository.Context.SaveChangesAsync();            
         }
 
-        public async Task<bool> ValidateIatToken(Guid userId, string iat)
+        public async Task<bool> ValidateIatTokenAsync(Guid userId, string iat)
         {            
             return await _repository.Entity.Where(r => r.UserId == userId && r.Iat == iat).AnyAsync();
         }

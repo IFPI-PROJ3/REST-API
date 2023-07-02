@@ -4,16 +4,22 @@ namespace Proj3.Application.Common.Interfaces.Persistence.NGO
 {
     public interface IEventRepository
     {
-        IAsyncEnumerable<Event> GetAllByNgo(Guid ngoId);
+        IAsyncEnumerable<Event> GetAllByNgoAsync(Guid ngoId);
 
-        IAsyncEnumerable<Event> GetAllActiveByNgo(Guid ngoId);
+        Task<List<Event>> GetAllFeedAsync(Guid userId, int daysToEvent, List<int> categories);
 
-        IAsyncEnumerable<Event> GetAllActive();
+        IAsyncEnumerable<Event> GetUpcomingEventsByNgoAsync(Guid ngoId);
+
+        IAsyncEnumerable<Event> GetActiveEventsByNgoAsync(Guid ngoId);
+
+        IAsyncEnumerable<Event> GetEndedEventsByNgoAsync(Guid ngoId);        
+
+        Task<Event?> GetEventByIdAsync(Guid eventId);
 
         Task<Event> AddAsync(Event @event);
 
         Task<bool> UpdateAsync(Event @event);
 
-        Task<bool> DeleteAsync(Guid ngoId); 
+        Task CancelEventAsync(Guid eventId);
     }
 }

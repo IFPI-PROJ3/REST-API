@@ -4,11 +4,11 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Common
 {
     public interface ICategoryRepository
     {
-        IAsyncEnumerable<Category> GetAll();
+        IAsyncEnumerable<Category> GetAllAsync();
 
-        Task<List<string>> GetAllCategoriesByNgo(Guid ngoId);
+        Task<List<string>> GetAllCategoriesByNgoAsync(Guid ngoId);
 
-        Task<List<string>> GetAllCategoriesByVolunteer(Guid ngoId);
+        Task<List<string>> GetAllCategoriesByVolunteerAsync(Guid ngoId);
 
         Task AddCategoriesToNgoAsync(Guid ngoId, List<int> categories);
 

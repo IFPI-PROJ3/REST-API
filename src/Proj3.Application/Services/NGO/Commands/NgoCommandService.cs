@@ -25,7 +25,7 @@ namespace Proj3.Application.Services.NGO.Commands
                 throw new NotFoundException();
             }
 
-            await _ngoRepository.Update(ngo);
+            await _ngoRepository.UpdateAsync(ngo);
 
             return new NgoStatusResponse(ngo);
         }

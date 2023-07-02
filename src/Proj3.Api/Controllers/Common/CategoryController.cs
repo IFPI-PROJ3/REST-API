@@ -36,7 +36,7 @@ namespace Proj3.Api.Controllers.Common
         [HttpGet("/all")]
         public IActionResult All()
         {
-            var categories = _categoryQueryService.GetAll();
+            var categories = _categoryQueryService.GetAllAsync();
             return StatusCode(StatusCodes.Status200OK, categories);
         }
     }

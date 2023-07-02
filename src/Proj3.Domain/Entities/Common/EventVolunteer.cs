@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Proj3.Domain.Entities.NGO
+namespace Proj3.Domain.Entities.Common
 {
     [Table("EventVolunteers")]
     public sealed class EventVolunteer
@@ -20,7 +20,7 @@ namespace Proj3.Domain.Entities.NGO
         public EventVolunteer(Guid eventId, Guid volunteerId)
         {
             EventId = eventId;
-            VolunteerId = volunteerId;            
+            VolunteerId = volunteerId;
         }
     }
 }

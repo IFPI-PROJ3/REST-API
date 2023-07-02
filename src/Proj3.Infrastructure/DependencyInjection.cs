@@ -20,7 +20,7 @@ using Proj3.Infrastructure.Persistence;
 using Proj3.Infrastructure.Persistence.Repositories;
 using Proj3.Infrastructure.Persistence.Repositories.Authentication;
 using Proj3.Infrastructure.Persistence.Repositories.Common;
-using Proj3.Infrastructure.Persistence.Repositories.Ngo;
+using Proj3.Infrastructure.Persistence.Repositories.NGO;
 using Proj3.Infrastructure.Persistence.Repositories.Volunteer;
 using Proj3.Infrastructure.Services;
 
@@ -46,13 +46,14 @@ public static class DependencyInjection
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         services.AddScoped<IRepositoryBase<UserValidationCode>, RepositoryBase<UserValidationCode>>();
-        services.AddScoped<IUserValidationCodeRepository, UserValidationCodeRepository>();
+        services.AddScoped<IUserValidationCodeRepository, UserValidationCodeRepository>();        
 
         // Common
         services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
         services.AddScoped<IRepositoryBase<NgoCategory>, RepositoryBase<NgoCategory>>();
         services.AddScoped<IRepositoryBase<VolunteerCategory>, RepositoryBase<VolunteerCategory>>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IUserImageRepository, UserImageRepository>();
 
         // Review
         services.AddScoped<IRepositoryBase<Review>, RepositoryBase<Review>>();
@@ -63,7 +64,11 @@ public static class DependencyInjection
         services.AddScoped<INgoRepository, NgoRepository>();        
         services.AddScoped<IRepositoryBase<Event>, RepositoryBase<Event>>();
         services.AddScoped<IEventRepository, EventRepository>();
-                    
+
+        // Images
+        services.AddScoped<IRepositoryBase<EventImage>, RepositoryBase<EventImage>>();
+        services.AddScoped<IEventImagesRepository, EventImagesRepository>();
+
         return services;
     }
 

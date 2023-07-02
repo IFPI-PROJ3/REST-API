@@ -14,22 +14,22 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Authentication
             _repository = repository;
         }
 
-        public async Task<User> Add(User user)
+        public async Task<User> AddAsync(User user)
         {
             return await _repository.AddAsync(user);
         }
-        public async Task<User> Update(User user)
+        public async Task<User> UpdateAsync(User user)
         {
             await _repository.UpdateAsync(user);
             return user;
         }
 
-        public async Task<User?> GetUserById(Guid id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<User?> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _repository.Entity.Where(user => user.Email == email).SingleOrDefaultAsync();
         }

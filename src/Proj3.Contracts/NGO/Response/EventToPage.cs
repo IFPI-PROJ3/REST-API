@@ -1,7 +1,8 @@
 ﻿using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.Volunteer;
 
-namespace Proj3.Application.Common.DTO;
+namespace Proj3.Contracts.NGO.Response;
+
 public record EventToPage
 (
     Guid id,
@@ -12,11 +13,10 @@ public record EventToPage
     int volunteers_limit,
     int volunteers_count,
     DateTime start_date,
-    DateTime end_date,
-    bool cancelled,
+    DateTime end_date,    
     DateTime created_at,
     DateTime? updated_at,
-    List<Category> categories,
-    List<Review> reviews
-    //List<images>;
+    List<string> categories,
+    List<Review> reviews,
+    string? image_thumb    
 );

@@ -6,8 +6,10 @@ namespace Proj3.Application.Common.Interfaces.Services.NGO.Queries
 {
     public interface INgoQueryService
     {
-        Task<Ngo?> GetByUserId(Guid userId);
-        Task<Ngo?> GetById(Guid ngoId);
-        Task<IEnumerable<NgoDTO>> AllNgos(EventsFeedRequest searchOption);
+        Task<Ngo?> GetByUserIdAsync(Guid userId);
+
+        Task<Ngo?> GetByIdAsync(Guid ngoId);
+
+        Task<IEnumerable<NgoDTO>> AllNgosAsync(EventsFeedRequest searchOption);
     }
 }

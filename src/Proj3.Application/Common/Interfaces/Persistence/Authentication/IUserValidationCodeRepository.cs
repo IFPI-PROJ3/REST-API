@@ -4,9 +4,12 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Authentication
 {
     public interface IUserValidationCodeRepository
     {
-        Task Add(UserValidationCode userValidationCode);
-        Task<UserValidationCode?> GetEmailValidationCodeByUser(User user);        
-        Task RemoveUserConfirmation(UserValidationCode userValidationCode);
-        Task RenewCode(UserValidationCode userValidationCode);
+        Task AddAsync(UserValidationCode userValidationCode);
+
+        Task<UserValidationCode?> GetEmailValidationCodeByUserAsync(User user);  
+        
+        Task RemoveUserConfirmationAsync(UserValidationCode userValidationCode);
+
+        Task RenewCodeAsync(UserValidationCode userValidationCode);
     }
 }

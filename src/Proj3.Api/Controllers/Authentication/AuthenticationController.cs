@@ -52,7 +52,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPost("signup-ngo")]
         public async Task<IActionResult> SignUpNgo([FromBody] SignUpNgoRequest request)
         {
-            UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpNgo(
+            UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpNgoAsync(
                 request
             );
 
@@ -84,7 +84,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPost("signup-volunteer")]
         public async Task<IActionResult> SignUpVolunteer([FromBody] SignUpVolunteerRequest request)
         {
-            UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpVolunteer(
+            UserStatusResult? userInactiveResult = await _authenticationCommandService.SignUpVolunteerAsync(
                 request
             );
 
@@ -113,7 +113,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
-            AuthenticationResult? authServiceResult = await _authenticationQueryService.SignIn(
+            AuthenticationResult? authServiceResult = await _authenticationQueryService.SignInAsync(
                 request
             );
 
@@ -143,7 +143,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPut("logout")]
         public async Task<IActionResult> Logout()
         {
-            if(await _authenticationCommandService.Logout(HttpContext) == false)
+            if(await _authenticationCommandService.LogoutAsync(HttpContext) == false)
             {
                 return Ok(StatusCodes.Status401Unauthorized);
             }
@@ -166,7 +166,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPut("refresh-token")]
         public async Task<ActionResult> RefreshTokenAsync([FromBody]RefreshTokenRequest request)
         {            
-            AuthenticationResult? authResult = await _authenticationCommandService.RefreshToken(
+            AuthenticationResult? authResult = await _authenticationCommandService.RefreshTokenAsync(
                 request
             );
 
@@ -199,7 +199,7 @@ namespace Proj3.Api.Controllers.Authentication
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            AuthenticationResult? authServiceResult = await _authenticationCommandService.ChangePassword(
+            AuthenticationResult? authServiceResult = await _authenticationCommandService.ChangePasswordAsync(
                 request
             );
 

@@ -4,10 +4,10 @@ namespace Proj3.Application.Common.Interfaces.Services.Common.Queries
 {
     public interface ICategoryQueryService
     {
-        IAsyncEnumerable<Category> GetAll();
+        IAsyncEnumerable<Category> GetAllAsync();
 
-        Task<List<string>> GetCategoryNameByNgo(Guid ngoId);
+        Task<List<string>> GetCategoryNameByNgoAsync(Guid ngoId);
 
-        Task<List<string>> GetCategoryNameByVolunteer(Guid volunteerId);
+        Task<List<string>> GetCategoryNameByVolunteerAsync(Guid volunteerId);
     }
 }

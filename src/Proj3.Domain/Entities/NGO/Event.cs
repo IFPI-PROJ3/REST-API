@@ -19,7 +19,7 @@ namespace Proj3.Domain.Entities.NGO
 
         [Required]
         [MaxLength(300)]
-        public string Decription { get; set; } = null!;
+        public string Description { get; set; } = null!;
 
         [Required]
         public bool QuickEvent { get; set; }
@@ -39,12 +39,12 @@ namespace Proj3.Domain.Entities.NGO
 
         public DateTime? UpdatedAt { get; set; }
 
-        public static Event NewQuickEvent(Guid ngoId, string title, string decription, DateTime startDate, DateTime endDate)
+        public static Event NewQuickEvent(Guid ngoId, string title, string description, DateTime startDate, DateTime endDate)
         {
             Event event_ = new();
             event_.NgoId = ngoId;
             event_.Title = title;
-            event_.Decription = decription;
+            event_.Description = description;
             event_.QuickEvent = true;
             event_.VolunteersLimit = 0;            
             event_.StartDate = startDate;
@@ -54,12 +54,12 @@ namespace Proj3.Domain.Entities.NGO
             return event_;
         }
 
-        public static Event NewEvent(Guid ngoId, string title, string decription, int volunteersLimit, int volunteerCandidateLimit, DateTime startDate, DateTime endDate)
+        public static Event NewEvent(Guid ngoId, string title, string decription, int volunteersLimit, DateTime startDate, DateTime endDate)
         {
             Event event_ = new();
             event_.NgoId = ngoId;
             event_.Title = title;
-            event_.Decription = decription;
+            event_.Description = decription;
             event_.QuickEvent = false;
             event_.VolunteersLimit = volunteersLimit;            
             event_.StartDate = startDate;

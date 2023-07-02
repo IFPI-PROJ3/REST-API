@@ -8,8 +8,8 @@ namespace Proj3.Application.Common.Interfaces.Services.NGO.Commands
     {
         Task<NewEventResponse> AddAsync(HttpContext httpContext, NewEventRequest newEventRequest);
 
-        Task<UpdatedEventResponse> UpdateAsync(HttpContext httpContext, UpdateEventRequest updateEventRequest);
+        Task<UpdatedEventResponse> UpdateAsync(HttpContext httpContext, Guid eventId, UpdateEventRequest updateEventRequest);
 
-        Task<bool> CancelAsync(HttpContext httpContext, Guid ngoId);
+        Task CancelAsync(HttpContext httpContext, Guid eventId);
     }
 }

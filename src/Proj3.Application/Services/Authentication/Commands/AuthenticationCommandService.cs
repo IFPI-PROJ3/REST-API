@@ -21,6 +21,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     private readonly IEmailUtils _emailUtils;        
     private readonly IUserRepository _userRepository;
     private readonly INgoRepository _ngoRepository;
+    private readonly IVolunteerRepository _volunteerRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IRefreshTokenRepository _refreshTokensRepository;
     private readonly IUserValidationCodeRepository _userValidationCodeRepository;
@@ -45,9 +46,9 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         _transactionsManager = transactionsManager;
     }
 
-    public async Task<UserStatusResult> SignUpNgo(SignUpNgoRequest signUpNgoRequest)
+    public async Task<UserStatusResult> SignUpNgoAsync(SignUpNgoRequest signUpNgoRequest)
     {
-        if (await _userRepository.GetUserByEmail(signUpNgoRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
+        if (await _userRepository.GetUserByEmailAsync(signUpNgoRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
@@ -75,14 +76,14 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         {
             await _transactionsManager.BeginTransactionAsync();
 
-            await _userRepository.Add(user);
-            await _ngoRepository.Add(ngo);
+            await _userRepository.AddAsync(user);
+            await _ngoRepository.AddAsync(ngo);
 
             await _categoryRepository.AddCategoriesToNgoAsync(ngo.Id, signUpNgoRequest.categories);
 
             UserValidationCode uvEmail = new(user.Id, user.Email);
             await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
-            await _userValidationCodeRepository.Add(uvEmail);
+            await _userValidationCodeRepository.AddAsync(uvEmail);
 
             await _transactionsManager.CommitTransactionAsync();
 
@@ -95,9 +96,9 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         }
     }
 
-    public async Task<UserStatusResult> SignUpVolunteer(SignUpVolunteerRequest signUpVolunteerRequest)
+    public async Task<UserStatusResult> SignUpVolunteerAsync(SignUpVolunteerRequest signUpVolunteerRequest)
     {
-        if (await _userRepository.GetUserByEmail(signUpVolunteerRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
+        if (await _userRepository.GetUserByEmailAsync(signUpVolunteerRequest.email) is Domain.Entities.Authentication.User userCheck && userCheck.Active)
         {
             throw new UserAlreadyExistsException();
         }
@@ -133,11 +134,11 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         {
             await _transactionsManager.BeginTransactionAsync();
 
-            await _userRepository.Add(user);
+            await _userRepository.AddAsync(user);
             await _categoryRepository.AddCategoriesToVolunteerAsync(volunteer.Id, signUpVolunteerRequest.categories);
 
             UserValidationCode uvEmail = new(user.Id, user.Email);
-            await _userValidationCodeRepository.Add(uvEmail);
+            await _userValidationCodeRepository.AddAsync(uvEmail);
 
             await _transactionsManager.CommitTransactionAsync();
 
@@ -150,25 +151,25 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         }
     }
 
-    public async Task<AuthenticationResult> RefreshToken(RefreshTokenRequest refreshTokenRequest)
+    public async Task<AuthenticationResult> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
     {
         if (_tokensUtils.ValidateJwtToken(refreshTokenRequest.access_token) is null)
         {
             throw new InvalidAcessTokenException();
         }
 
-        if (await _refreshTokensRepository.GetByToken(refreshTokenRequest.refresh_token) is not RefreshToken rf)
+        if (await _refreshTokensRepository.GetByTokenAsync(refreshTokenRequest.refresh_token) is not RefreshToken rf)
         {
             throw new InvalidRefreshTokenException();
         }
 
-        Domain.Entities.Authentication.User user = (await _userRepository.GetUserById(rf.UserId))!;
+        Domain.Entities.Authentication.User user = (await _userRepository.GetUserByIdAsync(rf.UserId))!;
         ClaimsPrincipal claimsPrincipal = _tokensUtils.ExtractClaimsFromToken(refreshTokenRequest.access_token);
 
         string newAccessToken = _tokensUtils.GenerateJwtToken(user, claimsPrincipal);
         RefreshToken newRefreshToken = _tokensUtils.GenerateRefreshToken(user, claimsPrincipal);
 
-        await _refreshTokensRepository.Add(newRefreshToken);
+        await _refreshTokensRepository.AddAsync(newRefreshToken);
 
         return new AuthenticationResult(
             user,
@@ -177,17 +178,17 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         );
     }
 
-    public async Task<bool> Logout(HttpContext httpContext)
+    public async Task<bool> LogoutAsync(HttpContext httpContext)
     {
         Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
 
-        await _refreshTokensRepository.RevokeAllTokensFromUser(userId);
+        await _refreshTokensRepository.RevokeAllTokensFromUserAsync(userId);
         return true;        
     }
 
-    public async Task<AuthenticationResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
+    public async Task<AuthenticationResult> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest)
     {
-        if (!(await _userRepository.GetUserByEmail(changePasswordRequest.email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, changePasswordRequest.old_password)))
+        if (!(await _userRepository.GetUserByEmailAsync(changePasswordRequest.email) is Domain.Entities.Authentication.User user && user.PasswordHash == Crypto.ReturnUserHash(user, changePasswordRequest.old_password)))
         {
             throw new InvalidCredentialsException();
         }        
@@ -202,7 +203,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         user.PasswordHash = Crypto.ReturnUserHash(user, changePasswordRequest.new_password);
         string? acessToken = _tokensUtils.GenerateJwtToken(user);
         RefreshToken? refreshToken = _tokensUtils.GenerateRefreshToken(user);
-        await _userRepository.Update(user);
+        await _userRepository.UpdateAsync(user);
 
         await _transactionsManager.CommitTransactionAsync();
 
@@ -213,9 +214,9 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         );
     }
 
-    public async Task<UserStatusResult> ConfirmEmail(ConfirmationRequest confirmationRequest)
+    public async Task<UserStatusResult> ConfirmEmailAsync(ConfirmationRequest confirmationRequest)
     {
-        if (await _userValidationCodeRepository.GetEmailValidationCodeByUser((await _userRepository.GetUserById(confirmationRequest.user_id))!) is not UserValidationCode uv)
+        if (await _userValidationCodeRepository.GetEmailValidationCodeByUserAsync((await _userRepository.GetUserByIdAsync(confirmationRequest.user_id))!) is not UserValidationCode uv)
         {
             throw new Exception("This confirmation not exists.");
         }
@@ -232,10 +233,10 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
         await _transactionsManager.BeginTransactionAsync();
 
-        await _userValidationCodeRepository.RemoveUserConfirmation(uv);
-        Domain.Entities.Authentication.User? user = await _userRepository.GetUserById(confirmationRequest.user_id);
+        await _userValidationCodeRepository.RemoveUserConfirmationAsync(uv);
+        Domain.Entities.Authentication.User? user = await _userRepository.GetUserByIdAsync(confirmationRequest.user_id);
         user!.Active = true;
-        await _userRepository.Update(user);
+        await _userRepository.UpdateAsync(user);
 
         await _transactionsManager.CommitTransactionAsync();
 

@@ -24,7 +24,7 @@ namespace Proj3.Application.Services.Volunteer.Queries
             List<float> allNgoRating = new();
             List<Review> eventReviews = new();
 
-            var ngoEvents = await _eventRepository.GetAllByNgo(ngoId).ToListAsync();
+            var ngoEvents = await _eventRepository.GetAllByNgoAsync(ngoId).ToListAsync();
 
             foreach (Event @event in ngoEvents)
             {
