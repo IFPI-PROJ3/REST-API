@@ -69,6 +69,10 @@ public static class DependencyInjection
         services.AddScoped<IRepositoryBase<EventImage>, RepositoryBase<EventImage>>();
         services.AddScoped<IEventImagesRepository, EventImagesRepository>();
 
+        // Volunteer
+        services.AddScoped<IRepositoryBase<Volunteer>, RepositoryBase<Volunteer>>();
+        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+
         return services;
     }
 
