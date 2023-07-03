@@ -28,7 +28,7 @@ namespace Proj3.Domain.Entities.Authentication
         public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        public bool Active { get; set; } = false;
+        public bool Active { get; set; } = true;
 
         public static User NewUserNgo(string name, string email)
         {
