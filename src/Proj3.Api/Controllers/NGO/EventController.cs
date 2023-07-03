@@ -75,9 +75,8 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="500">Internal server error</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]        
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("ngo/{id}")]
         public IActionResult GetNgoEvents([FromQuery] Guid id)
         {
@@ -89,8 +88,14 @@ namespace Proj3.Api.Controllers.NGO
         /// Get active ngo events (NGO/Volunteer)
         /// </summary>                
         /// <param name="id">Ngo id</param>
-        /// <response code="501">Not implemented</response>
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
+        /// <response code="200">Event collection</response>
+        /// <response code="401">Invalid credentials</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("actives/ngo/{id}")]
         public IActionResult GetActiveNgoEvents([FromQuery] Guid id)
         {
@@ -102,8 +107,7 @@ namespace Proj3.Api.Controllers.NGO
         /// Create a new event (NGO)
         /// </summary>                        
         /// <response code="201">Created</response>
-        /// <response code="401">Invalid credentials</response>
-        /// <response code="404">Not found</response>
+        /// <response code="401">Invalid credentials</response>        
         /// <response code="500">Internal server error</response>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -123,8 +127,11 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="200">Updated</response>
         /// <response code="401">Invalid credentials</response>
         /// <response code="404">Not found</response>
-        /// <response code="500">Internal server error</response>
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
+        /// <response code="500">Internal server error</response>        
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> UpdateEventAsync([FromQuery] Guid id, [FromBody] UpdateEventRequest updateEventRequest)
         {
@@ -140,7 +147,10 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="401">Invalid credentials</response>
         /// <response code="404">Not found</response>
         /// <response code="500">Internal server error</response>
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("cancel/{id}")]
         public async Task<IActionResult> CancelEventAsync([FromQuery] Guid id)
         {
