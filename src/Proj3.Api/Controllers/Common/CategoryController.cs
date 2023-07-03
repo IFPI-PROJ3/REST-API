@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.Common.Queries;
 using System.Net.Mime;
 
@@ -33,7 +32,7 @@ namespace Proj3.Api.Controllers.Common
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpGet("/all")]
+        [HttpGet("all")]
         public IActionResult All()
         {
             var categories = _categoryQueryService.GetAllAsync();
