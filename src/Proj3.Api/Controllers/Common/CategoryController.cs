@@ -27,8 +27,8 @@ namespace Proj3.Api.Controllers.Common
         /// <summary>
         /// Get collections with all categories
         /// </summary>          
-        /// <response code="200">Categories collection</response>        
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">Categories collection</response>                
+        /// <response code="500">InternalServerError</response>  
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

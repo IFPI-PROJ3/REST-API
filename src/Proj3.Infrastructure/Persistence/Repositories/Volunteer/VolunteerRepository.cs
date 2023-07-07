@@ -1,29 +1,36 @@
-﻿using Proj3.Application.Common.Interfaces.Persistence.Volunteer;
+﻿using Microsoft.EntityFrameworkCore;
+using Proj3.Application.Common.Interfaces.Persistence;
+using Proj3.Application.Common.Interfaces.Persistence.Volunteer;
 
 namespace Proj3.Infrastructure.Persistence.Repositories.Volunteer
 {
     public class VolunteerRepository : IVolunteerRepository
     {
-        public VolunteerRepository() { }
-
-        public Task AddAsync(Domain.Entities.Volunteer.Volunteer volunteer)
+        private readonly IRepositoryBase<Domain.Entities.Volunteer.Volunteer> _repository;
+        
+        public VolunteerRepository(IRepositoryBase<Domain.Entities.Volunteer.Volunteer> repository) 
         {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public Task UpdateAsync(Domain.Entities.Volunteer.Volunteer volunteer)
+        public async Task AddAsync(Domain.Entities.Volunteer.Volunteer volunteer)
         {
-            throw new NotImplementedException();
+            await _repository.AddAsync(volunteer);
         }
 
-        public Task<Domain.Entities.Volunteer.Volunteer?> GetByIdAsync(Guid volunteerId)
+        public async Task UpdateAsync(Domain.Entities.Volunteer.Volunteer volunteer)
         {
-            throw new NotImplementedException();
+            await _repository.UpdateAsync(volunteer);
         }
 
-        public Task<Domain.Entities.Volunteer.Volunteer?> GetByUserId(Guid userId)
+        public async Task<Domain.Entities.Volunteer.Volunteer?> GetByIdAsync(Guid volunteerId)
         {
-            throw new NotImplementedException();
+            return await _repository.GetByIdAsync(volunteerId);
+        }
+
+        public async Task<Domain.Entities.Volunteer.Volunteer?> GetByUserIdAsync(Guid userId)
+        {
+            return await _repository.Entity.Where(v => v.UserId == userId).FirstOrDefaultAsync();
         }
     }
 }

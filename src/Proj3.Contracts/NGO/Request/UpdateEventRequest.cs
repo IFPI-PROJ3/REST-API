@@ -3,6 +3,7 @@
     public record UpdateEventRequest
     (
         string title,
-        string description                
+        string description,
+        byte[]? image_thumb
     );
 }

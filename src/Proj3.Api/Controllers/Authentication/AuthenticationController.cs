@@ -74,7 +74,7 @@ namespace Proj3.Api.Controllers.Authentication
         /// <response code="201">User created</response>
         /// <response code="409">User already exists</response>
         /// <response code="422">User validation error</response>        
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">InternalServerError</response>  
         [ProducesResponseType(typeof(UserStatusResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -104,8 +104,8 @@ namespace Proj3.Api.Controllers.Authentication
         /// </summary>
         /// <param name="request">User data</param>
         /// <response code="200">User authenticated</response>
-        /// <response code="401">Invalid credentials</response>   
-        /// <response code="500">Internal server error</response>
+        /// <response code="401">Unauthorized</response>   
+        /// <response code="500">InternalServerError</response>  
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -135,8 +135,8 @@ namespace Proj3.Api.Controllers.Authentication
         /// Logout user
         /// </summary>        
         /// <response code="204">No content, refresh</response>
-        /// <response code="401">Invalid credentials exception</response>        
-        /// <response code="500">Internal server error</response>     
+        /// <response code="401">Unauthorized</response>                   
+        /// <response code="500">InternalServerError</response>  
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
@@ -156,9 +156,8 @@ namespace Proj3.Api.Controllers.Authentication
         /// </summary>        
         /// <param name="request">Access token and refresh token</param>        
         /// <response code="200">User authenticated</response>
-        /// <response code="401">Access token is invalid</response>
-        /// <response code="401">Refresh token is invalid</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="401">Invalid tokens</response>                           
+        /// <response code="500">InternalServerError</response>  
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -191,7 +190,7 @@ namespace Proj3.Api.Controllers.Authentication
         /// <response code="201">User authenticated</response>
         /// <response code="401">Invalid credentials exception</response>
         /// <response code="401">Invalid password exception</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">InternalServerError</response>
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

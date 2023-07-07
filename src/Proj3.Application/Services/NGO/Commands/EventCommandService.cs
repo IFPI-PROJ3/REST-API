@@ -94,12 +94,30 @@ namespace Proj3.Application.Services.NGO.Commands
                 throw new NotFoundException();
             }
 
-            @event.Title = updateEventRequest.title;
-            @event.Description = updateEventRequest.description;
+            try
+            {
+                await _transactionsManager.BeginTransactionAsync();
 
-            await _eventRepository.UpdateAsync(@event);
+                @event.Title = updateEventRequest.title;
+                @event.Description = updateEventRequest.description;
+                                
+                await _eventRepository.UpdateAsync(@event);
 
-            return new UpdatedEventResponse(@event);
+                await _transactionsManager.CommitTransactionAsync();
+
+                if (updateEventRequest.image_thumb is not null)
+                {                                        
+                    var eventImage = (await _eventImagesRepository.GetEventImagesAsync(@eventId))[0];
+                    eventImage = await _eventImagesRepository.AddThumbAsync(updateEventRequest.image_thumb, eventImage);
+                }
+
+                return new UpdatedEventResponse(@event);
+            } 
+            catch (Exception)
+            {
+                await _transactionsManager.RollbackTransactionAsync();
+                throw;
+            }            
         }
 
         public async Task CancelAsync(HttpContext httpContext, Guid eventId)

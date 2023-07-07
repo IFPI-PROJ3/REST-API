@@ -50,10 +50,15 @@ public static class DependencyInjection
 
         // Common
         services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
         services.AddScoped<IRepositoryBase<NgoCategory>, RepositoryBase<NgoCategory>>();
         services.AddScoped<IRepositoryBase<VolunteerCategory>, RepositoryBase<VolunteerCategory>>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        
         services.AddScoped<IUserImageRepository, UserImageRepository>();
+
+        services.AddScoped<IRepositoryBase<EventVolunteer>, RepositoryBase<EventVolunteer>>();
+        services.AddScoped<IEventVolunteerRepository, EventVolunteerRepository>();
 
         // Review
         services.AddScoped<IRepositoryBase<Review>, RepositoryBase<Review>>();

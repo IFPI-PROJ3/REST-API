@@ -8,6 +8,6 @@
 
         Task<Domain.Entities.Volunteer.Volunteer?> GetByIdAsync(Guid volunteerId);
 
-        Task<Domain.Entities.Volunteer.Volunteer?> GetByUserId(Guid userId);        
+        Task<Domain.Entities.Volunteer.Volunteer?> GetByUserIdAsync(Guid userId);        
     }
 }

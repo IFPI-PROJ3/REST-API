@@ -149,10 +149,12 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             await _transactionsManager.BeginTransactionAsync();
 
             await _userRepository.AddAsync(user);
+            await _volunteerRepository.AddAsync(volunteer);
+
             await _categoryRepository.AddCategoriesToVolunteerAsync(volunteer.Id, signUpVolunteerRequest.categories);
 
             UserValidationCode uvEmail = new(user.Id, user.Email);
-            await _userValidationCodeRepository.AddAsync(uvEmail);
+            await _userValidationCodeRepository.AddAsync(uvEmail);            
 
             await _userImageRepository.AddUserImageAsync(signUpVolunteerRequest.profile_image, user.Id);
 

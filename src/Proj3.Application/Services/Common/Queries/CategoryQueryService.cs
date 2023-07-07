@@ -2,13 +2,13 @@
 using Proj3.Application.Common.Interfaces.Services.Common.Queries;
 using Proj3.Domain.Entities.Common;
 
-namespace Proj3.Application.Services.Common
+namespace Proj3.Application.Services.Common.Queries
 {
     public class CategoryQueryService : ICategoryQueryService
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryQueryService(ICategoryRepository categoryRepository) 
+        public CategoryQueryService(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
