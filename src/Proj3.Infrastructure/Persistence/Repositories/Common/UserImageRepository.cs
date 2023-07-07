@@ -11,18 +11,18 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
         {
             try
             {
-                await S3Service.FileUploadAsync(image, userId.ToString());                
+                await S3Service.FileUploadAsync(image, userId.ToString()+".jpg");                
             }
             catch (Exception)
             {
-                await S3Service.DeleteFileAsync(userId.ToString());
+                await S3Service.DeleteFileAsync(userId.ToString()+".jpg");
                 throw;
             }
         }
 
         public async Task DeleteUserImageAsync(Guid userId)
         {
-            await S3Service.DeleteFileAsync(userId.ToString());
+            await S3Service.DeleteFileAsync(userId.ToString()+".jpg");
         }
     }
 }

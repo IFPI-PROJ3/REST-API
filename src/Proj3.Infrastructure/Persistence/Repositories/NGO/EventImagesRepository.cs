@@ -19,12 +19,12 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
         {
             try
             {
-                await S3Service.FileUploadAsync(image, eventImage.Id.ToString());
+                await S3Service.FileUploadAsync(image, eventImage.Id.ToString()+".jpg");
                 return await _repository.AddAsync(eventImage);                
             }
             catch (Exception)
             {
-                await S3Service.DeleteFileAsync(eventImage.Id.ToString());
+                await S3Service.DeleteFileAsync(eventImage.Id.ToString()+".jpg");
                 throw;
             }
         }
@@ -37,14 +37,14 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
             {
                 try
                 {
-                    await S3Service.FileUploadAsync(eventImages[i].Item1, eventImages[i].Item2.Id.ToString());
+                    await S3Service.FileUploadAsync(eventImages[i].Item1, eventImages[i].Item2.Id.ToString()+".jpg");
 
                     await _repository.AddAsync(eventImages[i].Item2);
                     eventImagesAdded.Add(eventImages[i].Item2);
                 }
                 catch (Exception)
                 {
-                    await S3Service.DeleteFileAsync(eventImages[i].Item2.Id.ToString());
+                    await S3Service.DeleteFileAsync(eventImages[i].Item2.Id.ToString()+".jpg");
                     throw;
                 }                                               
             }
@@ -64,7 +64,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
 
         public async Task DeleteEventImageAsync(Guid eventImageId)
         {
-            await _repository.DeleteAsync(eventImageId);
+            await _repository.DeleteAsync(eventImageId+".jpg");
         }
     }
 }
