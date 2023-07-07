@@ -12,8 +12,8 @@ using Proj3.Infrastructure.Persistence;
 namespace Proj3.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230622123826_0002_refactor-event-volunteer")]
-    partial class _0002_refactoreventvolunteer
+    [Migration("20230707004214_0001_initial")]
+    partial class _0001_initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -148,6 +148,25 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Proj3.Domain.Entities.Common.EventVolunteer", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("VolunteerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("Accepted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("EventId", "VolunteerId");
+
+                    b.ToTable("EventVolunteers");
+                });
+
             modelBuilder.Entity("Proj3.Domain.Entities.NGO.Event", b =>
                 {
                     b.Property<Guid>("Id")
@@ -160,7 +179,7 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Decription")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
@@ -185,9 +204,6 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("VolunteerCandidateLimit")
-                        .HasColumnType("integer");
-
                     b.Property<int>("VolunteersLimit")
                         .HasColumnType("integer");
 
@@ -205,28 +221,12 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("ImageThumb")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.ToTable("EventImages");
-                });
-
-            modelBuilder.Entity("Proj3.Domain.Entities.NGO.EventVolunteer", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("VolunteerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool?>("Accepted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("EventId", "VolunteerId");
-
-                    b.ToTable("EventVolunteers");
                 });
 
             modelBuilder.Entity("Proj3.Domain.Entities.NGO.Ngo", b =>
@@ -330,6 +330,12 @@ namespace Proj3.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -37,7 +37,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
         {
             return _repository.Entity.Where(
                 e => e.NgoId == ngoId                
-                && e.StartDate > DateTime.UtcNow
+                && e.StartDate > DateTime.Now
                 && e.Cancelled == false
             ).AsAsyncEnumerable();
         }
@@ -46,8 +46,8 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
         {
             return _repository.Entity.Where(
                 e => e.NgoId == ngoId 
-                && e.EndDate > DateTime.UtcNow 
-                && e.StartDate < DateTime.UtcNow
+                && e.EndDate > DateTime.Now 
+                && e.StartDate < DateTime.Now
                 && e.Cancelled == false
             ).AsAsyncEnumerable();
         }
@@ -56,7 +56,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
         {
             return _repository.Entity.Where(
                 e => e.NgoId == ngoId 
-                && e.EndDate < DateTime.UtcNow 
+                && e.EndDate < DateTime.Now 
                 && e.Cancelled == false
             ).AsAsyncEnumerable();
         }

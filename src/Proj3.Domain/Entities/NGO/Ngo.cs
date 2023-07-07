@@ -37,7 +37,7 @@ namespace Proj3.Domain.Entities.NGO
             Description = description;
             Latitude = latitude;
             Longitude = longitude;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }

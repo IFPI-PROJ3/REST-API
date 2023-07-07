@@ -20,7 +20,7 @@ namespace Proj3.Domain.Entities.Volunteer
         {
             VolunteerId = volunteerId;
             CategoryId = categoryId;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }

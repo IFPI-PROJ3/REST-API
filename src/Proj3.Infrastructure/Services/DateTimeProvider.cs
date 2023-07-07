@@ -4,6 +4,6 @@ namespace Proj3.Infrastructure.Services
 {
     public class DateTimeProvider : IDateTimeProvider
     {
-        public DateTime UtcNow => DateTime.Now;
+        public DateTime Now => DateTime.Now;
     }
 }

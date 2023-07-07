@@ -49,7 +49,7 @@ namespace Proj3.Domain.Entities.NGO
             event_.VolunteersLimit = 0;            
             event_.StartDate = startDate;
             event_.EndDate = endDate;
-            event_.CreatedAt = DateTime.UtcNow;
+            event_.CreatedAt = DateTime.Now;
 
             return event_;
         }
@@ -64,7 +64,7 @@ namespace Proj3.Domain.Entities.NGO
             event_.VolunteersLimit = volunteersLimit;            
             event_.StartDate = startDate;
             event_.EndDate = endDate;
-            event_.CreatedAt = DateTime.UtcNow;
+            event_.CreatedAt = DateTime.Now;
 
             return event_;
         }

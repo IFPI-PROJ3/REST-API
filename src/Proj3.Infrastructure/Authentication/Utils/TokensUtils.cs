@@ -31,7 +31,7 @@ namespace Proj3.Infrastructure.Authentication.Utils
                     SecurityAlgorithms.HmacSha256
             );
 
-            string iat = claimsPrincipal is not null ? claimsPrincipal.Claims.First(claim => claim.Type == "iat").Value : _datetimeprovider.UtcNow.ToString();
+            string iat = claimsPrincipal is not null ? claimsPrincipal.Claims.First(claim => claim.Type == "iat").Value : _datetimeprovider.Now.ToString();
             
             Claim[]? claims = new[]
             {
@@ -44,7 +44,7 @@ namespace Proj3.Infrastructure.Authentication.Utils
             var securityToken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
-                expires: _datetimeprovider.UtcNow.AddHours(2),
+                expires: _datetimeprovider.Now.AddHours(2),
                 claims: claims,
                 signingCredentials: signingCredentials
             );            
@@ -54,13 +54,13 @@ namespace Proj3.Infrastructure.Authentication.Utils
 
         public RefreshToken GenerateRefreshToken(User user, ClaimsPrincipal? claimsPrincipal = null)
         {
-            string iat = claimsPrincipal is not null ? claimsPrincipal.Claims.First(claim => claim.Type == "iat").Value : _datetimeprovider.UtcNow.ToString();
+            string iat = claimsPrincipal is not null ? claimsPrincipal.Claims.First(claim => claim.Type == "iat").Value : _datetimeprovider.Now.ToString();
 
             RefreshToken? refreshToken = new RefreshToken(
                 userId: user.Id,
                 token: getUniqueToken(),
-                created: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddDays(7),
+                created: DateTime.Now,
+                expires: DateTime.Now.AddDays(7),
                 device: "",
                 iat: iat
             );

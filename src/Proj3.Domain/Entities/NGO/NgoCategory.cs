@@ -20,7 +20,7 @@ namespace Proj3.Domain.Entities.NGO
         {
             NgoId = ngoId;
             CategoryId = categoryId;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }

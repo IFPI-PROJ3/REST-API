@@ -28,7 +28,7 @@ namespace Proj3.Domain.Entities.Volunteer
             EventId = eventId;
             VolunteerId = volunteerId;
             Content = content;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }
