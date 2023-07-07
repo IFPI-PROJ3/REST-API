@@ -20,6 +20,7 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 WebApplication? app = builder.Build();
 {
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
     app.UseHttpsRedirection();
 

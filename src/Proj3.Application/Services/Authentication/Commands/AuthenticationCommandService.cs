@@ -26,6 +26,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
     private readonly ICategoryRepository _categoryRepository;
     private readonly IRefreshTokenRepository _refreshTokensRepository;
     private readonly IUserValidationCodeRepository _userValidationCodeRepository;
+    private readonly IUserImageRepository _userImageRepository;
     private readonly ITransactionsManager _transactionsManager;
 
     public AuthenticationCommandService(ITokensUtils tokensUtils, 
@@ -35,7 +36,8 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         ICategoryRepository categoryRepository,
         IUserRepository userRepository, 
         IRefreshTokenRepository refreshTokensRepository, 
-        IUserValidationCodeRepository userValidationCodeRepository, 
+        IUserValidationCodeRepository userValidationCodeRepository,
+        IUserImageRepository userImageRepository,
         ITransactionsManager transactionsManager)
     {
         _tokensUtils = tokensUtils;
@@ -46,6 +48,7 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         _userRepository = userRepository;
         _refreshTokensRepository = refreshTokensRepository;
         _userValidationCodeRepository = userValidationCodeRepository;
+        _userImageRepository = userImageRepository;
         _transactionsManager = transactionsManager;
     }
 
@@ -73,12 +76,18 @@ public class AuthenticationCommandService : IAuthenticationCommandService
         user.Salt = Crypto.GetSalt;
         user.PasswordHash = Crypto.ReturnUserHash(user, signUpNgoRequest.password);
 
-        Ngo ngo = new(user.Id, signUpNgoRequest.name, signUpNgoRequest.description, signUpNgoRequest.latitude, signUpNgoRequest.longitude);
+        Ngo ngo = new(
+            user.Id, 
+            signUpNgoRequest.name, 
+            signUpNgoRequest.description, 
+            signUpNgoRequest.latitude, 
+            signUpNgoRequest.longitude
+        );
 
         try
         {
             await _transactionsManager.BeginTransactionAsync();
-
+            
             await _userRepository.AddAsync(user);
             await _ngoRepository.AddAsync(ngo);
 
@@ -87,6 +96,8 @@ public class AuthenticationCommandService : IAuthenticationCommandService
             UserValidationCode uvEmail = new(user.Id, user.Email);
             await _emailUtils.SendEmail(user.Email, "Código de Confirmação de email", $"Código: {uvEmail.Code}");
             await _userValidationCodeRepository.AddAsync(uvEmail);
+
+            await _userImageRepository.AddUserImageAsync(signUpNgoRequest.profile_image, user.Id);            
 
             await _transactionsManager.CommitTransactionAsync();
 
@@ -142,6 +153,8 @@ public class AuthenticationCommandService : IAuthenticationCommandService
 
             UserValidationCode uvEmail = new(user.Id, user.Email);
             await _userValidationCodeRepository.AddAsync(uvEmail);
+
+            await _userImageRepository.AddUserImageAsync(signUpVolunteerRequest.profile_image, user.Id);
 
             await _transactionsManager.CommitTransactionAsync();
 

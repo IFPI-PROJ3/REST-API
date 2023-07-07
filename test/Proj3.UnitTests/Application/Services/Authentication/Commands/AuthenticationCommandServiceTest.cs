@@ -7,6 +7,7 @@ using Proj3.Application.Common.Interfaces.Services.Authentication.Command;
 using Proj3.Application.Common.Interfaces.Utils.Authentication;
 using Proj3.Application.Services.Authentication.Commands;
 using Proj3.Domain.Entities.Authentication;
+using Proj3.Infrastructure.Persistence.Repositories.Common;
 
 namespace Proj3.UnitTests.Application.Services.Authentication.Commands
 {
@@ -20,6 +21,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<IRefreshTokenRepository> _refreshTokensRepositoryMock;
         private Mock<IUserValidationCodeRepository> _userValidationCodeRepositoryMock;
+        private Mock<IUserImageRepository> _userImageRepository;
         private Mock<ITransactionsManager> _transactionsManagerMock;
 
         private IAuthenticationCommandService _authenticationCommandService;
@@ -34,6 +36,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
             _userRepositoryMock = new Mock<IUserRepository>();
             _refreshTokensRepositoryMock = new Mock<IRefreshTokenRepository>();
             _userValidationCodeRepositoryMock = new Mock<IUserValidationCodeRepository>();
+            _userImageRepository = new Mock<IUserImageRepository>();
             _transactionsManagerMock = new Mock<ITransactionsManager>();
 
             _authenticationCommandService = new AuthenticationCommandService(
@@ -45,6 +48,7 @@ namespace Proj3.UnitTests.Application.Services.Authentication.Commands
                 _userRepositoryMock.Object,
                 _refreshTokensRepositoryMock.Object,
                 _userValidationCodeRepositoryMock.Object,
+                _userImageRepository.Object,
                 _transactionsManagerMock.Object
             );
         }

@@ -41,7 +41,7 @@ namespace Proj3.Domain.Entities.Volunteer
             Description = description;
             Latitude = latitude;
             Longitude = longitude;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }

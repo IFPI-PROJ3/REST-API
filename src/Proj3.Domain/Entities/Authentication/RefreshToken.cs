@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +20,7 @@ namespace Proj3.Domain.Entities.Authentication
         [Required]
         public DateTime Created { get; set; }
 
-        [Required]
+        [Required]        
         public DateTime Expires { get; set; }
 
         [Required]

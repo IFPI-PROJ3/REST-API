@@ -48,7 +48,7 @@ namespace Proj3.Domain.Entities.Authentication
         {
             get
             {
-                return DateTime.UtcNow.AddHours(2);
+                return DateTime.Now.AddHours(2);
             }
         }
 
