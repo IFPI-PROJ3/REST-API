@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
+using Proj3.Contracts.Authentication.Response;
 using Proj3.Contracts.NGO.Request;
+using Proj3.Contracts.NGO.Response;
 using System.Net.Mime;
 
 namespace Proj3.Api.Controllers.NGO
@@ -34,7 +36,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="200">Events collection</response>
         /// <response code="401">Unauthorized</response>        
         /// <response code="500">InternalServerError</response>  
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventToCard), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [Consumes(MediaTypeNames.Application.Json)]
@@ -53,7 +55,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="401">Unauthorized</response>
         /// <response code="404">NotFound</response>
         /// <response code="500">InternalServerError</response>  
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventToPage), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
@@ -72,7 +74,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="401">Unauthorized</response>
         /// <response code="404">NotFound</response>
         /// <response code="500">InternalServerError</response>  
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventToCard), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -109,7 +111,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="401">Unauthorized</response>
         /// <response code="404">NotFound</response>
         /// <response code="500">InternalServerError</response>      
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdatedEventResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

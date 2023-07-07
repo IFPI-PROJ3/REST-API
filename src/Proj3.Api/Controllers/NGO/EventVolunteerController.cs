@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.Common.Command;
 using Proj3.Application.Common.Interfaces.Services.Common.Queries;
+using Proj3.Contracts.NGO.Response;
 using System.Net.Mime;
 
 namespace Proj3.Api.Controllers.NGO
@@ -33,7 +34,7 @@ namespace Proj3.Api.Controllers.NGO
         /// <response code="401">Not authorized</response>
         /// <response code="404">Not found</response>
         /// <response code="500">Internal server error</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<EventRequestResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
