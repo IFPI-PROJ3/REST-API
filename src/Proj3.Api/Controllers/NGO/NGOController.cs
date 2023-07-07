@@ -83,7 +83,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
         [HttpGet("{id}")]
-        public async Task<ActionResult> NgoPageAsync([FromQuery]Guid id)
+        public async Task<ActionResult> NgoPageAsync(Guid id)
         {            
             if (await _ngoQueryService.GetByIdAsync(id) is not Ngo ngo)
             {
@@ -100,17 +100,5 @@ namespace Proj3.Api.Controllers.NGO
             NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating, upcomingEvents, activeEvents, endedEvents);
             return StatusCode(StatusCodes.Status501NotImplemented, ngoPageInfo);
         }
-
-        /// <summary>
-        /// Get ngos by category (Volunteer)
-        /// </summary>                
-        /// <param name="id">Category id</param>
-        /// <response code="501">Not implemented</response>
-        //[ProducesResponseType(StatusCodes.Status501NotImplemented)]
-        //[HttpGet("category/{id}")]
-        //public IActionResult GetNgosByCategory([FromQuery] int id)
-        //{
-        //    return StatusCode(StatusCodes.Status501NotImplemented);
-        //}
     }
 }

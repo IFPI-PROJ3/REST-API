@@ -39,7 +39,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("requests/{id}")]
-        public async Task<IActionResult> EventRequestsAsync([FromQuery] Guid id)
+        public async Task<IActionResult> EventRequestsAsync(Guid id)
         {
             var requests = await _eventVolunteerQueryService.GetRequestsByEvent(HttpContext, id);
             return StatusCode(StatusCodes.Status200OK, requests);
@@ -58,7 +58,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("accept-request/{id}")]
-        public async Task<IActionResult> EventAcceptRequestAsync([FromQuery] Guid id)
+        public async Task<IActionResult> EventAcceptRequestAsync(Guid id)
         {
             await _eventVolunteerCommandService.AcceptRequestAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status204NoContent);
@@ -77,7 +77,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("refuse-request/{id}")]
-        public async Task<IActionResult> EventRefuseRequestAsync([FromQuery] Guid id)
+        public async Task<IActionResult> EventRefuseRequestAsync(Guid id)
         {
             await _eventVolunteerCommandService.RefuseRequest(HttpContext, id);
             return StatusCode(StatusCodes.Status204NoContent);
@@ -96,7 +96,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
         [HttpPost("request/{id}")]
-        public async Task<IActionResult> EventRequestAsync([FromQuery] Guid id)
+        public async Task<IActionResult> EventRequestAsync(Guid id)
         {
             await _eventVolunteerCommandService.NewRequestAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status204NoContent);

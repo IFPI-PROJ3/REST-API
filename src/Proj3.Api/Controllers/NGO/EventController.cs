@@ -60,7 +60,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEventById([FromQuery] Guid id)
+        public async Task<IActionResult> GetEventById(Guid id)
         {            
             var eventToPage = await _eventQueryService.GetEventByIdAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status200OK, eventToPage);
@@ -79,7 +79,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("ngo/{id}")]
-        public IActionResult GetNgoEvents([FromQuery] Guid id)
+        public IActionResult GetNgoEvents(Guid id)
         {
             var events = _eventQueryService.GetAllByNgoAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status200OK, events);
@@ -116,7 +116,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("edit/{id}")]
-        public async Task<IActionResult> UpdateEventAsync([FromQuery] Guid id, [FromBody] UpdateEventRequest updateEventRequest)
+        public async Task<IActionResult> UpdateEventAsync(Guid id, [FromBody] UpdateEventRequest updateEventRequest)
         {
             var updatedEvent = await _eventCommandService.UpdateAsync(HttpContext, id, updateEventRequest);
             return StatusCode(StatusCodes.Status200OK, updatedEvent);
@@ -135,7 +135,7 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("cancel/{id}")]
-        public async Task<IActionResult> CancelEventAsync([FromQuery] Guid id)
+        public async Task<IActionResult> CancelEventAsync(Guid id)
         {
             await _eventCommandService.CancelAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status204NoContent);

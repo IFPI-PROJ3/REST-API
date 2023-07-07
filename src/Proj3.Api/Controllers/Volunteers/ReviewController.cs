@@ -20,7 +20,7 @@ namespace Proj3.Api.Controllers.Volunteers
         /// <response code="501">Not implemented</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpGet("event/{id}")]
-        public IActionResult GetReviews([FromQuery] Guid id)
+        public IActionResult GetReviews(Guid id)
         {
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
@@ -32,7 +32,7 @@ namespace Proj3.Api.Controllers.Volunteers
         /// <response code="501">Not implemented</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpPost("new/{id}")]
-        public IActionResult CreateReview([FromQuery] Guid id)
+        public IActionResult CreateReview(Guid id)
         {
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
@@ -44,7 +44,7 @@ namespace Proj3.Api.Controllers.Volunteers
         /// <response code="501">Not implemented</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpPut("edit/{id}")]
-        public IActionResult UpdateReview([FromQuery] Guid id)
+        public IActionResult UpdateReview(Guid id)
         {
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
@@ -56,7 +56,7 @@ namespace Proj3.Api.Controllers.Volunteers
         /// <response code="501">Not implemented</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpPut("delete/{id}")]
-        public IActionResult DeleteReview([FromQuery] Guid id)
+        public IActionResult DeleteReview(Guid id)
         {
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
