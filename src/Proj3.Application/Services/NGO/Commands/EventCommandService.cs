@@ -101,9 +101,7 @@ namespace Proj3.Application.Services.NGO.Commands
                 @event.Title = updateEventRequest.title;
                 @event.Description = updateEventRequest.description;
                                 
-                await _eventRepository.UpdateAsync(@event);
-
-                await _transactionsManager.CommitTransactionAsync();
+                await _eventRepository.UpdateAsync(@event);                
 
                 if (updateEventRequest.image_thumb is not null)
                 {                                        
@@ -111,7 +109,10 @@ namespace Proj3.Application.Services.NGO.Commands
                     eventImage = await _eventImagesRepository.AddThumbAsync(updateEventRequest.image_thumb, eventImage);
                 }
 
+                await _transactionsManager.CommitTransactionAsync();
+
                 return new UpdatedEventResponse(@event);
+
             } 
             catch (Exception)
             {

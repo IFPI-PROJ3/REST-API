@@ -20,10 +20,16 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
             try
             {
                 await S3Service.FileUploadAsync(image, eventImage.Id.ToString()+".jpg");
-                return await _repository.AddAsync(eventImage);                
+
+                if(_repository.GetByIdAsync(eventImage.Id) == null)
+                {
+                    await _repository.AddAsync(eventImage);
+                }
+
+                return eventImage;
             }
-            catch (Exception)
-            {
+            catch (Exception ex)
+            {                
                 await S3Service.DeleteFileAsync(eventImage.Id.ToString()+".jpg");
                 throw;
             }
