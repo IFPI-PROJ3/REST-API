@@ -6,6 +6,7 @@ public record EventRequestResponse
     Guid event_id,
     Guid volunteer_id,
     string volunteer_name,
-    string volunteer_email    
+    string volunteer_email,
+    string profile_image
 );
 

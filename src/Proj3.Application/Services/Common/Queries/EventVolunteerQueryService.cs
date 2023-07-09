@@ -42,7 +42,7 @@ namespace Proj3.Application.Services.Common.Queries
             {
                 var volunteer = await _volunteerRepository.GetByIdAsync(request.VolunteerId);
                 var volunteerUser = await _userRepository.GetUserByIdAsync(volunteer!.UserId);
-                eventRequestResponse.Add(new EventRequestResponse(request.Id, request.EventId, request.VolunteerId, volunteer.Name + " " + volunteer.LastName, volunteerUser!.Email));
+                eventRequestResponse.Add(new EventRequestResponse(request.Id, request.EventId, request.VolunteerId, volunteer.Name + " " + volunteer.LastName, volunteerUser!.Email, volunteer.UserId.ToString()));
             }
 
             return eventRequestResponse;
@@ -69,7 +69,7 @@ namespace Proj3.Application.Services.Common.Queries
             {
                 var volunteer = await _volunteerRepository.GetByIdAsync(request.VolunteerId);
                 var volunteerUser = await _userRepository.GetUserByIdAsync(volunteer!.UserId);
-                eventRequestResponse.Add(new EventRequestResponse(request.Id, request.EventId, request.VolunteerId, volunteer.Name + " " + volunteer.LastName, volunteerUser!.Email));
+                eventRequestResponse.Add(new EventRequestResponse(request.Id, request.EventId, request.VolunteerId, volunteer.Name + " " + volunteer.LastName, volunteerUser!.Email, volunteer.UserId.ToString()));
             }
 
             return eventRequestResponse;            
