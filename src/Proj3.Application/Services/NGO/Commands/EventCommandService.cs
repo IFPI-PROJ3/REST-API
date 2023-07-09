@@ -57,7 +57,7 @@ namespace Proj3.Application.Services.NGO.Commands
                 @event = await _eventRepository.AddAsync(@event);
                  
                 EventImage eventImage = EventImage.NewThumbImage(@event.Id);
-                eventImage = await _eventImagesRepository.AddThumbAsync(newEventRequest.image_thumb, eventImage);
+                eventImage = await _eventImagesRepository.AddOrUpdateThumbAsync(newEventRequest.image_thumb, eventImage);
 
                 await _transactionsManager.CommitTransactionAsync();
 
@@ -106,7 +106,7 @@ namespace Proj3.Application.Services.NGO.Commands
                 if (updateEventRequest.image_thumb is not null)
                 {                                        
                     var eventImage = (await _eventImagesRepository.GetEventImagesAsync(@eventId))[0];
-                    eventImage = await _eventImagesRepository.AddThumbAsync(updateEventRequest.image_thumb, eventImage);
+                    eventImage = await _eventImagesRepository.AddOrUpdateThumbAsync(updateEventRequest.image_thumb, eventImage);
                 }
 
                 await _transactionsManager.CommitTransactionAsync();

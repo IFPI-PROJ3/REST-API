@@ -4,7 +4,7 @@ namespace Proj3.Application.Common.Interfaces.Persistence.NGO
 {
     public interface IEventImagesRepository
     {
-        public Task<EventImage> AddThumbAsync(byte[] image, EventImage eventImage);
+        public Task<EventImage> AddOrUpdateThumbAsync(byte[] image, EventImage eventImage);
 
         public Task<List<EventImage>> AddImagesAsync(List<Tuple<byte[], EventImage>> eventImages);
 

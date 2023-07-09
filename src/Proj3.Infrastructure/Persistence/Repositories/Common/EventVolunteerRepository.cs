@@ -41,6 +41,11 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
         public async Task NewRequestAsync(Guid eventId, Guid volunteerId)
         {
             await _repository.AddAsync(new EventVolunteer(eventId, volunteerId));
-        }        
+        }
+
+        public async Task<int> GetEventParticipantsCount(Guid eventId)
+        {
+            return await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == true).CountAsync();
+        }
     }
 }

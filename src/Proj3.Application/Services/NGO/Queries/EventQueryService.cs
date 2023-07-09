@@ -18,14 +18,16 @@ namespace Proj3.Application.Services.NGO.Queries
         private readonly IEventRepository _eventRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IEventImagesRepository _eventImagesRepository;
+        private readonly IEventVolunteerRepository _eventVolunteerRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IUserRepository _userRepository;
 
-        public EventQueryService(IEventRepository eventRepository, ICategoryRepository categoryRepository, IEventImagesRepository eventImagesRepository, IReviewRepository reviewRepository, IUserRepository userRepository)
+        public EventQueryService(IEventRepository eventRepository, ICategoryRepository categoryRepository, IEventImagesRepository eventImagesRepository, IEventVolunteerRepository eventVolunteerRepository, IReviewRepository reviewRepository, IUserRepository userRepository)
         {
             _eventRepository = eventRepository;
             _categoryRepository = categoryRepository;
             _eventImagesRepository = eventImagesRepository;
+            _eventVolunteerRepository = eventVolunteerRepository;
             _reviewRepository = reviewRepository;
             _userRepository = userRepository;
         }
@@ -156,11 +158,12 @@ namespace Proj3.Application.Services.NGO.Queries
             }
 
             List<string> eventCategories = await _categoryRepository.GetAllCategoriesByNgoAsync(events.First().Id);
-            List<EventToCard> eventsToCard = new List<EventToCard>();
+            List<EventToCard> eventsToCard = new List<EventToCard>();                        
 
             foreach (Event @event in events)
             {
                 EventImage? thumbImage = await _eventImagesRepository.GetThumbImageAsync(@event.Id);
+                int volunteersCount = await _eventVolunteerRepository.GetEventParticipantsCount(@event.Id);
 
                 eventsToCard.Add(new EventToCard
                     (
@@ -170,7 +173,7 @@ namespace Proj3.Application.Services.NGO.Queries
                         @event.Description,
                         @event.QuickEvent,
                         @event.VolunteersLimit,
-                        501,
+                        volunteersCount,
                         @event.StartDate,
                         @event.EndDate,
                         @event.CreatedAt,

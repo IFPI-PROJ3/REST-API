@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Proj3.Application.Common.Interfaces.Services.Common.Queries;
+using System.Net;
 using System.Net.Mime;
 
 namespace Proj3.Api.Controllers.Common
@@ -29,8 +31,7 @@ namespace Proj3.Api.Controllers.Common
         /// </summary>          
         /// <response code="200">Categories collection</response>                
         /// <response code="500">InternalServerError</response>  
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+        [ProducesResponseType(StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("all")]
         public IActionResult All()

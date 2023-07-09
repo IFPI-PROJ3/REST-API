@@ -15,7 +15,7 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
             _repository = repository;
         }
 
-        public async Task<EventImage> AddThumbAsync(byte[] image, EventImage eventImage)
+        public async Task<EventImage> AddOrUpdateThumbAsync(byte[] image, EventImage eventImage)
         {
             try
             {
