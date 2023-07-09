@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
-using Proj3.Contracts.Authentication.Response;
 using Proj3.Contracts.NGO.Request;
 using Proj3.Contracts.NGO.Response;
 using System.Net.Mime;

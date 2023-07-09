@@ -163,9 +163,8 @@ namespace Proj3.Application.Services.NGO.Queries
             foreach (Event @event in events)
             {
                 EventImage? thumbImage = await _eventImagesRepository.GetThumbImageAsync(@event.Id);
-                int accepted = await _eventVolunteerRepository.GetEventParticipantsCount(@event.Id);
-                int candidates = await _eventVolunteerRepository.GetEventCandidatesCount(@event.Id);
-                string volunteerCount = accepted.ToString() + "/" + candidates.ToString();
+                int requestsCount = await _eventVolunteerRepository.GetEventRequestsCount(@event.Id);
+                int volunteersCount = await _eventVolunteerRepository.GetEventVolunteersCount(@event.Id);                                
 
                 eventsToCard.Add(new EventToCard
                     (
@@ -175,7 +174,8 @@ namespace Proj3.Application.Services.NGO.Queries
                         @event.Description,
                         @event.QuickEvent,
                         @event.VolunteersLimit,
-                        volunteerCount,
+                        requestsCount,
+                        volunteersCount,
                         @event.StartDate,
                         @event.EndDate,
                         @event.CreatedAt,
