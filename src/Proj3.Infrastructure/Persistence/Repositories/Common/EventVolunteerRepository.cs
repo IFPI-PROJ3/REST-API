@@ -47,5 +47,12 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
         {
             return await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == true).CountAsync();
         }
+
+        public async Task<int> GetEventCandidatesCount(Guid eventId)
+        {
+            var notresponse = await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == null).CountAsync();
+            var accepted = await GetEventParticipantsCount(eventId);
+            return notresponse + accepted;
+        }
     }
 }

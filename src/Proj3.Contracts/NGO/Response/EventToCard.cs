@@ -10,7 +10,7 @@ public record EventToCard
     string description,
     bool quick_event,
     int volunteers_limit,     
-    int volunteers_count,
+    string volunteers_count,
     DateTime start_date,
     DateTime end_date,         
     DateTime created_at,
