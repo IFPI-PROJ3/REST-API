@@ -26,14 +26,14 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
 
         public async Task AcceptRequestAsync(Guid eventVolunteerId)
         {
-            var eventVolunteer = await _repository.GetByIdAsync(eventVolunteerId);
+            var eventVolunteer = await _repository.Entity.Where(e => e.Id == eventVolunteerId).FirstOrDefaultAsync();
             eventVolunteer!.Accepted = true;
             await _repository.UpdateAsync(eventVolunteer);
         }
 
         public async Task RefuseRequestAsync(Guid eventVolunteerId)
         {
-            var eventVolunteer = await _repository.GetByIdAsync(eventVolunteerId);
+            var eventVolunteer = await _repository.Entity.Where(e => e.Id == eventVolunteerId).FirstOrDefaultAsync();
             eventVolunteer!.Accepted = false;
             await _repository.UpdateAsync(eventVolunteer);
         }
