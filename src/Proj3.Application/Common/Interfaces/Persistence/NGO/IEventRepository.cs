@@ -12,7 +12,13 @@ namespace Proj3.Application.Common.Interfaces.Persistence.NGO
 
         IAsyncEnumerable<Event> GetActiveEventsByNgoAsync(Guid ngoId);
 
-        IAsyncEnumerable<Event> GetEndedEventsByNgoAsync(Guid ngoId);        
+        IAsyncEnumerable<Event> GetEndedEventsByNgoAsync(Guid ngoId);
+
+        Task<List<Event>> GetUpcomingEventsByVolunteerAsync(Guid volunteerId);
+
+        Task<List<Event>> GetActiveEventsByVolunteerAsync(Guid volunteerId);
+
+        Task<List<Event>> GetEndedEventsByVolunteerAsync(Guid volunteerId);
 
         Task<Event?> GetEventByIdAsync(Guid eventId);
 

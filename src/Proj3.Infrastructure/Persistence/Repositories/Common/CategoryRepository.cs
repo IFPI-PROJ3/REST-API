@@ -44,32 +44,32 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
 
         public async Task<List<string>> GetAllCategoriesByNgoAsync(Guid ngoId)
         {
-            List<string> categoriesStrArray = new();
+            List<string> categoriesStr = new();
 
             var categories = _repositoryNgoCategory.Entity.Where(c => c.NgoId == ngoId).ToList();
             
             foreach(var ngoCategory in categories)
             {
                 var category = await _repository.GetByIdAsync(ngoCategory.CategoryId);
-                categoriesStrArray.Add(category.Name);
+                categoriesStr.Add(category!.Name);
             }
             
-            return categoriesStrArray;
+            return categoriesStr;
         }
 
         public async Task<List<string>> GetAllCategoriesByVolunteerAsync(Guid volunteerId)
         {
-            List<string> categoriesStrArray = new();
+            List<string> categoriesStr = new();
 
             var categories = _repositoryVolunteerCategory.Entity.Where(c => c.VolunteerId == volunteerId).ToList();
 
             foreach (var volunteerCategory in categories)
             {
                 var category = await _repository.GetByIdAsync(volunteerCategory.CategoryId);
-                categoriesStrArray.Append(category.Name);
+                categoriesStr.Add(category!.Name);
             }
 
-            return categoriesStrArray;
+            return categoriesStr;
         }
     }
 }

@@ -45,6 +45,9 @@ public static class DependencyInjection
         services.AddScoped<IEventVolunteerCommandService, EventVolunteerCommandService>();
         services.AddScoped<IEventVolunteerQueryService, EventVolunteerQueryService>();
 
+        // Volunteer
+        services.AddScoped<IVolunteerQueryService, VolunteerQueryService>();
+
         return services;
     }
 }

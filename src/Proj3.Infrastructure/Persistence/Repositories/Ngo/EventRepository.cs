@@ -2,6 +2,7 @@
 using Proj3.Application.Common.Interfaces.Persistence;
 using Proj3.Application.Common.Interfaces.Persistence.NGO;
 using Proj3.Application.Common.Interfaces.Services;
+using Proj3.Domain.Entities.Common;
 using Proj3.Domain.Entities.NGO;
 
 namespace Proj3.Infrastructure.Persistence.Repositories.NGO
@@ -58,12 +59,72 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
                 e => e.NgoId == ngoId 
                 && e.EndDate < DateTime.Now 
                 && e.Cancelled == false
-            ).AsAsyncEnumerable();
+            ).AsAsyncEnumerable();            
         }
 
         public IAsyncEnumerable<Event> GetAllByNgoAsync(Guid ngoId)
         {
             return _repository.Entity.Where(e => e.NgoId == ngoId && e.Cancelled == false).AsAsyncEnumerable();
+        }
+
+        public async Task<List<Event>> GetUpcomingEventsByVolunteerAsync(Guid volunteerId)
+        {
+            List<Event> upcomingEvents = new();
+            AppDbContext context = (AppDbContext)_repository.Context;            
+
+            var events = await context.EventVolunteers!.Where(e => e.VolunteerId == volunteerId && e.Accepted == true).ToListAsync();            
+
+            foreach(EventVolunteer @eventVolunteer in events)
+            {
+                Event @event = await context.Events!.Where(e => e.Id == @eventVolunteer.EventId).FirstAsync();
+
+                if (@event.StartDate > DateTime.Now && @event.Cancelled == false)
+                {
+                    upcomingEvents.Add(@event);
+                }                
+            }
+
+            return upcomingEvents;
+        }
+
+        public async Task<List<Event>> GetActiveEventsByVolunteerAsync(Guid volunteerId)
+        {
+            List<Event> activeEvents = new();
+            AppDbContext context = (AppDbContext)_repository.Context;
+
+            var events = await context.EventVolunteers!.Where(e => e.VolunteerId == volunteerId && e.Accepted == true).ToListAsync();
+
+            foreach (EventVolunteer @eventVolunteer in events)
+            {
+                Event @event = await context.Events!.Where(e => e.Id == @eventVolunteer.EventId).FirstAsync();
+
+                if (@event.StartDate < DateTime.Now && @event.EndDate > DateTime.Now && @event.Cancelled == false)
+                {
+                    activeEvents.Add(@event);
+                }
+            }
+
+            return activeEvents;
+        }
+
+        public async Task<List<Event>> GetEndedEventsByVolunteerAsync(Guid volunteerId)
+        {
+            List<Event> endedEvents = new();
+            AppDbContext context = (AppDbContext)_repository.Context;
+
+            var events = await context.EventVolunteers!.Where(e => e.VolunteerId == volunteerId && e.Accepted == true).ToListAsync();
+
+            foreach (EventVolunteer @eventVolunteer in events)
+            {
+                Event @event = await context.Events!.Where(e => e.Id == @eventVolunteer.EventId).FirstAsync();
+
+                if (@event.EndDate < DateTime.Now && @event.Cancelled == false)
+                {
+                    endedEvents.Add(@event);
+                }
+            }
+
+            return endedEvents;
         }
 
         public async Task<Event?> GetEventByIdAsync(Guid eventId)

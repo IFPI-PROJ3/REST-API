@@ -2,6 +2,6 @@
 {
     public interface IReviewQueryService
     {
-        Task<float> GetAverageRatingByNgoAsync(Guid ngoId);
+        Task<float> GetAverageRatingByNgoAsync(Guid ngoId);        
     }
 }

@@ -12,6 +12,8 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Volunteer
 
         Task<bool> UpdateAsync(Review review);
 
-        Task DeleteAsync(Guid EventId, Guid VolunteerId);        
+        Task DeleteAsync(Guid EventId, Guid VolunteerId);
+
+        Task<bool> UserAlreadyPostReviewAsync(Guid eventId, Guid volunteerId);
     }
 }

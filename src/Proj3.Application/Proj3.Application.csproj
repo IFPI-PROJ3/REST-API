@@ -14,7 +14,9 @@
 
   <ItemGroup>
     <Compile Include="Common\Interfaces\Services\Volunteer\Commands\IReviewCommandService.cs" />
+    <Compile Include="Common\Interfaces\Services\Volunteer\Commands\IVolunteerCommandService.cs" />
     <Compile Include="Common\Interfaces\Services\Volunteer\Queries\IReviewQueryService.cs" />
+    <Compile Include="Common\Interfaces\Services\Volunteer\Queries\IVolunteerQueryService.cs" />
   </ItemGroup>  
 
   <ItemGroup>

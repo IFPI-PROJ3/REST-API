@@ -33,6 +33,11 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Volunteer
             return averageRating.Average();
         }
 
+        public async Task<bool> UserAlreadyPostReviewAsync(Guid eventId, Guid volunteerId)
+        {
+            return await _repository.Entity.Where(r => r.EventId == eventId && r.VolunteerId == volunteerId).AnyAsync();
+        }
+
         public Task<Review> AddAsync(Review review)
         {
             return _repository.AddAsync(review);
@@ -53,6 +58,6 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Volunteer
             }
 
             _repository.Entity.Remove(eventReview);
-        }
+        }        
     }
 }

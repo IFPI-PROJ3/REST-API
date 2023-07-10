@@ -8,8 +8,6 @@ using Proj3.Contracts.NGO.Request;
 using Proj3.Contracts.NGO.Response;
 using Proj3.Domain.Entities.Authentication;
 using Proj3.Domain.Entities.NGO;
-using System.Diagnostics;
-using System.Transactions;
 
 namespace Proj3.Application.Services.NGO.Commands
 {
