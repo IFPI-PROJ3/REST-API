@@ -8,6 +8,8 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Common
 
         public Task<List<EventVolunteer>> GetEventVolunteersByEvent(Guid eventId);
 
+        public Task<EventVolunteer?> GetEventVolunteerById(Guid eventVolunteerId);
+
         public Task AcceptRequestAsync(Guid eventId);
 
         public Task RefuseRequestAsync(Guid eventId);

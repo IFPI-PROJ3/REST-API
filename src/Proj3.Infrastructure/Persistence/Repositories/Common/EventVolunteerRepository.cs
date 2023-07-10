@@ -24,11 +24,16 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
             return await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == true).ToListAsync();
         }
 
+        public async Task<EventVolunteer?> GetEventVolunteerById(Guid eventVolunteerId)
+        {
+            return await _repository.Entity.Where(e => e.Id == eventVolunteerId).FirstOrDefaultAsync();
+        }
+
         public async Task AcceptRequestAsync(Guid eventVolunteerId)
         {
             var eventVolunteer = await _repository.Entity.Where(e => e.Id == eventVolunteerId).FirstOrDefaultAsync();
             eventVolunteer!.Accepted = true;
-            await _repository.UpdateAsync(eventVolunteer);
+            await _repository.UpdateAsync(eventVolunteer);            
         }
 
         public async Task RefuseRequestAsync(Guid eventVolunteerId)
@@ -51,6 +56,6 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
         public async Task<int> GetEventRequestsCount(Guid eventId)
         {
             return await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == null).CountAsync();                        
-        }
+        }        
     }
 }

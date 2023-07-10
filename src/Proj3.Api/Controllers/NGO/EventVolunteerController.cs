@@ -27,6 +27,25 @@ namespace Proj3.Api.Controllers.NGO
         }
 
         /// <summary>
+        /// Get event volunteers (NGO)
+        /// </summary>     
+        /// <param name="id">Event id</param>
+        /// <response code="200">Collection with event volunteers</response>
+        /// <response code="401">Not authorized</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [ProducesResponseType(typeof(List<EventRequestResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> EventVolunteersAsync(Guid id)
+        {
+            var volunteers = await _eventVolunteerQueryService.GetEventVolunteersByEvent(HttpContext, id);
+            return StatusCode(StatusCodes.Status200OK, volunteers);
+        }
+
+        /// <summary>
         /// Get event volunteers requests (NGO)
         /// </summary>     
         /// <param name="id">Event id</param>
