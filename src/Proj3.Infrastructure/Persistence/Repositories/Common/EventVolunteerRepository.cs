@@ -56,6 +56,13 @@ namespace Proj3.Infrastructure.Persistence.Repositories.Common
         public async Task<int> GetEventRequestsCount(Guid eventId)
         {
             return await _repository.Entity.Where(x => x.EventId == eventId && x.Accepted == null).CountAsync();                        
-        }        
+        }
+
+        public async Task DeleteRequestAsync(Guid eventId, Guid volunteerId)
+        {
+            var obj = await _repository.Entity.Where(x => x.EventId == eventId && x.VolunteerId == volunteerId).FirstAsync();
+            _repository.Entity.Remove(obj);
+            await _repository.Context.SaveChangesAsync();
+        }
     }
 }

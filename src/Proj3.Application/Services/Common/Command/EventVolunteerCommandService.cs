@@ -83,7 +83,32 @@ namespace Proj3.Application.Services.Common.Command
             }
 
             var volunteer = await _volunteerRepository.GetByUserIdAsync(user.Id);
+            
             await _eventVolunteerRepository.NewRequestAsync(eventId, volunteer!.Id);
+        }
+
+        public async Task CancelRequestAsync(HttpContext httpContext, Guid eventId)
+        {
+            Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
+
+            if (await _userRepository.GetUserByIdAsync(userId) is not User user)
+            {
+                throw new InvalidCredentialsException();
+            }
+
+            if (user.UserRole != UserRole.Volunteer)
+            {
+                throw new NotFoundException();
+            }
+
+            var volunteer = await _volunteerRepository.GetByUserIdAsync(user.Id);
+
+            var requests = await _eventVolunteerRepository.GetRequestsByEvent(eventId);
+
+            if(requests.Where(r => r.VolunteerId == volunteer.Id).Any())
+            {
+                await _eventVolunteerRepository.DeleteRequestAsync(eventId, volunteer!.Id);
+            }
         }
     }
 }

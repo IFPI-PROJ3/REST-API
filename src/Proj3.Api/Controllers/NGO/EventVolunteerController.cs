@@ -120,5 +120,24 @@ namespace Proj3.Api.Controllers.NGO
             await _eventVolunteerCommandService.NewRequestAsync(HttpContext, id);
             return StatusCode(StatusCodes.Status204NoContent);
         }
+
+        /// <summary>
+        /// Volunteer cancel request participation in event (Volunteer)
+        /// </summary>     
+        /// <param name="id">Event id</param>
+        /// <response code="204">Canceled</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="404">NotFound</response>
+        /// <response code="500">InternalServerError</response>  
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost("cancel-request/{id}")]
+        public async Task<IActionResult> EventCancelRequestAsync(Guid id)
+        {
+            await _eventVolunteerCommandService.CancelRequestAsync(HttpContext, id);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
     }
 }

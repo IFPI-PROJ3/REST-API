@@ -16,6 +16,8 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Common
 
         public Task NewRequestAsync(Guid eventId, Guid volunteerId);
 
+        public Task DeleteRequestAsync(Guid eventId, Guid volunteerId);
+
         public Task<int> GetEventVolunteersCount(Guid eventId);
 
         public Task<int> GetEventRequestsCount(Guid eventId);
