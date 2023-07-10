@@ -4,7 +4,9 @@ namespace Proj3.Application.Common.Interfaces.Persistence.Volunteer
 {
     public interface IReviewRepository
     {
-        IAsyncEnumerable<Review> GetReviewsByEvent(Guid eventId);
+        Task<List<Review>> GetReviewsByNgo(Guid ngoId);
+
+        Task<List<Review>> GetReviewsByEvent(Guid eventId);
 
         Task<float> GetAverageRatingByEvent(Guid eventId);
 

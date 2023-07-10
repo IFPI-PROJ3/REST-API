@@ -12,24 +12,12 @@ namespace Proj3.Api.Controllers.Volunteers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     public class ReviewController : ControllerBase
-    {
-        /// <summary>
-        /// Get event reviews (NGO/Volunteer)
-        /// </summary>                
-        /// <param name="id">Event id</param>
-        /// <response code="501">Not implemented</response>
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
-        [HttpGet("event/{id}")]
-        public IActionResult GetReviews(Guid id)
-        {
-            return StatusCode(StatusCodes.Status501NotImplemented);
-        }
-
+    {       
         /// <summary>
         /// Create a new review (Volunteer)
         /// </summary>                
-        /// <param name="id">Review id</param>
-        /// <response code="501">Not implemented</response>
+        /// <param name="id">event id</param>
+        /// <response code="200">New Review</response>
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [HttpPost("new/{id}")]
         public IActionResult CreateReview(Guid id)

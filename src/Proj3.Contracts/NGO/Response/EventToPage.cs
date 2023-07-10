@@ -11,12 +11,12 @@ public record EventToPage
     string description,
     bool quick_event,
     int volunteers_limit,
-    int volunteers_count,
+    int requests_count,
+    int volunteers_count,    
     DateTime start_date,
     DateTime end_date,    
     DateTime created_at,
     DateTime? updated_at,
-    List<string> categories,
-    List<Review> reviews,
+    List<string> categories,    
     string? image_thumb    
 );

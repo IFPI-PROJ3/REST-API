@@ -20,15 +20,17 @@ namespace Proj3.Application.Services.NGO.Queries
         private readonly IEventImagesRepository _eventImagesRepository;
         private readonly IEventVolunteerRepository _eventVolunteerRepository;
         private readonly IReviewRepository _reviewRepository;
+        private readonly IVolunteerRepository _volunteerRepository;
         private readonly IUserRepository _userRepository;
 
-        public EventQueryService(IEventRepository eventRepository, ICategoryRepository categoryRepository, IEventImagesRepository eventImagesRepository, IEventVolunteerRepository eventVolunteerRepository, IReviewRepository reviewRepository, IUserRepository userRepository)
+        public EventQueryService(IEventRepository eventRepository, ICategoryRepository categoryRepository, IEventImagesRepository eventImagesRepository, IEventVolunteerRepository eventVolunteerRepository, IReviewRepository reviewRepository, IVolunteerRepository volunteerRepository, IUserRepository userRepository)
         {
             _eventRepository = eventRepository;
             _categoryRepository = categoryRepository;
             _eventImagesRepository = eventImagesRepository;
             _eventVolunteerRepository = eventVolunteerRepository;
             _reviewRepository = reviewRepository;
+            _volunteerRepository = volunteerRepository;
             _userRepository = userRepository;
         }
 
@@ -41,7 +43,23 @@ namespace Proj3.Application.Services.NGO.Queries
                 throw new InvalidCredentialsException();
             }
             
-            var events = await _eventRepository.GetAllFeedAsync(user.Id, 501, eventsFeedRequest.categories);
+            var events = await _eventRepository.GetAllFeedAsync(user.Id, 0, eventsFeedRequest.categories);
+            var volunteer = await _volunteerRepository.GetByUserIdAsync(user.Id);
+
+            List<Event> eventsToRemove = new();
+
+            foreach(Event @event in events)
+            {
+                var subs = await _eventVolunteerRepository.GetEventVolunteersByEvent(@event.Id);
+                
+                if(subs.Any(x => x.EventId == @event.Id))
+                {
+                    eventsToRemove.Add(@event);
+                }                
+            }
+
+            events.RemoveAll(e => eventsToRemove.Contains(e));
+
             return await TransformEventToCard(events);            
         }        
 
@@ -77,7 +95,9 @@ namespace Proj3.Application.Services.NGO.Queries
             }
 
             List<string> eventCategories = await _categoryRepository.GetAllCategoriesByNgoAsync(@event.NgoId);
-            List<Review> eventReviews = (List<Review>)(await _reviewRepository.GetReviewsByEvent(eventId).ToListAsync()).Take(5);
+            int requestCount = await _eventVolunteerRepository.GetEventRequestsCount(@event.Id);
+            int volunteersCount = await _eventVolunteerRepository.GetEventVolunteersCount(@event.Id);
+            
             EventImage? thumbImage = await _eventImagesRepository.GetThumbImageAsync(eventId);
 
             return new EventToPage
@@ -88,13 +108,13 @@ namespace Proj3.Application.Services.NGO.Queries
                 @event.Description,
                 @event.QuickEvent,
                 @event.VolunteersLimit,
-                501,
+                requestCount,
+                volunteersCount,
                 @event.StartDate,
                 @event.EndDate,
                 @event.CreatedAt,
                 @event.UpdatedAt,
-                eventCategories,
-                eventReviews,
+                eventCategories,               
                 thumbImage is null ? null : thumbImage.Id.ToString()
             );
         }

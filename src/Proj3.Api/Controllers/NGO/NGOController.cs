@@ -4,7 +4,9 @@ using Proj3.Application.Common.Interfaces.Services.NGO.Commands;
 using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
 using Proj3.Application.Common.Interfaces.Services.Volunteer.Queries;
 using Proj3.Application.Services.NGO.Queries;
+using Proj3.Application.Services.Volunteer.Queries;
 using Proj3.Contracts.Authentication.Response;
+using Proj3.Contracts.Common;
 using Proj3.Contracts.NGO.Response;
 using Proj3.Domain.Entities.NGO;
 using System.Net.Mime;
@@ -65,8 +67,10 @@ namespace Proj3.Api.Controllers.NGO
             List<EventToCard> upcomingEvents = await _eventQueryService.GetUpcomingEventsByNgoAsync(HttpContext, ngo.Id);
             List<EventToCard> activeEvents = await _eventQueryService.GetActiveEventsByNgoAsync(HttpContext, ngo.Id);
             List<EventToCard> endedEvents = await _eventQueryService.GetEndedEventsByNgoAsync(HttpContext, ngo.Id);
-                        
-            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating, upcomingEvents, activeEvents, endedEvents);                        
+            List<ReviewToCard> reviews = new();                        
+
+            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating, upcomingEvents, activeEvents, endedEvents, reviews);                        
+
             return StatusCode(StatusCodes.Status200OK, ngoPageInfo);
         }
 
@@ -96,8 +100,10 @@ namespace Proj3.Api.Controllers.NGO
             List<EventToCard> upcomingEvents = await _eventQueryService.GetUpcomingEventsByNgoAsync(HttpContext, ngo.Id);
             List<EventToCard> activeEvents = await _eventQueryService.GetActiveEventsByNgoAsync(HttpContext, ngo.Id);
             List<EventToCard> endedEvents = await _eventQueryService.GetEndedEventsByNgoAsync(HttpContext, ngo.Id);
+            List<ReviewToCard> reviews = await _reviewQueryService.GetReviewsByNgo(ngo.Id);
 
-            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating, upcomingEvents, activeEvents, endedEvents);
+            NgoPageInfo ngoPageInfo = new NgoPageInfo(ngo, categories, average_rating, upcomingEvents, activeEvents, endedEvents, reviews);
+
             return StatusCode(StatusCodes.Status501NotImplemented, ngoPageInfo);
         }
     }

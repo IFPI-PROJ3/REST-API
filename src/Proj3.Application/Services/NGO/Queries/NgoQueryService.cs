@@ -1,7 +1,6 @@
-﻿using Proj3.Application.Common.DTO;
-using Proj3.Application.Common.Interfaces.Persistence.NGO;
+﻿using Proj3.Application.Common.Interfaces.Persistence.NGO;
 using Proj3.Application.Common.Interfaces.Services.NGO.Queries;
-using Proj3.Contracts.NGO.Request;
+using Proj3.Contracts.NGO.Response;
 using Proj3.Domain.Entities.NGO;
 
 namespace Proj3.Application.Services.NGO.Queries
@@ -15,6 +14,11 @@ namespace Proj3.Application.Services.NGO.Queries
             _ngoRepository = ngoRepository;            
         }
 
+        public Task<NgoPageInfo> GetNgoPage()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Ngo?> GetByUserIdAsync(Guid userId)
         {
             return await _ngoRepository.GetByUserId(userId);
@@ -24,10 +28,5 @@ namespace Proj3.Application.Services.NGO.Queries
         {
             return await _ngoRepository.GetByIdAsync(ngoId);
         }        
-
-        public Task<IEnumerable<NgoDTO>> AllNgosAsync(EventsFeedRequest searchOption)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
