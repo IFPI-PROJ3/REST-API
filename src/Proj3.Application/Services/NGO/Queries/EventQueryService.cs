@@ -34,7 +34,7 @@ namespace Proj3.Application.Services.NGO.Queries
             _userRepository = userRepository;
         }
 
-        public async Task<List<EventToCard>> GetEventsFeedAsync(HttpContext httpContext, EventsFeedRequest eventsFeedRequest)
+        public async Task<List<EventToCardVolunteer>> GetEventsFeedAsync(HttpContext httpContext /*, EventsFeedRequest eventsFeedRequest*/)
         {
             Guid userId = Utils.Authentication.User.GetUserIdFromHttpContext(httpContext);
 
@@ -43,7 +43,7 @@ namespace Proj3.Application.Services.NGO.Queries
                 throw new InvalidCredentialsException();
             }
             
-            var events = await _eventRepository.GetAllFeedAsync(user.Id, 0, eventsFeedRequest.categories);
+            var events = await _eventRepository.GetAllFeedAsync(user.Id, 0, new List<int>() { 1, 2, 3, 4, 5, 6, 7 });
             var volunteer = await _volunteerRepository.GetByUserIdAsync(user.Id);
 
             List<Event> eventsToRemove = new();
@@ -60,7 +60,7 @@ namespace Proj3.Application.Services.NGO.Queries
 
             events.RemoveAll(e => eventsToRemove.Contains(e));
 
-            return await TransformEventToCard(events);            
+            return await TransformEventToCardVolunteer(events, volunteer.Id);            
         }        
 
         public async Task<List<EventToCard>> GetAllByNgoAsync(HttpContext httpContext, Guid ngoId)
@@ -202,6 +202,47 @@ namespace Proj3.Application.Services.NGO.Queries
                         @event.UpdatedAt,
                         eventCategories,
                         thumbImage is null ? null : thumbImage.Id.ToString()
+                    )
+                );
+            }
+
+            return eventsToCard;
+        }
+
+        public async Task<List<EventToCardVolunteer>> TransformEventToCardVolunteer(List<Event> events, Guid volunteerId)
+        {
+            if (events.Count == 0)
+            {
+                return new List<EventToCardVolunteer>();
+            }
+
+            List<string> eventCategories = await _categoryRepository.GetAllCategoriesByNgoAsync(events.First().Id);
+            List<EventToCardVolunteer> eventsToCard = new();
+
+            foreach (Event @event in events)
+            {
+                EventImage? thumbImage = await _eventImagesRepository.GetThumbImageAsync(@event.Id);
+                int requestsCount = await _eventVolunteerRepository.GetEventRequestsCount(@event.Id);
+                int volunteersCount = await _eventVolunteerRepository.GetEventVolunteersCount(@event.Id);
+                bool canBeReviewed = await _reviewRepository.UserAlreadyPostReviewAsync(@event.Id, volunteerId);
+
+                eventsToCard.Add(new EventToCardVolunteer
+                    (
+                        @event.Id,
+                        @event.NgoId,
+                        @event.Title,
+                        @event.Description,
+                        @event.QuickEvent,
+                        @event.VolunteersLimit,
+                        requestsCount,
+                        volunteersCount,
+                        @event.StartDate,
+                        @event.EndDate,
+                        @event.CreatedAt,
+                        @event.UpdatedAt,
+                        eventCategories,
+                        thumbImage is null ? null : thumbImage.Id.ToString(),
+                        canBeReviewed
                     )
                 );
             }

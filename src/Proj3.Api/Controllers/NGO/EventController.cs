@@ -40,9 +40,9 @@ namespace Proj3.Api.Controllers.NGO
         [ProducesResponseType(StatusCodes.Status501NotImplemented)]
         [Consumes(MediaTypeNames.Application.Json)]
         [HttpPost("feed")]
-        public async Task<IActionResult> GetFeedEventsAsync([FromBody] EventsFeedRequest eventsFeedRequest)
+        public async Task<IActionResult> GetFeedEventsAsync()
         {
-            var events = await _eventQueryService.GetEventsFeedAsync(HttpContext, eventsFeedRequest);
+            var events = await _eventQueryService.GetEventsFeedAsync(HttpContext);
             return StatusCode(StatusCodes.Status200OK, events);
         }
 

@@ -6,7 +6,7 @@ namespace Proj3.Application.Common.Interfaces.Services.NGO.Queries
 {
     public interface IEventQueryService
     {
-        Task<List<EventToCard>> GetEventsFeedAsync(HttpContext httpContext, EventsFeedRequest eventsFeedRequest);
+        Task<List<EventToCardVolunteer>> GetEventsFeedAsync(HttpContext httpContext /*EventsFeedRequest eventsFeedRequest*/);
 
         Task<List<EventToCard>> GetUpcomingEventsByNgoAsync(HttpContext httpContext, Guid ngoId);
 
