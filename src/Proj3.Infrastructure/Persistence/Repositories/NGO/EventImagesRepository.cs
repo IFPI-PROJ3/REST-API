@@ -21,10 +21,10 @@ namespace Proj3.Infrastructure.Persistence.Repositories.NGO
             {
                 await S3Service.FileUploadAsync(image, eventImage.Id.ToString()+".jpg");
 
-                if(_repository.GetByIdAsync(eventImage.Id) == null)
-                {
+                //if(_repository.GetByIdAsync(eventImage.Id) == null)
+                //{
                     await _repository.AddAsync(eventImage);
-                }
+                //}
 
                 return eventImage;
             }
